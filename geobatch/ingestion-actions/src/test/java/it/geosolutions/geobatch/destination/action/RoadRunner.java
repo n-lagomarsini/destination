@@ -56,7 +56,7 @@ public class RoadRunner{
         datastoreParams.put("host", "192.168.1.31");
         datastoreParams.put("Expose primary keys", "true");
         datastoreParams.put("user", "siig_p");
-        datastoreParams.put("database", "destination_staging");
+        datastoreParams.put("database", "vulnerability_test");
         
         JDBCDataStore dataStore = null;        
         MetadataIngestionHandler metadataHandler = null;
@@ -89,13 +89,13 @@ public class RoadRunner{
 	        zeroComputation.removeZeros(null, 3, null);
 	        
 	        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(1024*1024*1024);
-	        
+	        */
 	        VulnerabilityComputation vulnerability = new VulnerabilityComputation(inputFeature, 
 	        		new ProgressListenerForwarder(null), metadataHandler, dataStore);
 	        
 	        vulnerability.computeVulnerability(null, 1, "PURGE_INSERT", null);
-	        vulnerability.computeVulnerability(null, 2, "PURGE_INSERT", null);
-	        vulnerability.computeVulnerability(null, 3, "PURGE_INSERT", null);*/
+	        //vulnerability.computeVulnerability(null, 2, "PURGE_INSERT", null);
+	        //vulnerability.computeVulnerability(null, 3, "PURGE_INSERT", null);
 			
 			StreetUserComputation streetUserComputation = new StreetUserComputation(inputFeature,
 					new ProgressListenerForwarder(null),
@@ -104,7 +104,7 @@ public class RoadRunner{
 	        
 	        //streetUserComputation.execute(1);
 	        //streetUserComputation.execute(2);
-	        streetUserComputation.execute(3);
+	        //streetUserComputation.execute(3);
 			/*
 	        RiskComputation riskComputation = new RiskComputation(
 	        		inputFeature,
