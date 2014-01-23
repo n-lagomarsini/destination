@@ -488,6 +488,24 @@ public abstract class InputObject {
 	}
 	
 	/**
+         * Returns the size of the features founded by the inputReader  
+         * 
+         * @return size the number of input features
+         * @throws IOException 
+         */
+        protected int inputSize() throws IOException{ 
+                if(inputQuery !=null && inputReader != null){
+                    int count= inputReader.getCount(inputQuery);
+                    if(count==-1){
+                        return inputReader.getFeatures(inputQuery).size();
+                    }
+                    return count;            
+                }            
+                return 0;                                  
+        }
+	
+	
+	/**
 	 * Returns the next value to use for the output feature id.
 	 * 
 	 * @param id
@@ -589,6 +607,26 @@ public abstract class InputObject {
 			}
 		}		
 	}
+	
+	
+	       /**
+         * Updates the import progress ( progress / total )
+         * for the listeners.
+         * 
+         * @param total
+         * @param loopCounter
+         * @param message
+         */
+        protected void importFinishedModified(int total,int loopCounter, int errors, String message) {          
+        listenerForwarder.setProgress((float)total);
+        listenerForwarder.setTask(message);
+                if(LOGGER.isInfoEnabled()) {
+                        LOGGER.info(message + ": "+(loopCounter - errors)+ "/" + total);
+                        if(errors > 0) {
+                                LOGGER.info("Skipped: " + errors);
+                        }
+                }               
+        }
 	
 	/**
 	 * 
