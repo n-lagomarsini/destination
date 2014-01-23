@@ -1,5 +1,5 @@
 <coverageStore>
-  <id>CoverageStoreInfoImpl--38c05adb:1419c0eb046:5784</id>
+  <id>CoverageStoreInfoImpl-27d26bfb:142ebec3b59:-4c2e</id>
   <name>aree_commerciali_mosaic</name>
   <type>ImageMosaic</type>
   <enabled>true</enabled>
@@ -7,5 +7,5 @@
     <id>WorkspaceInfoImpl--570ae188:124761b8d78:-7ffb</id>
   </workspace>
   <__default>false</__default>
-  <url>file:coverages/destination/aree_commerciali</url>
+  <url>file:coverages/destination/strutture_commerciali</url>
 </coverageStore>

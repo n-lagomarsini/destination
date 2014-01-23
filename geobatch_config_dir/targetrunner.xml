@@ -38,7 +38,7 @@
                    </entry>
                    <entry>
                      <string>host</string>
-                     <string>localhost</string>
+                     <string>192.168.1.31</string>
                    </entry>
                    <entry>
                      <string>port</string>
@@ -68,7 +68,9 @@
             </outputFeature>
             <projectOnMappings>false</projectOnMappings>
             <attributeMappings/>
-
+            <!-- Listeners -->
+            <listenerId>ConsumerLogger0</listenerId>
+            <listenerId>Cumulator</listenerId>
         </Ds2dsConfiguration>
 
 
@@ -76,7 +78,10 @@
             <id>target_processing</id>
             <name>Target processing</name>
             <description>Target postprocessing</description>
-            <dropInput>false</dropInput>
+            <dropInput>true</dropInput>
+            <!-- Listeners -->
+            <listenerId>ConsumerLogger0</listenerId>
+            <listenerId>Cumulator</listenerId>
         </TargetIngestionConfiguration>
 		
 		<ScriptingConfiguration>
@@ -99,6 +104,9 @@
 				  </entry>
 			</properties>
 			-->
+            <!-- Listeners -->
+            <listenerId>ConsumerLogger0</listenerId>
+            <listenerId>Cumulator</listenerId>
 			
 		</ScriptingConfiguration>
 
@@ -107,36 +115,26 @@
             <name>Raster processing</name>
             <description>Raster postprocessing</description>
 			<!--<baseOutputPath>C:/temp/</baseOutputPath>-->
+            <!-- Listeners -->
+            <listenerId>ConsumerLogger0</listenerId>
+            <listenerId>Cumulator</listenerId>
         </RasterizeConfiguration>
 
     </EventConsumerConfiguration>
 
 
     <ListenerConfigurations>
-<!--		<StatusProgressListener>
-            <serviceID>statusListenerService</serviceID>
-            <id>StatusActionLogger0</id>
-        </StatusProgressListener>
-
-        <LoggingProgressListener>
-            <serviceID>loggingListenerService</serviceID>
-            <id>ActionLogger0</id>
-
-            <loggerName>it.geosolutions.ActionLogger</loggerName>
-        </LoggingProgressListener>-->
-
         <LoggingProgressListener>
             <serviceID>loggingListenerService</serviceID>
             <id>ConsumerLogger0</id>
-
             <loggerName>it.geosolutions.ConsLogger</loggerName>
+            <appendToListenerForwarder>true</appendToListenerForwarder>
         </LoggingProgressListener>
-
         <CumulatingProgressListener>
             <serviceID>cumulatingListenerService</serviceID>
             <id>Cumulator</id>
+            <appendToListenerForwarder>true</appendToListenerForwarder>
         </CumulatingProgressListener>
-
     </ListenerConfigurations>
 
 </FlowConfiguration>

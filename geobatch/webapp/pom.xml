@@ -83,6 +83,37 @@
       <groupId>it.geosolutions.geobatch</groupId>
       <artifactId>gb-dao-xstream</artifactId>
     </dependency>
+    <dependency>
+      <groupId>it.geosolutions.geobatch</groupId>
+      <artifactId>gb-web-core</artifactId>
+      <type>war</type>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>it.geosolutions.geobatch</groupId>
+      <artifactId>gb-web-core</artifactId>
+      <classifier>classes</classifier>
+    </dependency>
+    <dependency>
+        <groupId>it.geosolutions.geobatch</groupId>
+        <artifactId>gb-action-commons</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>it.geosolutions.geobatch</groupId>
+        <artifactId>gb-action-freemarker</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>it.geosolutions.geobatch</groupId>
+        <artifactId>gb-action-shapefile</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>it.geosolutions.geobatch</groupId>
+        <artifactId>gb-rest-api</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>it.geosolutions.geobatch</groupId>
+        <artifactId>gb-rest-impl</artifactId>
+    </dependency>
     <!-- ============================== -->
     <!-- log4j -->
     <!-- ============================== -->
@@ -90,6 +121,41 @@
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <scope>runtime</scope>
+    </dependency>
+    <!-- JAI Tools -->
+    <dependency>
+        <!--<groupId>com.googlecode.jaitools</groupId> -->
+        <groupId>org.jaitools</groupId>
+        <artifactId>jt-zonalstats</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>javax.media</groupId>
+        <artifactId>jai_core</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>javax.media</groupId>
+        <artifactId>jai_codec</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>javax.media</groupId>
+        <artifactId>jai_imageio</artifactId>
+    </dependency>
+    <!-- imageio-ext -->
+    <dependency>
+        <groupId>${imageio-ext.group}</groupId>
+        <artifactId>imageio-ext-tiff</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>${imageio-ext.group}</groupId>
+        <artifactId>imageio-ext-geocore</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>${imageio-ext.group}</groupId>
+        <artifactId>imageio-ext-imagereadmt</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>${imageio-ext.group}</groupId>
+        <artifactId>imageio-ext-streams</artifactId>
     </dependency>
     <!-- ============================== -->
     <!-- Test: JETTY -->
@@ -127,6 +193,38 @@
           </execution>
         </executions>
       </plugin>
+
+      <!-- Unpack flow configuration on final war -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.4</version>
+        <executions>
+          <execution>
+            <id>unpack_dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>it.geosolutions.destination.geobatch</groupId>
+                  <artifactId>gb-destination-ingestion-actions</artifactId>
+                  <version>${project.version}</version>
+                  <type>jar</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.directory}/${flow.dir}</outputDirectory>
+                  <includes>data/**</includes>
+                </artifactItem>
+              </artifactItems>
+              <overWriteReleases>true</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+            
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
         <artifactId>maven-jetty-plugin</artifactId>

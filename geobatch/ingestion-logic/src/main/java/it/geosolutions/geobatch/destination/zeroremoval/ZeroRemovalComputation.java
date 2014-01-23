@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.geotools.data.DataStore;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureStore;
 import org.geotools.data.Transaction;
@@ -82,7 +83,7 @@ public class ZeroRemovalComputation extends InputObject {
 	private final static Logger LOGGER = LoggerFactory.getLogger(ZeroRemovalComputation.class);
 
 	private static Pattern TYPE_NAME_PARTS = Pattern
-			.compile("^([A-Z]{2})_([A-Z]{1})_([A-Za-z]+)_([0-9]{8})$");
+			.compile("^([A-Z]{2})_([A-Z]{1})_([A-Za-z]+)_([0-9]{8})(_ORIG)?$");
 
 	public static String GEO_TYPE_NAME = "siig_geo_ln_arco_X";
 	//private static final String NR_INCIDENTI = "nr_incidenti";
@@ -108,9 +109,14 @@ public class ZeroRemovalComputation extends InputObject {
 	 */
 	public ZeroRemovalComputation(double kIncr, String inputTypeName,
 			ProgressListenerForwarder listenerForwarder,
-			MetadataIngestionHandler metadataHandler, JDBCDataStore dataStore) {
+			MetadataIngestionHandler metadataHandler, DataStore dataStore) {
 		super(inputTypeName, listenerForwarder, metadataHandler, dataStore);
 		this.kInc = kIncr;
+	}
+	
+	@Override
+	protected String getInputTypeName(String inputTypeName) {
+		return inputTypeName.replace("_ORIG", "");
 	}
 
 	/**
@@ -121,7 +127,7 @@ public class ZeroRemovalComputation extends InputObject {
 	 */
 	public ZeroRemovalComputation(String inputTypeName,
 			ProgressListenerForwarder listenerForwarder,
-			MetadataIngestionHandler metadataHandler, JDBCDataStore dataStore) {
+			MetadataIngestionHandler metadataHandler, DataStore dataStore) {
 		super(inputTypeName, listenerForwarder, metadataHandler, dataStore);
 		this.kInc = KINCR_DEFAULT_VALUE;
 	}
@@ -166,7 +172,6 @@ public class ZeroRemovalComputation extends InputObject {
 		reset();
 
 		if (isValid()) {
-			
 
 			crs = checkCrs(crs);
 
@@ -177,27 +182,31 @@ public class ZeroRemovalComputation extends InputObject {
 			int startErrors = 0;
 			// existing process
 			MetadataIngestionHandler.Process importData = getProcessData();
-			if(importData != null){
-			process = importData.getId();
-			trace = importData.getMaxTrace();
-			errors = importData.getMaxError();
+			if (importData != null) {
+				process = importData.getId();
+				trace = importData.getMaxTrace();
+				errors = importData.getMaxError();
 				startErrors = errors;
 			}
 
-			if(metadataHandler != null && process == -1) {
+			if (metadataHandler != null && process == -1) {
 				LOGGER.error("Cannot find process for input file");
 				throw new IOException("Cannot find process for input file");
 			}
-			
-			//First iteration on NR_INCIDENTI -> NR_INCIDENTI_ELAB
-			LOGGER.debug("Start first iteration");
-			this.iterativeProcess("nr_incidenti", "nr_incidenti_elab", true, aggregationLevel, startErrors, errors, trace, process, closePhase);
-			//Check for zero nr_incidenti_elab
 
-			//Second iteration on NR_INCIDENTI_ELAB -> NR_INCIDENTI_ELAB
-			if(this.existsZeroInElab(aggregationLevel,"nr_incidenti_elab")){
+			// First iteration on NR_INCIDENTI -> NR_INCIDENTI_ELAB
+			LOGGER.debug("Start first iteration");
+			this.iterativeProcess("nr_incidenti", "nr_incidenti_elab", true,
+					aggregationLevel, startErrors, errors, trace, process,
+					closePhase);
+			// Check for zero nr_incidenti_elab
+
+			// Second iteration on NR_INCIDENTI_ELAB -> NR_INCIDENTI_ELAB
+			if (this.existsZeroInElab(aggregationLevel, "nr_incidenti_elab")) {
 				LOGGER.debug("Start second iteration");
-				this.iterativeProcess("nr_incidenti_elab", "nr_incidenti_elab", false, aggregationLevel, startErrors, errors, trace, process, closePhase);
+				this.iterativeProcess("nr_incidenti_elab", "nr_incidenti_elab",
+						false, aggregationLevel, startErrors, errors, trace,
+						process, closePhase);
 			}
 
 		}
@@ -209,7 +218,7 @@ public class ZeroRemovalComputation extends InputObject {
 		try{
 			//Check if exists almost one arc for partner with NR_INCIDENTI_ELAB = 0
 			String geoName = getTypeName(GEO_TYPE_NAME, aggregationLevel);
-			createInputReader(dataStore, null, geoName);
+			createInputReader(dataStore,  Transaction.AUTO_COMMIT, geoName);
 			setInputFilter(
 					filterFactory.and(
 							filterFactory.equals(filterFactory.property(PARTNER_FIELD),filterFactory.literal(partner)),
@@ -232,9 +241,9 @@ public class ZeroRemovalComputation extends InputObject {
                 String geoName = getTypeName(GEO_TYPE_NAME, aggregationLevel);
     
                 // setup input reader
-                createInputReader(dataStore, null, geoName);
+                createInputReader(dataStore, transaction, geoName);
     
-                OutputObject geoObject = new OutputObject(dataStore, null, geoName, GEOID);
+                OutputObject geoObject = new OutputObject(dataStore, transaction, geoName, GEOID);
     
                 setInputFilter(filterFactory.equals(filterFactory.property(PARTNER_FIELD),
                         filterFactory.literal(partner)));
@@ -297,6 +306,7 @@ public class ZeroRemovalComputation extends InputObject {
                         }
                     } catch (IllegalArgumentException e) {
                         LOGGER.error(e.getMessage(), e);
+                        transaction.rollback();
                         errors++;
                         if (metadataHandler != null) {
                             metadataHandler.logError(trace, errors, "Error importing data",
@@ -320,8 +330,7 @@ public class ZeroRemovalComputation extends InputObject {
                         metadataHandler.closeProcessPhase(process, closePhase);
                     }
                 }
-                closeInputReader();
-    
+                closeInputReader();    
                 transaction.close();
             }
         }

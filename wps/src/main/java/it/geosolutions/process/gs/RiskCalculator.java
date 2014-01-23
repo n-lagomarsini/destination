@@ -34,12 +34,16 @@ import java.util.logging.Logger;
 
 import org.geoserver.catalog.Catalog;
 import org.geoserver.catalog.DataStoreInfo;
+import org.geoserver.catalog.FeatureTypeInfo;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DefaultTransaction;
+import org.geotools.data.FeatureSource;
 import org.geotools.data.collection.ListFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.store.EmptyFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.NameImpl;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
@@ -51,6 +55,7 @@ import org.geotools.process.factory.DescribeResult;
 import org.geotools.util.logging.Logging;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.FilterFactory2;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -67,6 +72,7 @@ import com.vividsolutions.jts.io.WKTReader;
 public class RiskCalculator extends RiskCalculatorBase {
 	private static final Logger LOGGER = Logging.getLogger(RiskCalculator.class);	
 	private static final WKTReader wktReader = new WKTReader();
+	private static final FilterFactory2 ff2 = CommonFactoryFinder.getFilterFactory2();
 	/**
 	 * @param catalog
 	 */
@@ -185,7 +191,8 @@ public class RiskCalculator extends RiskCalculatorBase {
 			@DescribeParameter(name = "pis", description = "optional List (_ delimited) of csv id_geo_arco,pis values to use on the simulation", min = 0) String pis,
 			@DescribeParameter(name = "distances", description = "optional list of distances for the simulation processing", min = 0) String distances,
 			
-			@DescribeParameter(name = "damageArea", description = "optional field containing damage area geometry or an id for the ProcessingRepository storing the same data", min = 0) String damageArea
+			@DescribeParameter(name = "damageArea", description = "optional field containing damage area geometry or an id for the ProcessingRepository storing the same data", min = 0) String damageArea,
+			@DescribeParameter(name = "extendedSchema", description = "optional field that chooses an extended schema for the result (useful for download)", min = 0) Boolean extendedSchema
 
 		) throws IOException, SQLException {
 		// building DataStore connection using Catalog/storeName or connection input parameters
@@ -208,7 +215,10 @@ public class RiskCalculator extends RiskCalculatorBase {
 		if(features == null) {
 			throw new ProcessException("Missing input feature");
 		}
-		
+		if(extendedSchema == null) {
+			extendedSchema = false;
+		}
+		checkProcessingAllowed(dataStore, processing);
 		if(processing == 3) {
 			
 			List<String> pscs = new ArrayList<String>();
@@ -242,7 +252,7 @@ public class RiskCalculator extends RiskCalculatorBase {
 			return calculateRisk(features, dataStore, storeName, precision, connectionParams,
 					processing, formula, target, materials, scenarios,
 					entities, severeness, fpfield, 1, true, null, null, simulationTargets, cffs, pscs,
-					padrs, piss, distancesList);
+					padrs, piss, distancesList, extendedSchema);
 		} else if(processing == 4){
 			try {
 				Geometry damageAreaGeometry = loadDamageArea(dataStore, damageArea);
@@ -250,7 +260,7 @@ public class RiskCalculator extends RiskCalculatorBase {
 				return calculateRisk(features, dataStore, storeName, precision, connectionParams,
 						processing, formula, target, materials, scenarios,
 						entities, severeness, fpfield, 1, false, damageAreaGeometry, damageValues, null, null, null,
-						null, null, null);
+						null, null, null, extendedSchema);
 			} catch (ParseException e) {
 				throw new ProcessException("Error reading targets WKT", e);
 			}
@@ -264,10 +274,27 @@ public class RiskCalculator extends RiskCalculatorBase {
 			return calculateRisk(features, dataStore, storeName, precision, connectionParams,
 					processing, formula, target, materials, scenarios,
 					entities, severeness, fpfield, batch, false, null, null, null, null, null,
-					null, null, null);
+					null, null, null, extendedSchema);
 						
 		}
 		
+	}
+
+	/**
+	 * @param dataStore 
+	 * @throws IOException 
+	 * 
+	 */
+	private void checkProcessingAllowed(JDBCDataStore dataStore, int processing) throws IOException {
+		// access through catalog to let the security jump in
+		FeatureTypeInfo ft = catalog.getResourceByName("destination", "siig_mtd_d_elaborazione", FeatureTypeInfo.class);
+		FeatureSource source = ft.getFeatureSource(null, null); 
+		FeatureCollection fc = source.getFeatures(ff2.equals(ff2.property("id_elaborazione"), ff2.literal(processing)));
+		// check if the given processing is allowed (if not is filtered out from results
+		// so size should be 0)
+		if(fc.size() != 1) {
+			throw new ProcessException("Operation not allowed");
+		}
 	}
 
 	/**
@@ -492,7 +519,8 @@ public class RiskCalculator extends RiskCalculatorBase {
 			List<String> psc,
 			Map<Integer, Map<Integer, Double>> padrs,
 			Map<Integer, Double> piss,
-			List<Integer> distances
+			List<Integer> distances,
+			boolean extendedSchema
 		) throws IOException, SQLException {
 		
 		if(precision == null) {
@@ -512,8 +540,17 @@ public class RiskCalculator extends RiskCalculatorBase {
 			SimpleFeatureTypeBuilder tb = new SimpleFeatureTypeBuilder();									
 			tb.add("id_geo_arco", features.getSchema().getDescriptor("id_geo_arco").getType().getBinding());
 			tb.add("geometria", MultiLineString.class,features.getSchema().getGeometryDescriptor().getCoordinateReferenceSystem());
-	        tb.add("rischio1", Double.class);			
-	        tb.add("rischio2", Double.class);
+			
+			if(extendedSchema) {
+				tb.add("rischio_sociale", Double.class);			
+		        tb.add("rischio_ambientale", Double.class);
+				tb.add("nr_corsie", Integer.class);			
+		        tb.add("lunghezza", Integer.class);
+		        tb.add("nr_incidenti", Integer.class);
+			} else {
+				tb.add("rischio1", Double.class);			
+		        tb.add("rischio2", Double.class);
+			}
 	        // fake layer name (risk) used for WPS output. Layer risk must be defined in GeoServer
 	        // catalog
 	        tb.setName(new NameImpl(features.getSchema().getName().getNamespaceURI(), "risk"));	        
@@ -530,8 +567,8 @@ public class RiskCalculator extends RiskCalculatorBase {
 	        	throw new ProcessException("Unable to load formula " + formula);
 	        }
 	        
-			if ((!formulaDescriptor.hasGrid() && level == 3)
-					|| (!formulaDescriptor.hasNoGrid() && level < 3)) {
+			if (((!formulaDescriptor.hasGrid() && level == 3)
+					|| (!formulaDescriptor.hasNoGrid() && level < 3)) && !extendedSchema) {
 	        	LOGGER.info("Formula not supported on this level, returning empty collection");				
 				return new EmptyFeatureCollection(ft);
 	        } else {
@@ -565,7 +602,11 @@ public class RiskCalculator extends RiskCalculatorBase {
 						} 
 						fb.add(risk[0]);
 						fb.add(risk[1]);
-												
+						if(extendedSchema) {
+							fb.add((Number)feature.getAttribute("nr_corsie"));			
+					        fb.add((Number)feature.getAttribute("lunghezza"));
+					        fb.add((Number)feature.getAttribute("nr_incidenti"));
+						}
 						temp.put(id.intValue(), fb.buildFeature(id + ""));						
 							
 						if(simulation) {
@@ -608,7 +649,7 @@ public class RiskCalculator extends RiskCalculatorBase {
 									conn, level, processing, formulaDescriptor, id.intValue(), fk_partner,
 									materials, scenarios, entities, severeness, fpfield, target, simulationTargets, 
 									temp, precision,
-									cff, psc, padr, pis, null);
+									cff, psc, padr, pis, null, extendedSchema);
 							
 							result.addAll(temp.values());
 							temp = new HashMap<Number, SimpleFeature>();	
@@ -619,7 +660,7 @@ public class RiskCalculator extends RiskCalculatorBase {
 										conn, level, processing, formulaDescriptor, id.intValue(), fk_partner,
 										materials, scenarios, entities, severeness, fpfield, target, null, 
 										temp, precision,
-										null, null, null, null, damageValues);
+										null, null, null, null, damageValues, extendedSchema);
 								result.addAll(temp.values());								
 							}
 							temp = new HashMap<Number, SimpleFeature>();
@@ -631,7 +672,7 @@ public class RiskCalculator extends RiskCalculatorBase {
 								LOGGER.info("Calculated " + count + " values");
 								FormulaUtils.calculateFormulaValues(conn, level, processing, formulaDescriptor, ids.toString()
 										.substring(1), fk_partner, materials, scenarios,
-										entities, severeness, fpfield, target, temp, precision);								
+										entities, severeness, fpfield, target, temp, precision, extendedSchema);								
 								result.addAll(temp.values());
 								ids = new StringBuilder();
 								temp = new HashMap<Number, SimpleFeature>();								
@@ -645,7 +686,7 @@ public class RiskCalculator extends RiskCalculatorBase {
 					if(ids.length() > 0) {
 						FormulaUtils.calculateFormulaValues(conn, level, processing, formulaDescriptor, ids.toString()
 								.substring(1), fk_partner, materials, scenarios, entities,
-								severeness, fpfield, target, temp, precision);
+								severeness, fpfield, target, temp, precision, extendedSchema);
 					}					
 					result.addAll(temp.values());
 					

@@ -60,7 +60,7 @@ public class ArcsIngestionProcess extends InputObject {
 	private final static Logger LOGGER = LoggerFactory.getLogger(ArcsIngestionProcess.class);
 		
 	private static Pattern typeNameParts = Pattern
-			.compile("^([A-Z]{2})_([A-Z]{1})_([A-Za-z]+)_([0-9]{8})$");
+			.compile("^([A-Z]{2})_([A-Z]{1})_([A-Za-z]+)_([0-9]{8})(_ORIG)?$");
 	
 	private int partner;
 	private String codicePartner;
@@ -124,8 +124,13 @@ public class ArcsIngestionProcess extends InputObject {
 	 */
 	public ArcsIngestionProcess(String inputTypeName,
 			ProgressListener listenerForwarder,
-			MetadataIngestionHandler metadataHandler, JDBCDataStore dataStore) {
+			MetadataIngestionHandler metadataHandler, DataStore dataStore) {
 		super(inputTypeName, listenerForwarder, metadataHandler, dataStore);		
+	}
+	
+	@Override
+	protected String getInputTypeName(String inputTypeName) {
+		return inputTypeName.replace("_ORIG", "");
 	}
 	
 	/**
@@ -175,7 +180,7 @@ public class ArcsIngestionProcess extends InputObject {
 	 * @throws IOException
 	 */
 	public void importArcs(CoordinateReferenceSystem crs, int aggregationLevel,
-			boolean onGrid, boolean dropInput, String closePhase)
+			boolean onGrid, boolean dropInput, boolean newProcess, String closePhase)
 			throws IOException {
 		reset();
 		if(isValid()) {								
@@ -193,7 +198,7 @@ public class ArcsIngestionProcess extends InputObject {
 			try {												
 								
 				// create or retrieve metadata for ingestion
-				if(aggregationLevel == 1) {
+				if(newProcess) {
 					// new process
 					process = createProcess();
 					// write log for the imported file
@@ -209,7 +214,7 @@ public class ArcsIngestionProcess extends InputObject {
 				int startErrors = errors;
 				
 				// setup input reader								
-				createInputReader(dataStore, null, onGrid ? gridTypeName : null);						
+				createInputReader(dataStore, Transaction.AUTO_COMMIT, onGrid ? gridTypeName : null);						
 				
 				Transaction transaction = new DefaultTransaction();
 				
@@ -244,9 +249,13 @@ public class ArcsIngestionProcess extends InputObject {
 					Filter removeFilter = filterFactory.equals(
 						filterFactory.property("fk_partner"), filterFactory.literal(partner)
 					);
-					if(aggregationLevel == 3 && !onGrid) {
-						// remove only geo data for ln_3
-						removeObjects(new OutputObject[] {mainGeoObject}, removeFilter);
+					if(aggregationLevel == 3) {
+						if(onGrid) {
+							removeObjects(new OutputObject[] {dissestoObject, tipobersObject, tiposostObject, mainGeoObject}, removeFilter);
+						} else {
+							// remove only geo and vehicle data for ln_3
+							removeObjects(new OutputObject[] {vehicleObject, mainGeoObject}, removeFilter);
+						}
 					} else {
 						removeObjects(outputObjects, removeFilter);
 					}
@@ -327,7 +336,7 @@ public class ArcsIngestionProcess extends InputObject {
 				Geometry cell = (Geometry)gridFeature.getDefaultGeometry();
 				
 				FeatureSource<SimpleFeatureType, SimpleFeature> reader = createInputReader(
-						dataStore, null, null);				
+						dataStore, Transaction.AUTO_COMMIT, null);				
 				
 				FeatureIterator<SimpleFeature> iterator = reader.getFeatures(filterFactory.intersects(
 						filterFactory.property(inputGeometryName), 
@@ -336,7 +345,7 @@ public class ArcsIngestionProcess extends InputObject {
 				
 				try  {
 					errors = aggregateStep(trace, dataStore, outputObjects, total,
-							errors, startErrors, outputName, id, idTematico, iterator, cell, false);
+							errors, startErrors, outputName, id, idTematico, iterator, cell, false, true);
 				} finally {
 					iterator.close();
 				}
@@ -375,7 +384,7 @@ public class ArcsIngestionProcess extends InputObject {
 			));
 			try {
 				errors = aggregateStep(trace, dataStore, outputObjects, total,
-						errors, startErrors, outputName, id, idTematico, null, null, computeOnlyGeoFeature);
+						errors, startErrors, outputName, id, idTematico, null, null, computeOnlyGeoFeature, false);
 			} finally {
 				closeInputReader();
 			}	
@@ -408,7 +417,7 @@ public class ArcsIngestionProcess extends InputObject {
 			OutputObject[] outputObjects, int total, int errors,
 			int startErrors, String outputName, int id, int idTematico,
 			FeatureIterator<SimpleFeature> iterator, Geometry aggregateGeo,
-			boolean computeOnlyGeoFeature) throws IOException {
+			boolean computeOnlyGeoFeature, boolean dontComputeVehicle) throws IOException {
 		
 		SimpleFeature inputFeature;
 		Geometry geo = null;
@@ -462,7 +471,7 @@ public class ArcsIngestionProcess extends InputObject {
 						attributeMappings, "flg_nr_incidenti");
 				flgCorsieCounter.addElement(currentFlgCorsie);
 				flgIncidentiCounter.addElement(currentFlgIncidenti);
-				if(!computeOnlyGeoFeature){		
+				if(!dontComputeVehicle) {
 					// by vehicle
 					int[] tgms = extractMultipleValues(inputFeature, "TGM");
 					int[] velocitas = extractMultipleValues(inputFeature,
@@ -481,7 +490,9 @@ public class ArcsIngestionProcess extends InputObject {
 							attributeMappings, "flg_velocita");
 					flgTgmCounter.addElement(currentFlgTGM);
 					flgVelocCounter.addElement(currentFlgVeloc);
-
+				}
+				
+				if(!computeOnlyGeoFeature){		
 					// dissesto
 					String[] pterrs = inputFeature.getAttribute("PTERR") == null ? new String[0]
 							: inputFeature.getAttribute("PTERR").toString()
@@ -528,10 +539,13 @@ public class ArcsIngestionProcess extends InputObject {
 				addAggregateGeoFeature(outputObjects[4], id, idTematico, geo,
 						lunghezza, corsie, incidenti, inputFeature, idOrigin, 
 						flgCorsieCounter.getMax(), flgIncidentiCounter.getMax());						
-				if(!computeOnlyGeoFeature){
+				if(!dontComputeVehicle) {
 					addAggregateVehicleFeature(outputObjects[0], id, lunghezza,
 							tgm, velocita, flgTgmCounter.getMax(),
 							flgVelocCounter.getMax(), inputFeature);
+				}
+				
+				if(!computeOnlyGeoFeature){
 					addAggregateDissestoFeature(outputObjects[1], id,
 							lunghezza, pterr, inputFeature);
 					addAggregateCFFFeature(outputObjects[2], id, lunghezza, cff,
@@ -932,7 +946,7 @@ public class ArcsIngestionProcess extends InputObject {
 		
 		SimpleFeatureBuilder featureBuilder = dissestoObject.getBuilder();
 		
-		String[] pterrs = inputFeature.getAttribute("PTERR") == null ? null : inputFeature.getAttribute("PTERR").toString().split("\\|");					
+		String[] pterrs = inputFeature.getAttribute("PTERR") == null ? new String[] {} : inputFeature.getAttribute("PTERR").toString().split("\\|");					
 		
 		for(int count=0; count < pterrs.length; count++) {
 			try {

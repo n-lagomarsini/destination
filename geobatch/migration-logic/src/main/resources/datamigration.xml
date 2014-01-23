@@ -21,7 +21,7 @@
 		<featureParentRelation>siig_t_bersaglio_non_umano</featureParentRelation>
 	</feature>
 
-	
+ 	
 	<feature>
 		<target>true</target>
 		<featureName>siig_geo_bersaglio_umano_pl</featureName>
@@ -37,6 +37,7 @@
 		<target>true</target>
 		<featureName>siig_t_bersaglio_non_umano</featureName>
 	</feature>
+
 	<feature>
 		<target>true</target>
 		<featureName>siig_t_bersaglio_umano</featureName>
@@ -136,4 +137,5 @@
 	<feature>
 		<featureName>siig_geo_pl_arco_3</featureName>
 	</feature>
+
 </features>

@@ -24,7 +24,9 @@ import it.geosolutions.geobatch.destination.ingestion.TargetIngestionProcess;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Map;
@@ -87,15 +89,16 @@ public abstract class InputObject {
 	private SequenceManager sequenceManager;
 	
 	//
-	private String inputTypeName = "";
-	private ProgressListener listenerForwarder=null;
+	protected String inputTypeName = "";
+	protected String originalInputTypeName = "";
+	protected ProgressListener listenerForwarder=null;
 	
 	private boolean valid = false;
 	
 	FeatureStore<SimpleFeatureType, SimpleFeature> inputReader = null;
 	Query inputQuery = null;	
 	FeatureIterator<SimpleFeature> inputIterator = null;
-	int inputCount = 0;
+	protected int inputCount = 0;
 	int readCount = 0;
 	
 	protected MetadataIngestionHandler metadataHandler;
@@ -111,13 +114,27 @@ public abstract class InputObject {
 			MetadataIngestionHandler metadataHandler,
 			DataStore dataStore) {
 		super();
-		this.inputTypeName = inputTypeName;
+		this.originalInputTypeName = inputTypeName;
+		this.inputTypeName = getInputTypeName(inputTypeName);
 		this.listenerForwarder = listener;
 		this.dataStore = dataStore;
 		this.metadataHandler = metadataHandler;
 		this.valid = this.parseTypeName(inputTypeName);
 	}
 	
+	protected String getInputTypeName(String inputTypeName) {
+		return inputTypeName;
+	}
+	
+	/**
+	 * @param sequenceManager the sequenceManager to set
+	 */
+	public void setSequenceManager(SequenceManager sequenceManager) {
+		this.sequenceManager = sequenceManager;
+	}
+
+
+
 	/**
 	 * Parses type name to extract information about the to be ingested object.
 	 * 
@@ -169,7 +186,7 @@ public abstract class InputObject {
 		}
 	}
 	
-	protected void reset() {
+	protected void reset() throws IOException {
 		inputReader = null;
 		inputQuery = null;	
 		inputIterator = null;
@@ -177,6 +194,21 @@ public abstract class InputObject {
 		readCount = 0;
 	}
 	
+	public Connection getConnection(DataStore dataStore, Transaction transaction){
+		Connection connection= null;
+		try{
+			if( dataStore != null){
+				Method getConnection = dataStore.getClass().getMethod("getConnection",Transaction.class);
+				if (getConnection != null) {       
+					connection = (Connection)getConnection.invoke(dataStore,transaction);
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		return connection;
+	}
+
 	protected void resetInputCounter(){
 	    inputCount = 0;
 	}
@@ -264,9 +296,9 @@ public abstract class InputObject {
 	 * @throws IOException 
 	 */
 	protected MetadataIngestionHandler.Process getProcessData() throws IOException {
-		if(metadataHandler != null){
-		return metadataHandler.getProcessData(inputTypeName);
-	}
+		if (metadataHandler != null) {
+			return metadataHandler.getProcessData(originalInputTypeName);
+		}
 		return null;
 	}
 			
@@ -312,9 +344,9 @@ public abstract class InputObject {
 	 */
 	protected int logFile(int processo, int bersaglio, int partner, String codicePartner, String date, boolean update) throws IOException {
 		if(metadataHandler != null){
-		return metadataHandler.logFile(processo, -1,
-				partner, codicePartner, inputTypeName, date, false);
-	}
+			return metadataHandler.logFile(processo, bersaglio,
+					partner, codicePartner, originalInputTypeName, date, update);
+		}
 		return 0;
 	}
 	
