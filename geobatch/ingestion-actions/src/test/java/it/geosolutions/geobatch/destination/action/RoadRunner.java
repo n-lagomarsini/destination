@@ -96,8 +96,9 @@ public class RoadRunner{
 	        VulnerabilityComputation vulnerability = new VulnerabilityComputation(inputFeature, 
 	        		new ProgressListenerForwarder(null), metadataHandler, dataStore);
 	        
-	        vulnerability.computeVulnerability(null, 1, "PURGE_INSERT", null);
-	        /*vulnerability.computeVulnerability(null, 2, "PURGE_INSERT", null);
+	        vulnerability.computeVulnerability(null, 1, "INSERT", null, true);
+	        /*vulnerability.computeVulnerability(null, 1, "PURGE_INSERT", null);
+	        vulnerability.computeVulnerability(null, 2, "PURGE_INSERT", null);
 	        vulnerability.computeVulnerability(null, 3, "PURGE_INSERT", null);
 			
 	        RiskComputation riskComputation = new RiskComputation(
