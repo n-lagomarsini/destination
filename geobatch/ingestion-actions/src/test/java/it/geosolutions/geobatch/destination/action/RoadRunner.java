@@ -65,7 +65,7 @@ public class RoadRunner{
         	
         	//String inputFeature = "RL_C_Grafo_20130918";
         	//String inputFeature = "AO_C_Grafo_20130704";
-        	String inputFeature = "RP_C_Grafo_20140101_ORIG";
+        	String inputFeature = "RL_C_Grafo_20131126";
         	
         	dataStore = (JDBCDataStore)DataStoreFinder.getDataStore(datastoreParams);	        
 	        metadataHandler = new MetadataIngestionHandler(dataStore);
@@ -75,7 +75,7 @@ public class RoadRunner{
 	        ArcsIngestionProcess arcIngestion = new ArcsIngestionProcess(inputFeature,
 	                new ProgressListenerForwarder(null), metadataHandler, dataStore);
 	        
-	        arcIngestion.importArcs(null, 1, false, false, true, null);
+	        //arcIngestion.importArcs(null, 1, false, false, true, null);
 	        
 	        /*arcIngestion.importArcs(null, 2, false, false, null);
 	        arcIngestion.importArcs(null, 3, false, false, null);
@@ -91,13 +91,13 @@ public class RoadRunner{
 	        zeroComputation.removeZeros(null, 2, null);
 	        zeroComputation.removeZeros(null, 3, null);*/
 	        
-	        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(1024*1024*1024);
+	        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512*1024*1024);
 	        
 	        VulnerabilityComputation vulnerability = new VulnerabilityComputation(inputFeature, 
 	        		new ProgressListenerForwarder(null), metadataHandler, dataStore);
 	        
-	        /*vulnerability.computeVulnerability(null, 1, "PURGE_INSERT", null);
-	        vulnerability.computeVulnerability(null, 2, "PURGE_INSERT", null);
+	        vulnerability.computeVulnerability(null, 1, "PURGE_INSERT", null);
+	        /*vulnerability.computeVulnerability(null, 2, "PURGE_INSERT", null);
 	        vulnerability.computeVulnerability(null, 3, "PURGE_INSERT", null);
 			
 	        RiskComputation riskComputation = new RiskComputation(
