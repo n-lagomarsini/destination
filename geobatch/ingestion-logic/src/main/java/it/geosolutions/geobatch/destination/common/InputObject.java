@@ -40,6 +40,7 @@ import org.geotools.data.Transaction;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.filter.SortByImpl;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
@@ -47,6 +48,8 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Function;
+import org.opengis.filter.sort.SortBy;
+import org.opengis.filter.sort.SortOrder;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +61,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 import com.thoughtworks.xstream.XStream;
+
 import it.geosolutions.geobatch.flow.event.ProgressListener;
 
 /**
@@ -491,7 +495,8 @@ public abstract class InputObject {
 	 */
 	protected SimpleFeature readInput() throws IOException {
 		if(inputIterator == null) {
-			inputIterator = inputReader.getFeatures(inputQuery).features();
+	                SortBy order = new SortByImpl(filterFactory.property("id_geo_arco"), SortOrder.ASCENDING);
+                        inputIterator = inputReader.getFeatures(inputQuery).sort(order).features();
 		}
 		if(inputIterator != null) {
 			SimpleFeature result = readInput(inputIterator);
