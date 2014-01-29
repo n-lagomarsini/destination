@@ -486,6 +486,40 @@ public abstract class InputObject {
 		}
 		return value;
 	}
+
+
+	       /**
+         * Reads the next available input feature in a sorted order.
+         * 
+         * @return
+         * @throws IOException 
+         */
+        protected FeatureCollection<SimpleFeatureType, SimpleFeature> readCollectionSorted() throws IOException{            
+            SortBy order = new SortByImpl(filterFactory.property("id_geo_arco"), SortOrder.ASCENDING);
+            return inputReader.getFeatures(inputQuery).sort(order);
+        }
+
+	
+	/**
+         * Reads the next available input feature in a sorted order.
+         * 
+         * @return
+         * @throws IOException 
+         */
+        protected SimpleFeature readInputSorted() throws IOException {
+                if(inputIterator == null) {
+                        SortBy order = new SortByImpl(filterFactory.property("id_geo_arco"), SortOrder.ASCENDING);
+                        inputIterator = inputReader.getFeatures(inputQuery).sort(order).features();
+                }
+                if(inputIterator != null) {
+                        SimpleFeature result = readInput(inputIterator);
+                        if(result != null) {
+                                inputCount++;
+                        }
+                        return result;
+                }
+                return null;
+        }
 	
 	/**
 	 * Reads the next available input feature.
@@ -495,8 +529,7 @@ public abstract class InputObject {
 	 */
 	protected SimpleFeature readInput() throws IOException {
 		if(inputIterator == null) {
-	                SortBy order = new SortByImpl(filterFactory.property("id_geo_arco"), SortOrder.ASCENDING);
-                        inputIterator = inputReader.getFeatures(inputQuery).sort(order).features();
+                        inputIterator = inputReader.getFeatures(inputQuery).features();
 		}
 		if(inputIterator != null) {
 			SimpleFeature result = readInput(inputIterator);

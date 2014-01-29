@@ -21,6 +21,7 @@ import it.geosolutions.geobatch.destination.ingestion.MetadataIngestionHandler;
 import it.geosolutions.geobatch.destination.streetuser.StreetUserComputation;
 import it.geosolutions.geobatch.destination.vulnerability.TargetManager.TargetInfo;
 import it.geosolutions.geobatch.destination.vulnerability.VulnerabilityComputation;
+import it.geosolutions.geobatch.destination.vulnerability.VulnerabilityOperation;
 import it.geosolutions.geobatch.flow.event.ProgressListenerForwarder;
 
 import java.awt.image.RenderedImage;
@@ -40,8 +41,16 @@ import javax.media.jai.JAI;
 import javax.media.jai.PlanarImage;
 
 import org.geotools.data.DataStoreFinder;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
+import org.geotools.filter.function.Classifier;
+import org.geotools.filter.function.RangedClassifier;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.resources.image.ImageUtilities;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.FilterFactory2;
+import org.opengis.filter.expression.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,15 +112,6 @@ public class RoadRunner {
             VulnerabilityComputation vulnerability1 = new VulnerabilityComputation(inputFeature,
                     new ProgressListenerForwarder(null), metadataHandler, dataStore);
 
-            VulnerabilityComputation vulnerability2 = new VulnerabilityComputation(inputFeature,
-                    new ProgressListenerForwarder(null), metadataHandler, dataStore);
-
-            VulnerabilityComputation vulnerability3 = new VulnerabilityComputation(inputFeature,
-                    new ProgressListenerForwarder(null), metadataHandler, dataStore);
-
-            VulnerabilityComputation vulnerability4 = new VulnerabilityComputation(inputFeature,
-                    new ProgressListenerForwarder(null), metadataHandler, dataStore);
-
             // vulnerability.computeVulnerability(null, 1, "INSERT", null, true);
             // vulnerability.computeVulnerability(null, 1, "PURGE_INSERT", null);
 
@@ -128,101 +128,154 @@ public class RoadRunner {
                     60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000000));
 
             ConcurrentSkipListSet<BigDecimal> set = new ConcurrentSkipListSet<BigDecimal>();
-
-            // NOT HUMAN TARGETS
-            int minTileX = images[1].getMinTileX();
-            int minTileY = images[1].getMinTileY();
-
-            int maxTileX = minTileX + images[1].getNumXTiles();
-            int maxTileY = minTileY + images[1].getNumYTiles();
-
-            int calcWidth = images[1].getNumXTiles() / 2;
-            int calcHeight = images[1].getNumYTiles() / 2;
-
-            int aggregationLevel = 2;
+            
+            int aggregationLevel = 3;
             String writeMode = "PURGE_INSERT";
             String targetID = "NotHuman";
-
-            MyRunnable run1 = new MyRunnable(vulnerability1, aggregationLevel, writeMode, null,
-                    images[1], bandPerTargetNH, set, targetID, minTileX,
-                    minTileX + calcWidth, minTileY, minTileY + calcHeight, null, null, false, null,
-                    null, null);
-
-            MyRunnable run2 = new MyRunnable(vulnerability2, aggregationLevel, writeMode, null,
-                    images[1], bandPerTargetNH, set, targetID, minTileX + calcWidth + 1,
-                    maxTileX, minTileY, minTileY + calcHeight, null, null, false, null, null, null);
-
-            MyRunnable run3 = new MyRunnable(vulnerability3, aggregationLevel, writeMode, null,
-                    images[1], bandPerTargetNH, set, targetID, minTileX,
-                    minTileX + calcWidth, minTileY + calcHeight + 1, maxTileY, null, null, false,
-                    null, null, null);
-
-            MyRunnable run4 = new MyRunnable(vulnerability4, aggregationLevel, writeMode, null,
-                    images[1], bandPerTargetNH, set, targetID, minTileX + calcWidth + 1,
-                    maxTileX, minTileY + calcHeight + 1, maxTileY, null, null, false, null, null,
-                    null);           
-
-
-            latch = new CountDownLatch(threadMaxNumber);
-
-            executor.execute(run1);
-            executor.execute(run2);
-            executor.execute(run3);
-            executor.execute(run4);
-
-            latch.await();
-
-            executor.shutdown();
-
-            executor.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
             
+//
+//            // NOT HUMAN TARGETS
+//            int minTileX = images[1].getMinTileX();
+//            int minTileY = images[1].getMinTileY();
+//
+//            int maxTileX = minTileX + images[1].getNumXTiles();
+//            int maxTileY = minTileY + images[1].getNumYTiles();
+//
+//            int calcWidth = images[1].getNumXTiles() / 2;
+//            int calcHeight = images[1].getNumYTiles() / 2;
+//
+//
+//            MyRunnable run1 = new MyRunnable(vulnerability1, aggregationLevel, writeMode, null,
+//                    images[1], bandPerTargetNH, set, targetID, minTileX,
+//                    minTileX + calcWidth, minTileY, minTileY + calcHeight, null, null, false, null,
+//                    null, null);
+//
+//            MyRunnable run2 = new MyRunnable(vulnerability2, aggregationLevel, writeMode, null,
+//                    images[1], bandPerTargetNH, set, targetID, minTileX + calcWidth + 1,
+//                    maxTileX, minTileY, minTileY + calcHeight, null, null, false, null, null, null);
+//
+//            MyRunnable run3 = new MyRunnable(vulnerability3, aggregationLevel, writeMode, null,
+//                    images[1], bandPerTargetNH, set, targetID, minTileX,
+//                    minTileX + calcWidth, minTileY + calcHeight + 1, maxTileY, null, null, false,
+//                    null, null, null);
+//
+//            MyRunnable run4 = new MyRunnable(vulnerability4, aggregationLevel, writeMode, null,
+//                    images[1], bandPerTargetNH, set, targetID, minTileX + calcWidth + 1,
+//                    maxTileX, minTileY + calcHeight + 1, maxTileY, null, null, false, null, null,
+//                    null);           
+//
+//
+//            latch = new CountDownLatch(threadMaxNumber);
+//
+//            executor.execute(run1);
+//            executor.execute(run2);
+//            executor.execute(run3);
+//            executor.execute(run4);
+//
+//            latch.await();
+//
+//            executor.shutdown();
+//
+//            executor.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
+//            
+//            // Image Disposal
+//            ImageUtilities.disposePlanarImageChain(PlanarImage.wrapRenderedImage(images[1]));
+//            
+//            // HUMAN TARGETS
+//            
+//            set.clear();
+//            
+//            executor = new ThreadPoolExecutor(threadMaxNumber, threadMaxNumber,
+//                    60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000000));
+//            
+//            targetID = "Human";
+//            run1 = new MyRunnable(vulnerability1, aggregationLevel, writeMode, null, images[0],
+//                    bandPerTargetH, set, targetID, minTileX, minTileX + calcWidth, minTileY,
+//                    minTileY + calcHeight, null, null, false, null, null, null);
+//
+//            run2 = new MyRunnable(vulnerability2, aggregationLevel, writeMode, null, images[0],
+//                    bandPerTargetH, set, targetID, minTileX + calcWidth + 1, maxTileX, minTileY,
+//                    minTileY + calcHeight, null, null, false, null, null, null);
+//
+//            run3 = new MyRunnable(vulnerability3, aggregationLevel, writeMode, null, images[0],
+//                    bandPerTargetH, set, targetID, minTileX, minTileX + calcWidth, minTileY
+//                            + calcHeight + 1, maxTileY, null, null, false, null, null, null);
+//
+//            run4 = new MyRunnable(vulnerability4, aggregationLevel, writeMode, null, images[0],
+//                    bandPerTargetH, set, targetID, minTileX + calcWidth + 1, maxTileX, minTileY
+//                            + calcHeight + 1, maxTileY, null, null, false, null, null, null);
+//
+//            latch = new CountDownLatch(threadMaxNumber);
+//
+//            executor.execute(run1);
+//            executor.execute(run2);
+//            executor.execute(run3);
+//            executor.execute(run4);
+//
+//            latch.await();
+//
+//            executor.shutdown();
+//
+//            executor.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
+            
+            FeatureCollection<SimpleFeatureType,SimpleFeature> cells = vulnerability1.geometryIDList();
+            
+            FilterFactory2 filterFactory = VulnerabilityOperation.filterFactory;
+            
+            Function classify = filterFactory.function("EqualInterval", filterFactory.property("id_geo_arco"), filterFactory.literal(threadMaxNumber));
+            
+            RangedClassifier groups = (RangedClassifier) classify.evaluate(cells);
+            
+            latch = new CountDownLatch(threadMaxNumber);
+            
+            for(int i = 0; i < threadMaxNumber; i++){
+                Double min = (Double) groups.getMin(i);
+                Double max = (Double) groups.getMax(i);
+                
+                VulnerabilityComputation vulnerability = new VulnerabilityComputation(inputFeature,
+                        new ProgressListenerForwarder(null), metadataHandler, dataStore);
+                
+                MyRunnable run = new MyRunnable(vulnerability, aggregationLevel, writeMode, null,
+                        images[1], bandPerTargetNH, set, targetID, 0, 0,
+                        0, 0, min.toString(), max.toString(), false, null, null, null);
+            
+                executor.execute(run);
+            }                                                      
+            latch.await();
+            
+            executor.shutdown();
+            
+            executor.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
+    
             // Image Disposal
             ImageUtilities.disposePlanarImageChain(PlanarImage.wrapRenderedImage(images[1]));
             
-            // HUMAN TARGETS
-            
+            //HUMAN
             set.clear();
             
-            executor = new ThreadPoolExecutor(threadMaxNumber, threadMaxNumber,
-                    60, TimeUnit.SECONDS, new ArrayBlockingQueue<Runnable>(1000000));
-            
-            targetID = "Human";
-            run1 = new MyRunnable(vulnerability1, aggregationLevel, writeMode, null, images[0],
-                    bandPerTargetH, set, targetID, minTileX, minTileX + calcWidth, minTileY,
-                    minTileY + calcHeight, null, null, false, null, null, null);
-
-            run2 = new MyRunnable(vulnerability2, aggregationLevel, writeMode, null, images[0],
-                    bandPerTargetH, set, targetID, minTileX + calcWidth + 1, maxTileX, minTileY,
-                    minTileY + calcHeight, null, null, false, null, null, null);
-
-            run3 = new MyRunnable(vulnerability3, aggregationLevel, writeMode, null, images[0],
-                    bandPerTargetH, set, targetID, minTileX, minTileX + calcWidth, minTileY
-                            + calcHeight + 1, maxTileY, null, null, false, null, null, null);
-
-            run4 = new MyRunnable(vulnerability4, aggregationLevel, writeMode, null, images[0],
-                    bandPerTargetH, set, targetID, minTileX + calcWidth + 1, maxTileX, minTileY
-                            + calcHeight + 1, maxTileY, null, null, false, null, null, null);
-
             latch = new CountDownLatch(threadMaxNumber);
-
-            executor.execute(run1);
-            executor.execute(run2);
-            executor.execute(run3);
-            executor.execute(run4);
-
+            
+            for(int i = 0; i < threadMaxNumber; i++){
+                Double min = (Double) groups.getMin(i);
+                Double max = (Double) groups.getMax(i);
+                
+                VulnerabilityComputation vulnerability = new VulnerabilityComputation(inputFeature,
+                        new ProgressListenerForwarder(null), metadataHandler, dataStore);
+                
+                MyRunnable run = new MyRunnable(vulnerability, aggregationLevel, writeMode, null,
+                        images[10], bandPerTargetH, set, targetID, 0, 0,
+                        0, 0, min.toString(), max.toString(), false, null, null, null);
+            
+                executor.execute(run);
+            }                                                      
             latch.await();
-
+            
             executor.shutdown();
-
+            
             executor.awaitTermination(TIMEOUT, TimeUnit.SECONDS);
-
+            
             // Image Disposal
             ImageUtilities.disposePlanarImageChain(PlanarImage.wrapRenderedImage(images[0]));
-            
-            // Datastore disposal
-            if(dataStore!=null){
-                dataStore.dispose();
-            }
             
             // vulnerability.computeVulnerability(null, 3, "PURGE_INSERT", null, false);
             /*
