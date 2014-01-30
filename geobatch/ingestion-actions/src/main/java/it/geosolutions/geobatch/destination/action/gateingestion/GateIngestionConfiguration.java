@@ -22,9 +22,11 @@
 package it.geosolutions.geobatch.destination.action.gateingestion;
 
 import it.geosolutions.geobatch.actions.ds2ds.Ds2dsConfiguration;
+import it.geosolutions.geobatch.catalog.impl.configuration.TimeFormatConfiguration;
 
 /**
- * Gate ingestion configuration. Not use input ds (input data it's read from xml)
+ * Gate ingestion configuration. Not use input ds (input data it's read from
+ * xml)
  * 
  * @author adiaz
  */
@@ -34,6 +36,11 @@ public class GateIngestionConfiguration extends Ds2dsConfiguration {
  * Ignore primary keys in the xml file and generate it
  */
 private Boolean ignorePks;
+
+/**
+ * Time format configuration for the ingestion
+ */
+private TimeFormatConfiguration timeFormatConfiguration;
 
 public GateIngestionConfiguration(String id, String name, String description) {
     super(id, name, description);
@@ -51,6 +58,21 @@ public boolean getIgnorePks() {
  */
 public void setIgnorePks(boolean ignorePks) {
     this.ignorePks = ignorePks;
+}
+
+/**
+ * @return the timeFormatConfiguration
+ */
+public TimeFormatConfiguration getTimeFormatConfiguration() {
+    return timeFormatConfiguration;
+}
+
+/**
+ * @param timeFormatConfiguration the timeFormatConfiguration to set
+ */
+public void setTimeFormatConfiguration(
+        TimeFormatConfiguration timeFormatConfiguration) {
+    this.timeFormatConfiguration = timeFormatConfiguration;
 }
 
 }

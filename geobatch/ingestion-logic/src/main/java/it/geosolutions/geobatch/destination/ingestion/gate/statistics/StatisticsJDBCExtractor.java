@@ -21,7 +21,7 @@
  */
 package it.geosolutions.geobatch.destination.ingestion.gate.statistics;
 
-import it.geosolutions.geobatch.destination.common.utils.TimeUtils;
+import it.geosolutions.geobatch.catalog.impl.TimeFormat;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -69,20 +69,23 @@ private static final String END_KEY = ":end";
  */
 private static String JOIN_SQL = "select count(*) as quantita, fk_gate, "
         + "flg_corsia, flg_direzione, codice_onu from siig_gate_t_dato "
-        + "where data_rilevamento between '"
-        + START_KEY
-        + "' and '"
-        + END_KEY
+        + "where data_rilevamento between '" + START_KEY + "' and '" + END_KEY
         + "' group by fk_gate, flg_corsia, flg_direzione, codice_onu";
+
+/**
+ * Time format component
+ */
+private TimeFormat timeFormat;
 
 /**
  * Create a JDBC statistics extractor
  * 
  * @param dataStore to be used to execute the known query
  */
-public StatisticsJDBCExtractor(JDBCDataStore dataStore) {
+public StatisticsJDBCExtractor(JDBCDataStore dataStore, TimeFormat timeFormat) {
     super();
     this.dataStore = dataStore;
+    this.timeFormat = timeFormat;
 }
 
 /*
@@ -98,21 +101,21 @@ public List<StatisticsBean> getStatistics(StatisticInterval interval)
     Timestamp start = null, end = null;
     switch (interval) {
     case LAST_DAY:
-        start = TimeUtils.getTodayStartTime();
+        start = timeFormat.getTodayStartTime();
         break;
     case LAST_WEEK:
-        start = TimeUtils.getWeekStartTime();
+        start = timeFormat.getWeekStartTime();
         break;
     case LAST_MONTH:
-        start = TimeUtils.getMonthStartTime();
+        start = timeFormat.getMonthStartTime();
         break;
     case LAST_YEAR:
-        start = TimeUtils.getYearStartTime();
+        start = timeFormat.getYearStartTime();
         break;
     default:
-        start = TimeUtils.getTodayStartTime();
+        start = timeFormat.getTodayStartTime();
     }
-    end = TimeUtils.getTodayEndTime();
+    end = timeFormat.getTodayEndTime();
 
     return getStatistics(start, end, interval);
 }
@@ -127,11 +130,11 @@ public List<StatisticsBean> getStatistics() throws IOException {
     List<StatisticsBean> all = new LinkedList<StatisticsBean>();
 
     // create time stamps
-    Timestamp end = TimeUtils.getTodayEndTime();
-    Timestamp startDay = TimeUtils.getTodayStartTime();
-    Timestamp startWeek = TimeUtils.getWeekStartTime();
-    Timestamp startMonth = TimeUtils.getMonthStartTime();
-    Timestamp startYear = TimeUtils.getYearStartTime();
+    Timestamp end = timeFormat.getTodayEndTime();
+    Timestamp startDay = timeFormat.getTodayStartTime();
+    Timestamp startWeek = timeFormat.getWeekStartTime();
+    Timestamp startMonth = timeFormat.getMonthStartTime();
+    Timestamp startYear = timeFormat.getYearStartTime();
 
     // obtain data for each interval
     all.addAll(getStatistics(startDay, end, StatisticInterval.LAST_DAY));

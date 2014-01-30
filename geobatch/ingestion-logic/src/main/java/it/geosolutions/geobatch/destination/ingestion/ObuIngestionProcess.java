@@ -16,6 +16,8 @@
  */
 package it.geosolutions.geobatch.destination.ingestion;
 
+import it.geosolutions.geobatch.catalog.impl.TimeFormat;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -30,19 +32,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.ISODateTimeFormat;
-
 /**
  * @author "Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it"
  *
  */
 public class ObuIngestionProcess {
+
+        /**
+         * Time format component
+         */
+        private static TimeFormat DEFAULT_TIME_FORMAT = new TimeFormat(null, null, null, null);
+        
 	public static void main(String[] args) throws IOException, ParseException {
 		File importFile = new File("D:\\Develop\\destination\\OBU\\OBU.csv");
 		BufferedReader reader = null;
-		TimeZone tz = TimeZone.getTimeZone("UTC");
-		DateTimeFormatter dateFormat = ISODateTimeFormat.dateTimeNoMillis();
 		DateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		try {
 			reader = new BufferedReader(new FileReader(importFile));
@@ -51,9 +54,14 @@ public class ObuIngestionProcess {
 			while((line = reader.readLine()) != null) {
 				String[] parts = line.split(";");
 				int idSorgente = Integer.parseInt(parts[0]);
-				Date dataTrasmissione = dateFormat.parseDateTime(parts[1]).toDate();
-				Date dataRicezione = dateFormat.parseDateTime(parts[2]).toDate();
-				Date dataCreazione = dateFormat.parseDateTime(parts[3]).toDate();
+				Date dataTrasmissione = null, dataRicezione = null, dataCreazione = null;
+				try{
+	                            dataTrasmissione = DEFAULT_TIME_FORMAT.getDate(parts[1]);
+	                            dataRicezione = DEFAULT_TIME_FORMAT.getDate(parts[2]);
+	                            dataCreazione = DEFAULT_TIME_FORMAT.getDate(parts[3]);
+				}catch (Exception e){
+				    // TODO: handle this exception
+				}
 				String autista = parts[4];
 				String trattore = parts[5];
 				String semirimorchio = parts[6];

@@ -16,8 +16,9 @@
  */
 package it.geosolutions.geobatch.destination.ingestion;
 
+import it.geosolutions.geobatch.catalog.impl.TimeFormat;
+import it.geosolutions.geobatch.catalog.impl.configuration.TimeFormatConfiguration;
 import it.geosolutions.geobatch.destination.common.InputObject;
-import it.geosolutions.geobatch.destination.common.utils.TimeUtils;
 import it.geosolutions.geobatch.destination.ingestion.gate.model.ExportData;
 import it.geosolutions.geobatch.destination.ingestion.gate.model.Transit;
 import it.geosolutions.geobatch.destination.ingestion.gate.model.Transits;
@@ -27,6 +28,8 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +46,6 @@ import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
-import org.joda.time.DateTimeZone;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -100,11 +102,6 @@ private static Pattern typeNameParts = Pattern
         .compile("^([0-9]{2})[_-]([0-9]{8})[_-]([0-9]{6})$");
 
 /**
- * Used to clean fileName
- */
-private static final String DOT = ".";
-
-/**
  * Partner always 1
  */
 private static int PARTNER = 1;
@@ -152,6 +149,11 @@ public static String PROCESSED_COUNT = "PROCESSED_COUNT";
 public static String TOTAL_COUNT = "TOTAL_COUNT";
 
 /**
+ * Time format component
+ */
+private TimeFormat timeFormat;
+
+/**
  * Parametrized constructor
  * 
  * @param typeName
@@ -162,12 +164,15 @@ public static String TOTAL_COUNT = "TOTAL_COUNT";
  */
 public GateIngestionProcess(String typeName,
         ProgressListenerForwarder listenerForwarder,
-        MetadataIngestionHandler metadataHandler, DataStore dataStore, File file) {
+        MetadataIngestionHandler metadataHandler, DataStore dataStore, File file, TimeFormatConfiguration timeFormatConfiguration) {
 
     super(typeName, listenerForwarder, metadataHandler, dataStore);
 
     // init from file to be inserted
     this.setFile(file);
+    
+    // create time format
+    this.timeFormat = new TimeFormat(null, null, null, timeFormatConfiguration);
 }
 
 /**
@@ -183,8 +188,8 @@ public GateIngestionProcess(String typeName,
 public GateIngestionProcess(String typeName,
         ProgressListenerForwarder listenerForwarder,
         MetadataIngestionHandler metadataHandler, DataStore dataStore,
-        File file, Boolean ignorePks) {
-    this(typeName, listenerForwarder, metadataHandler, dataStore, file);
+        File file, Boolean ignorePks, TimeFormatConfiguration timeFormatConfiguration) {
+    this(typeName, listenerForwarder, metadataHandler, dataStore, file, timeFormatConfiguration);
     this.ignorePks = ignorePks;
 }
 
@@ -383,8 +388,10 @@ private int closeProcess(int process) throws IOException {
 public Long createTransit(Transit transit) throws Exception {
 
     // prepare data
-    Timestamp timestamp = TimeUtils.getTimeStamp(transit.getDataRilevamento());
-    DateTimeZone zone = TimeUtils.getDefaultFormatter().parseDateTime(transit.getDataRilevamento()).getZone();
+    Timestamp timestamp = timeFormat.getTimeStamp(transit.getDataRilevamento());
+    Date date = timeFormat.getDate(transit.getDataRilevamento());
+    Calendar cal = timeFormat.getCalendar(date);
+    
     // null value should throw an exception
     String arriveDate = timestamp != null ? timestamp + "" : null;
     Long idLong = null;
@@ -416,11 +423,11 @@ public Long createTransit(Transit transit) throws Exception {
         } else if (name.equals("data_rilevamento")) {
             featureBuilder.add(arriveDate);
         } else if (name.equals("ora_fuso_orario")){
-            featureBuilder.add(TimeUtils.getHour(zone));
+            featureBuilder.add(timeFormat.getHour(cal));
         }else if (name.equals("minuto_fuso_orario")) {
-            featureBuilder.add(TimeUtils.getMinutes(zone));
+            featureBuilder.add(timeFormat.getMinutes(cal));
         } else if (name.equals("data_ricezione")) {
-            featureBuilder.add(TimeUtils.getTodayTimestamp());
+            featureBuilder.add(timeFormat.getNowTimestamp());
         } else if (name.equals("flg_corsia")) {
             featureBuilder.add(transit.getCorsia().toString());
         } else if (name.equals("flg_direzione")) {

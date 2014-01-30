@@ -26,6 +26,7 @@ import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
 import it.geosolutions.geobatch.actions.ds2ds.Ds2dsConfiguration;
 import it.geosolutions.geobatch.actions.ds2ds.util.FeatureConfigurationUtil;
 import it.geosolutions.geobatch.annotations.Action;
+import it.geosolutions.geobatch.catalog.impl.configuration.TimeFormatConfiguration;
 import it.geosolutions.geobatch.destination.ingestion.MetadataIngestionHandler;
 import it.geosolutions.geobatch.destination.ingestion.gate.statistics.GateStatisticsProcess;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
@@ -49,6 +50,11 @@ import org.geotools.jdbc.JDBCDataStore;
 public class GateStatisticsAction extends BaseAction<EventObject> {
 
 private GateStatisticConfiguration configuration;
+
+/**
+ * Time format configuration for the ingestion
+ */
+private TimeFormatConfiguration timeFormatConfiguration;
 
 public GateStatisticsAction(final GateStatisticConfiguration configuration)
         throws IOException {
@@ -163,18 +169,19 @@ public Queue<EventObject> execute(Queue<EventObject> events)
  * @param dataStore
  * @param metadataHandler
  * @param file
- * @param inputDataStore  
- * 
+ * @param inputDataStore
  * @throws ActionException
  */
-protected void doProcess(Ds2dsConfiguration cfg,
-        JDBCDataStore dataStore, MetadataIngestionHandler metadataHandler,
-        File file, JDBCDataStore inputDataStore) throws ActionException {
+protected void doProcess(Ds2dsConfiguration cfg, JDBCDataStore dataStore,
+        MetadataIngestionHandler metadataHandler, File file,
+        JDBCDataStore inputDataStore) throws ActionException {
 
     try {
         GateStatisticsProcess computation = new GateStatisticsProcess(
-        // type name read on file name
-        		getInputTypeName(file), listenerForwarder, metadataHandler, dataStore, file, inputDataStore);
+                // type name read on file name
+                getInputTypeName(file), listenerForwarder, metadataHandler,
+                dataStore, file, inputDataStore,
+                configuration.getTimeFormatConfiguration());
 
         computation.generateStatistics(configuration.isPurgeData());
 
@@ -193,11 +200,26 @@ protected void doProcess(Ds2dsConfiguration cfg,
  * @return
  */
 private String getInputTypeName(File file) {
-	String fileName = file != null ? file.getName() : null;
+    String fileName = file != null ? file.getName() : null;
     if (fileName != null && fileName.contains(".")) {
         fileName = fileName.substring(0, fileName.lastIndexOf("."));
     }
     return fileName;
+}
+
+/**
+ * @return the timeFormatConfiguration
+ */
+public TimeFormatConfiguration getTimeFormatConfiguration() {
+    return timeFormatConfiguration;
+}
+
+/**
+ * @param timeFormatConfiguration the timeFormatConfiguration to set
+ */
+public void setTimeFormatConfiguration(
+        TimeFormatConfiguration timeFormatConfiguration) {
+    this.timeFormatConfiguration = timeFormatConfiguration;
 }
 
 }
