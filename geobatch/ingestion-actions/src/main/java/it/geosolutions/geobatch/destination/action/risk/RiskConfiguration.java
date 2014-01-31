@@ -41,6 +41,7 @@ public class RiskConfiguration extends ActionConfiguration {
     private String fpfield;
     private String writeMode;
     private String closePhase;
+    private boolean dropInput;
     
 	public RiskConfiguration(String id, String name, String description) {
 		super(id, name, description);
@@ -142,7 +143,23 @@ public class RiskConfiguration extends ActionConfiguration {
         this.closePhase = closePhase;
     }
 
-    @Override
+    
+    
+    /**
+	 * @return the dropInput
+	 */
+	public boolean isDropInput() {
+		return dropInput;
+	}
+
+	/**
+	 * @param dropInput the dropInput to set
+	 */
+	public void setDropInput(boolean dropInput) {
+		this.dropInput = dropInput;
+	}
+
+	@Override
     public RiskConfiguration clone() {
         final RiskConfiguration configuration = (RiskConfiguration) super.clone();
         

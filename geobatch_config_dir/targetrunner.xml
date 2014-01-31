@@ -114,6 +114,7 @@
             <id>raster_processing</id>
             <name>Raster processing</name>
             <description>Raster postprocessing</description>
+            <closePhase>B</closePhase>
 			<!--<baseOutputPath>C:/temp/</baseOutputPath>-->
             <!-- Listeners -->
             <listenerId>ConsumerLogger0</listenerId>

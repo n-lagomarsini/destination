@@ -226,18 +226,18 @@ public List<Long> generateStatistics(boolean purgeData) throws IOException {
 
             // create one transaction for all the operation
             transaction = new DefaultTransaction();
-
+            int idTematico = 0;
             // clean old statistics
             if (purgeData) {
                 updateProgress(49.1f, "Cleaning old statistics");
                 cleanStatistics(transaction);
-                updateProgress(50f, "Old statistics cleaned");
+                updateProgress(50f, "Old statistics cleaned");                
             }
 
             if (statistics != null && !statistics.isEmpty()) {
                 total = statistics.size();
                 float ftot = new Float(total);
-
+                
                 // Insert one by one
                 for (StatisticsBean statisticBean : statistics) {
                     Long id = null;
@@ -253,9 +253,13 @@ public List<Long> generateStatistics(boolean purgeData) throws IOException {
                         if (LOGGER.isInfoEnabled()) {
                             LOGGER.info(msg);
                         }
-
+                        if(purgeData) {
+                        	idTematico++;
+                        } else {
+                        	idTematico = nextId();
+                        }
                         // insert
-                        id = createStatistic(statisticBean.getFk_gate(),
+                        id = createStatistic(idTematico, statisticBean.getFk_gate(),
                                 statisticBean.getFk_interval(),
                                 statisticBean.getData_stat_inizio(),
                                 statisticBean.getData_stat_fine(),
@@ -402,14 +406,12 @@ private int closeProcess(int process) throws IOException {
  * @return auto generated key for the statistic insert
  * @throws Exception
  */
-public Long createStatistic(BigDecimal fk_gate, int fk_interval,
+public Long createStatistic(int idTematico, BigDecimal fk_gate, int fk_interval,
         Timestamp data_stat_inizio, Timestamp data_stat_fine,
         BigDecimal flg_corsia, BigDecimal direzione, String codice_kemler,
         String codice_onu, BigDecimal quantita, Transaction transaction)
         throws Exception {
 
-    // prepare data
-    int idTematico = nextId();
     Long idLong = new Long(idTematico);
 
     // Create feature

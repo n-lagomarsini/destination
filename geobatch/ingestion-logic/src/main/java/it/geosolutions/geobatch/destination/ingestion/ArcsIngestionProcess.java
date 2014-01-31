@@ -427,7 +427,7 @@ public class ArcsIngestionProcess extends InputObject {
 		int[] tgm = new int[] {0, 0};
 		int[] velocita = new int[] {0, 0};
 		double[] cff = new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		double[] padr = new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		double[] padr = new double[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		ElementsCounter flgTgmCounter = new ElementsCounter();
 		ElementsCounter flgVelocCounter = new ElementsCounter();
 		ElementsCounter flgCorsieCounter = new ElementsCounter();
@@ -946,11 +946,12 @@ public class ArcsIngestionProcess extends InputObject {
 		
 		SimpleFeatureBuilder featureBuilder = dissestoObject.getBuilder();
 		
-		String[] pterrs = inputFeature.getAttribute("PTERR") == null ? new String[] {} : inputFeature.getAttribute("PTERR").toString().split("\\|");					
+		Set<Integer> pterrs = removePTerrDuplicates(inputFeature.getAttribute("PTERR") == null ? new String[] {} : inputFeature.getAttribute("PTERR").toString().split("\\|"));
 		
-		for(int count=0; count < pterrs.length; count++) {
+		
+		for(int dissesto : pterrs) {
 			try {
-				int dissesto = Integer.parseInt(pterrs[count]);
+				
 				featureBuilder.reset();
 				// compiles the attributes from target and read feature data, using mappings
 				// to match input attributes with output ones
@@ -978,48 +979,64 @@ public class ArcsIngestionProcess extends InputObject {
 				
 	}
 	
+	/**
+	 * @param strings
+	 * @return
+	 */
+	private Set<Integer> removePTerrDuplicates(String[] pterrs) {
+		Set<Integer> result = new HashSet<Integer>();
+		for(String pterr : pterrs) {
+			result.add(Integer.parseInt(pterr));
+		}
+		return result;
+	}
+
 	private void addCFFFeature(OutputObject cffObject,
                 int id, SimpleFeature inputFeature) throws IOException {
 	    
-	    SimpleFeatureBuilder featureBuilder = cffObject.getBuilder();
-	    Object cffAttribute = inputFeature.getAttribute("CFF");	    
-            String[] cffAttributeSplitted =  cffAttribute == null ? new String[] {} : cffAttribute.toString().split("\\|");                                       
-            
-            for(int count=0; count < cffAttributeSplitted.length; count++) {
-                    try {
-                            String el = cffAttributeSplitted[count].replace(",", ".");
-                            double cffElement = Double.parseDouble(el);
-                            featureBuilder.reset();
-                            
-                            String idBersaglio = bersaglio.getProperty(Integer.toString(count+1));
-                            
-                            // compiles the attributes from target and read feature data, using mappings
-                            // to match input attributes with output ones
-                            for(AttributeDescriptor attr : cffObject.getSchema().getAttributeDescriptors()) {
-                                    if(attr.getLocalName().equals(geoId)) {
-                                            featureBuilder.add(id);
-                                    } else if(attr.getLocalName().equals("cff")) {
-                                            featureBuilder.add(cffElement);
-                                    } else if(attr.getLocalName().equals("id_bersaglio")) {
-                                            featureBuilder.add(idBersaglio);
-                                    } else if(attr.getLocalName().equals("fk_partner")) {
-                                            featureBuilder.add(partner+"");
-                                    } else {
-                                            featureBuilder.add(null);
-                                    }
-                            }
-//                            String fid2 = el.replaceAll("\\,", "");
-//                            fid2 = el.replaceAll("\\.", "");
-                            String featureid = id + "." + idBersaglio;
-                            SimpleFeature feature = featureBuilder.buildFeature(featureid);
-                            feature.getUserData().put(Hints.USE_PROVIDED_FID, true);                        
-                            
-                            cffObject.getWriter().addFeatures(DataUtilities
-                                            .collection(feature));
-                    } catch(NumberFormatException e) {
-                            
-                    }
-            }
+		SimpleFeatureBuilder featureBuilder = cffObject.getBuilder();
+		Object cffAttribute = inputFeature.getAttribute("CFF");
+		String[] cffAttributeSplitted = cffAttribute == null ? new String[] {}
+				: cffAttribute.toString().split("\\|");
+
+		for (int count = 0; count < cffAttributeSplitted.length; count++) {
+			try {
+				String el = cffAttributeSplitted[count].replace(",", ".");
+				double cffElement = Double.parseDouble(el);
+				featureBuilder.reset();
+
+				String idBersaglio = bersaglio.getProperty(Integer
+						.toString(count + 1));
+
+				// compiles the attributes from target and read feature data,
+				// using mappings
+				// to match input attributes with output ones
+				for (AttributeDescriptor attr : cffObject.getSchema()
+						.getAttributeDescriptors()) {
+					if (attr.getLocalName().equals(geoId)) {
+						featureBuilder.add(id);
+					} else if (attr.getLocalName().equals("cff")) {
+						featureBuilder.add(cffElement);
+					} else if (attr.getLocalName().equals("id_bersaglio")) {
+						featureBuilder.add(idBersaglio);
+					} else if (attr.getLocalName().equals("fk_partner")) {
+						featureBuilder.add(partner + "");
+					} else {
+						featureBuilder.add(null);
+					}
+				}
+				// String fid2 = el.replaceAll("\\,", "");
+				// fid2 = el.replaceAll("\\.", "");
+				String featureid = id + "." + idBersaglio;
+				SimpleFeature feature = featureBuilder.buildFeature(featureid);
+				feature.getUserData().put(Hints.USE_PROVIDED_FID, true);
+
+				cffObject.getWriter().addFeatures(
+						DataUtilities.collection(feature));
+			} catch (NumberFormatException e) {
+
+			}
+		}
 	}
 	
 	private void addSostanzaFeature(OutputObject sostanzaObject, int id,

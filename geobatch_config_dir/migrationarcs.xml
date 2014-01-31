@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FlowConfiguration>
 
-    <id>migration</id>
+    <id>migrationarcs</id>
 
-    <name>Migration</name>
-    <description>Migration data from staging to production</description>
+    <name>Migration Arcs</name>
+    <description>Migration of arcs data from staging to production</description>
 
     <autorun>true</autorun>
 
     <EventGeneratorConfiguration>
         <serviceID>fsEventGeneratorService</serviceID>
         <wildCard>*.run</wildCard>
-        <watchDirectory>migration/in</watchDirectory>
+        <watchDirectory>migrationarcs/in</watchDirectory>
         <osType>OS_UNDEFINED</osType>
         <eventType>FILE_ADDED</eventType>
     </EventGeneratorConfiguration>
@@ -19,9 +19,9 @@
     <EventConsumerConfiguration>
 
         <MigrationConfiguration>
-			<id>migration</id>
-			<description>migration</description>
-			<name>migration</name>               
+			<id>migrationarcs</id>
+			<description>migrationarcs</description>
+			<name>migrationarcs</name>               
 			<failIgnored>false</failIgnored>
 			<purgeData>true</purgeData>
 			<sourceFeature>
@@ -106,15 +106,6 @@
 	        <listenerId>Cumulator</listenerId>
 		</MigrationConfiguration>
         
-        <RasterMigrationConfiguration>
-            <id>rastermigration</id>
-			<description>rastermigration</description>
-			<name>rastermigration</name>               
-			<failIgnored>true</failIgnored>
-            <!-- Listeners -->
-	        <listenerId>ConsumerLogger0</listenerId>
-	        <listenerId>Cumulator</listenerId>
-        </RasterMigrationConfiguration>
 		
 	</EventConsumerConfiguration>
 

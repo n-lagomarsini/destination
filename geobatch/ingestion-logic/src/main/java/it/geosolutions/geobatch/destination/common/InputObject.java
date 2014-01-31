@@ -159,7 +159,8 @@ public abstract class InputObject {
 						throws AccessException {
 					if(target instanceof SimpleFeature) {
 						SimpleFeature feature = (SimpleFeature) target;
-						return new TypedValue(feature.getAttribute(name));
+						
+						return new TypedValue(getAttributeValue(feature, name));
 					}
 					return null;
 				}
@@ -572,10 +573,25 @@ public abstract class InputObject {
 			return spelExpression
 					.getValue(evaluationContext, inputFeature);
 		} else {
-			return inputFeature.getAttribute(expression);
+			return getAttributeValue(inputFeature, expression);
 		}
 	}
 	
+	/**
+	 * @param expression
+	 */
+	private static Object getAttributeValue(SimpleFeature feature, String name) {
+		Object value = feature.getAttribute(name);
+		if(value == null && !name.equals(name.toLowerCase())) {
+			value = feature.getAttribute(name.toLowerCase());
+		}
+		if(value == null && !name.equals(name.toUpperCase())) {
+			value = feature.getAttribute(name.toUpperCase());
+		}
+		return value;
+		
+	}
+
 	/**
 	 * @param outputObjects
 	 */
@@ -595,11 +611,22 @@ public abstract class InputObject {
 	 * @param message
 	 */
 	protected void updateImportProgress(int total, int errors, String message) {
-		if (inputCount % 100 == 0) {
-			listenerForwarder.setProgress((float) inputCount);
+		updateImportProgress(inputCount, total, errors, message);
+	}
+	
+	/**
+	 * Updates the import progress ( progress / total )
+	 * for the listeners.
+	 * 
+	 * @param total
+	 * @param message
+	 */
+	protected void updateImportProgress(int count, int total, int errors, String message) {
+		if (count % 100 == 0) {
+			listenerForwarder.setProgress((float) count);
 			listenerForwarder.setTask(message);
 			if(LOGGER.isInfoEnabled()) {
-				LOGGER.info(message + ": "+(inputCount - errors) + "/" + total);
+				LOGGER.info(message + ": "+(count - errors) + "/" + total);
 			}
 		}
 	}
@@ -612,10 +639,21 @@ public abstract class InputObject {
 	 * @param message
 	 */
 	protected void importFinished(int total, int errors, String message) {		
+        importFinished(inputCount, total, errors, message);	
+	}
+	
+	/**
+	 * Updates the import progress ( progress / total )
+	 * for the listeners.
+	 * 
+	 * @param total
+	 * @param message
+	 */
+	protected void importFinished(int count, int total, int errors, String message) {		
         listenerForwarder.setProgress((float)total);
         listenerForwarder.setTask(message);
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info(message + ": "+(inputCount - errors)+ "/" + total);
+			LOGGER.info(message + ": "+(count - errors)+ "/" + total);
 			if(errors > 0) {
 				LOGGER.info("Skipped: " + errors);
 			}

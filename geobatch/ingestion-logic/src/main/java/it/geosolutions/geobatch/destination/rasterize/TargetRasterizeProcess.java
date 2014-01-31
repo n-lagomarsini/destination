@@ -143,7 +143,7 @@ public class TargetRasterizeProcess extends InputObject{
 		}
 	};
 
-	public void execute(File configDir, File tempDir, File baseTifOutputDir, File eventFile) throws ActionException{
+	public void execute(File configDir, File tempDir, File baseTifOutputDir, File eventFile, String processPhase) throws ActionException, IOException{
 		LOGGER.debug("Execute Task Executor Action for partner : " + partner);
 		
 		Queue<FileSystemEvent> events = new LinkedList<FileSystemEvent>();
@@ -157,54 +157,84 @@ public class TargetRasterizeProcess extends InputObject{
 
 		//Check priority
 		File outputFile = new File(baseTifOutputDir.getAbsolutePath() + fs + codicePartner + fs + targetNameTypes.getProperty(targetType+"") + ".tif");
-		if(outputFile.exists() && priority == 1){
+		/*if(outputFile.exists() && priority == 1){
 			return;
-		}		
+		}*/		
 		clearOutput(baseTifOutputDir);		
 		
-		//No human target
-		if(targetType>=10){
-			LOGGER.debug("NO HUMAN TARGET");
-			
-			//EXECUTE rasterize		
-			events = rasterizeBNU(action,events);
+		int process = -1;
+		int trace = -1;
 
-			//Execute overview on output TIF
-			events = overview(action,events);
-
-		}
-
-		if(targetType>0 && targetType<10){
-			LOGGER.debug("HUMAN TARGET");
-
-			//Create temp SHP
-			events = createTempBU(action,events);
-
-			//Alter temp SHP: create NORM field
-			events = alterTempBU(action,events);
-
-			//Fill NORM field of temp SHP
-			events = fillTempBU(action,events);
-
-			//Execute rasterize on temporary SHP
-			events = rasterizeBU(action,events);
-
-			//Execute overview on output TIF
-			events = overview(action,events);
-			
-			//Clear normalized SHP
-			clearNormalized(baseTifOutputDir);
-
-		}
+		int errors = 0;
 		
-		//Rename output tif
-		{
-			File inputFile = new File(baseTifOutputDir.getAbsolutePath() + fs + codicePartner + fs + inputTypeName + ".tif");
-			
-			if(outputFile.exists()){
-				outputFile.delete();
+		// existing process
+		MetadataIngestionHandler.Process importData = getProcessData();
+		if (importData != null) {
+			process = importData.getId();
+			trace = importData.getMaxTrace();
+			errors = importData.getMaxError();			
+		}
+
+		if (metadataHandler != null && process == -1) {
+			LOGGER.error("Cannot find process for input file");
+			throw new IOException("Cannot find process for input file");
+		}
+		try {
+			//No human target
+			if(targetType>=10){
+				LOGGER.debug("NO HUMAN TARGET");
+				
+				//EXECUTE rasterize		
+				events = rasterizeBNU(action,events);
+	
+				//Execute overview on output TIF
+				events = overview(action,events);
+	
 			}
-			inputFile.renameTo(outputFile);
+	
+			if(targetType>0 && targetType<10){
+				LOGGER.debug("HUMAN TARGET");
+	
+				//Create temp SHP
+				events = createTempBU(action,events);
+	
+				//Alter temp SHP: create NORM field
+				events = alterTempBU(action,events);
+	
+				//Fill NORM field of temp SHP
+				events = fillTempBU(action,events);
+	
+				//Execute rasterize on temporary SHP
+				events = rasterizeBU(action,events);
+	
+				//Execute overview on output TIF
+				events = overview(action,events);
+				
+				//Clear normalized SHP
+				clearNormalized(baseTifOutputDir);
+	
+			}
+			
+			//Rename output tif
+			{
+				File inputFile = new File(baseTifOutputDir.getAbsolutePath() + fs + codicePartner + fs + inputTypeName + ".tif");
+				
+				if(outputFile.exists()){
+					outputFile.delete();
+				}
+				inputFile.renameTo(outputFile);
+			}
+		}
+        catch(Exception e){
+        	errors++;
+        	metadataHandler
+				.logError(trace, errors, "Error occurred on rasterize", getError(e), 0);                        
+            LOGGER.error("Error occurred on rasterize: " + e.getMessage(), e);
+        }
+		
+		if(process != -1 && processPhase != null) {
+			// close current process phase
+			metadataHandler.closeProcessPhase(process, processPhase);
 		}
 
 	}

@@ -25,15 +25,21 @@ public class RasterizeAction extends DestinationBaseAction<RasterizeConfiguratio
 	protected void doProcess(RasterizeConfiguration cfg,
 			FeatureConfiguration featureCfg, JDBCDataStore dataStore,
 			MetadataIngestionHandler metadataHandler, File file) throws ActionException {
-        
-		TargetRasterizeProcess rasterize = new TargetRasterizeProcess(featureCfg.getTypeName(), listenerForwarder, null, null);
-		
-		File outputDir =  new File(System.getProperty(VulnerabilityComputation.RASTER_PATH_PROP, "")); 
-		if(configuration.getBaseOutputPath() != null && !configuration.getBaseOutputPath().isEmpty()){
-			outputDir = new File(configuration.getBaseOutputPath());
-		}		
-		File eventFile = new File(getTempDir().getParentFile().getAbsolutePath() + "/rasterize.xml");
-		rasterize.execute(getConfigDir(), getTempDir(), outputDir, eventFile);
+        try {
+			TargetRasterizeProcess rasterize = new TargetRasterizeProcess(featureCfg.getTypeName(), listenerForwarder, metadataHandler, dataStore);
+			
+			File outputDir =  new File(System.getProperty(VulnerabilityComputation.RASTER_PATH_PROP, "")); 
+			if(configuration.getBaseOutputPath() != null && !configuration.getBaseOutputPath().isEmpty()){
+				outputDir = new File(configuration.getBaseOutputPath());
+			}		
+			File eventFile = new File(getTempDir().getParentFile().getAbsolutePath() + "/rasterize.xml");
+			rasterize.execute(getConfigDir(), getTempDir(), outputDir, eventFile, cfg.getClosePhase());
+		} catch (IOException ex) {
+            // TODO: what shall we do here??
+            // log and rethrow for the moment, but a rollback should be implementened somewhere
+            LOGGER.error("Error in rasterize process", ex);
+            throw new ActionException(this, "Error in rasterize process", ex);
+        }
 	}
 
 

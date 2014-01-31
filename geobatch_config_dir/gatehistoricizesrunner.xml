@@ -13,8 +13,7 @@
         <watchDirectory>gatehistoricizesrunner/in</watchDirectory>
         <osType>OS_UNDEFINED</osType>
   		<eventType>POLLING_EVENT</eventType>
-  		Fire at 2:17am on the last day of every month
-  		<interval>0 17 2 L * ?</interval>
+  		<interval>0 0 * * * ?</interval>
     </EventGeneratorConfiguration>
 
 	 <EventConsumerConfiguration>
@@ -34,8 +33,8 @@
 				<failIgnored>false</failIgnored>
 				<purgeData>false</purgeData>
 				<moveData>true</moveData>
-				<beforeYear>0</beforeYear>
-				<beforeMonth>1</beforeMonth>
+				<beforeYear>1</beforeYear>
+				<beforeMonth>0</beforeMonth>
 				<beforeDay>0</beforeDay>
 				<sourceFeature>
 					<typeName>siig_gate_t_dato</typeName>
@@ -46,7 +45,7 @@
 						</entry>
 						<entry>
 							<string>host</string>
-							<string>127.0.0.1</string>
+							<string>192.168.1.31</string>
 						</entry>
 						<entry>
 							<string>port</string>
@@ -54,7 +53,7 @@
 						</entry>
 						<entry>
 							<string>database</string>
-							<string>destination_staging_origin</string>
+							<string>destination</string>
 						</entry>
 						<entry>
 							<string>schema</string>
@@ -84,7 +83,7 @@
 					   </entry>
 					   <entry>
 						 <string>host</string>
-						 <string>127.0.0.1</string>
+						 <string>192.168.1.31</string>
 					   </entry>
 					   <entry>
 						 <string>port</string>
@@ -92,7 +91,7 @@
 					   </entry>
 					   <entry>
 						 <string>database</string>
-						 <string>destination_staging_origin</string>
+						 <string>destination</string>
 					   </entry>                   
 					   <entry>
 						 <string>schema</string>

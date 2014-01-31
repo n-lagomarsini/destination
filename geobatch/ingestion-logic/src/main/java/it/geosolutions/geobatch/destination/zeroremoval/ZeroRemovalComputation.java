@@ -247,7 +247,7 @@ public class ZeroRemovalComputation extends InputObject {
     
                 setInputFilter(filterFactory.equals(filterFactory.property(PARTNER_FIELD),
                         filterFactory.literal(partner)));
-                int total = getImportCount();
+                
                 // get unique aggregation values in order to identify the roads
                 Set<BigDecimal> aggregationValues = null;
                 if (streetAggregation) {
@@ -255,8 +255,10 @@ public class ZeroRemovalComputation extends InputObject {
                 } else {
                     aggregationValues = new HashSet<BigDecimal>(Arrays.asList(new BigDecimal(-1)));
                 }
-    
+                int total = aggregationValues.size();
+                int aggregationCount = 0;
                 for (BigDecimal aggregationValue : aggregationValues) {
+                	aggregationCount++;
                     try {
                         //
                         // First of all filter all the arcs to a specified road and partner
@@ -271,8 +273,8 @@ public class ZeroRemovalComputation extends InputObject {
                         }
                         setInputFilter(filter);
                         // int arcs = getImportCount();
-                        Long incidenti = (Long) getSumOnInput(inputField, new Long(0)).longValue();
-                        if (incidenti != 0) {
+                        Double incidenti = (Double) getSumOnInput(inputField, new Double(0)).doubleValue();
+                        if (incidenti != 0.0) {
                             Long lunghezzaTotale = (Long) getSumOnInput(LUNGHEZZA, new Long(0)).longValue();
                             DecIncManager decIncManager = new DecIncManager(inputField, kInc,
                                     lunghezzaTotale);
@@ -304,6 +306,7 @@ public class ZeroRemovalComputation extends InputObject {
                             }
                             transaction.commit();
                         }
+                        updateImportProgress(aggregationCount, total, errors - startErrors, "Spreading zeros data in " + geoObject.getName());
                     } catch (IllegalArgumentException e) {
                         LOGGER.error(e.getMessage(), e);
                         transaction.rollback();
@@ -314,7 +317,7 @@ public class ZeroRemovalComputation extends InputObject {
                         }
                     }
                 }
-                importFinished(total, errors - startErrors, "Accident data updated in " + geoName);
+                importFinished(aggregationCount, errors - startErrors, "Accident data updated in " + geoName);
             } catch (Exception e) {
                 LOGGER.error(e.getMessage(), e);
                 transaction.rollback();

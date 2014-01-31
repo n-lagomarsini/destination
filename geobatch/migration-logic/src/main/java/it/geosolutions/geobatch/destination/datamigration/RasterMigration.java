@@ -239,22 +239,18 @@ public class RasterMigration {
             // file associated to the output file path
             File outFile = new File(composeFilePath(partnerName, fileName, false));
             // Check if the file is present
-            if (outFile.exists()) {
-                // File is already present, so nothing must be done
-                return;
-            } else {
-                // If the input file is present, the operation must be executed
-                if (inFile.exists()) {
-                    if (listenerPresent) {
-                        listener.setTask("copying file " + partnerName + PATHSEPARATOR + fileName + TIF_EXTENSION + " into "
-                                + composePartnerDirPath(partnerName));
-                    }
-                    // Copy operation
-                    FileUtils.copyFile(inFile, outFile);
-                } else {
-                    // If the input file does not exist an exception is thrown
-                    throw new IllegalArgumentException("Input file not found");
+           
+            // If the input file is present, the operation must be executed
+            if (inFile.exists()) {
+                if (listenerPresent) {
+                    listener.setTask("copying file " + partnerName + PATHSEPARATOR + fileName + TIF_EXTENSION + " into "
+                            + composePartnerDirPath(partnerName));
                 }
+                // Copy operation
+                FileUtils.copyFile(inFile, outFile);
+            } else {
+                // If the input file does not exist an exception is thrown
+                throw new IllegalArgumentException("Input file not found");
             }
         }
     }

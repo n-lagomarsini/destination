@@ -14,6 +14,7 @@ import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DefaultTransaction;
 import org.geotools.data.FeatureSource;
+import org.geotools.data.Query;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
@@ -71,6 +72,8 @@ public class ShpProcessor {
 		//Execute computation
 		CoordinateReferenceSystem crs = schema.getGeometryDescriptor().getCoordinateReferenceSystem();
 		Unit<?> uom = crs.getCoordinateSystem().getAxis(0).getUnit();
+		int total = area.getCount(new Query(schema.getName().getLocalPart()));
+		int count = 0;
 		FeatureIterator<?> areaIterator = area.getFeatures().features();
 
 		try {
@@ -88,7 +91,8 @@ public class ShpProcessor {
 				Object sumResult = sum.evaluate( pointCollection );
 
 				if(sumResult != null){
-					outputValue = new Integer(Integer.parseInt(sum.evaluate( pointCollection ).toString()));
+					outputValue = ((Number)sum.evaluate( pointCollection )).intValue();
+					logger.debug("Found point inside area");
 				}else{
 					//Found the nearest geometry into distance
 					Filter distanceFilter = ff.dwithin(ff.property(geometryPointName), ff.literal(areaGeometry), inputData.getMaxDsitance().doubleValue(), uom.toString());
@@ -99,10 +103,10 @@ public class ShpProcessor {
 						while( pointIteartor.hasNext() ){
 							SimpleFeature pointFeature = (SimpleFeature) pointIteartor.next();
 							Geometry pointGeometry = (Geometry) pointFeature.getDefaultGeometry();
-							double distance = areaGeometry.distance(pointGeometry);
-							logger.debug("Found point in " + inputData.getMaxDsitance().doubleValue() + " from area");
+							double distance = areaGeometry.distance(pointGeometry);							
 							if(distance <=  minDistance){
-								outputValue =  new Integer(Integer.parseInt(pointFeature.getProperty(inputData.getInputField()).getValue().toString()));
+								outputValue =  ((Number)pointFeature.getProperty(inputData.getInputField()).getValue()).intValue();
+								logger.debug("Found point in " + inputData.getMaxDsitance().doubleValue() + " from area");
 							}
 						}
 					}finally {
@@ -114,7 +118,15 @@ public class ShpProcessor {
 				featureBuilder.init(areaFeature);
 				featureBuilder.set(inputData.getOutputFeild(), outputValue);				
 				SimpleFeature feature = featureBuilder.buildFeature(null);				
-				outputCollection.add(feature);				
+				outputCollection.add(feature);		
+				
+				if(count % 1000 == 0) {
+					logger.info(count + "/" + total);
+					outputFeatureStore.addFeatures(outputCollection);
+					transaction.commit();
+					outputCollection.clear();
+				}
+				count++;
 			}
 			outputFeatureStore.addFeatures(outputCollection);
 			transaction.commit();

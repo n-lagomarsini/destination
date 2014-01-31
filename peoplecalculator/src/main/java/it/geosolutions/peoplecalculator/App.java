@@ -29,7 +29,7 @@ public class App {
 			Option shpP   = OptionBuilder.withArgName( "file" )
 					.hasArg()
 					.isRequired()
-					.withDescription(  "The shapefile with point geometry" )
+					.withDescription(  "Complete path of the shapefile with point geometry" )
 					.create( "shpP" );
 			opt.addOption(shpP);
 
@@ -43,7 +43,7 @@ public class App {
 			Option shpA   = OptionBuilder.withArgName( "file" )
 					.hasArg()
 					.isRequired()
-					.withDescription(  "The shapefile with area geometry" )
+					.withDescription(  "Complete path of the shapefile with area geometry" )
 					.create( "shpA" );
 			opt.addOption(shpA);
 
@@ -56,13 +56,13 @@ public class App {
 
 			Option dirOut   = OptionBuilder.withArgName( "path" )
 					.hasArg()
-					.withDescription(  "Output folder" )
+					.withDescription(  "Complete path of the output folder" )
 					.create( "dirOut" );
 			opt.addOption(dirOut);
 
 			Option dMax   = OptionBuilder.withArgName( "integer" )
 					.hasArg().withType(Integer.class)
-					.withDescription(  "Maximum disance as integer meters (default 10 m)" )
+					.withDescription(  "Maximum distance as integer meters (default 10 m)" )
 					.create( "dMax" );
 			opt.addOption(dMax);
 

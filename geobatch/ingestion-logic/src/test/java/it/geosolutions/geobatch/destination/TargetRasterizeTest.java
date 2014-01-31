@@ -78,7 +78,7 @@ public class TargetRasterizeTest extends DestinationMemoryTest{
 			TargetRasterizeProcess targetRasterizeProcess = new TargetRasterizeProcess(
 					shpName, new ProgressListenerForwarder(null),
 					null, null);
-			targetRasterizeProcess.execute(configDir,new File(System.getProperty("java.io.tmpdir")),outputDir,xmlFile);
+			targetRasterizeProcess.execute(configDir,new File(System.getProperty("java.io.tmpdir")),outputDir,xmlFile, null);
 
 			checkFile(outputFilePath);
 
@@ -119,7 +119,7 @@ public class TargetRasterizeTest extends DestinationMemoryTest{
 			TargetRasterizeProcess targetRasterizeProcess = new TargetRasterizeProcess(
 					shpName, new ProgressListenerForwarder(null),
 					null, null);
-			targetRasterizeProcess.execute(configDir,new File(System.getProperty("java.io.tmpdir")),outputDir,xmlFile);
+			targetRasterizeProcess.execute(configDir,new File(System.getProperty("java.io.tmpdir")),outputDir,xmlFile, null);
 
 			checkFile(outputFilePath);
 

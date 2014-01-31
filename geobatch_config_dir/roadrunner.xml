@@ -38,7 +38,7 @@
                    </entry>
                    <entry>
                      <string>host</string>
-                     <string>192.168.1.31</string>
+                     <string>localhost</string>
                    </entry>
                    <entry>
                      <string>port</string>
@@ -285,6 +285,7 @@
             <fpfield>fp_scen_centrale</fpfield>
             <writeMode>PURGE_INSERT</writeMode>
             <closePhase>B</closePhase>
+            <dropInput>true</dropInput>
             <!-- Listeners -->
             <listenerId>ConsumerLogger0</listenerId>
             <listenerId>Cumulator</listenerId>
