@@ -22,6 +22,7 @@
 package it.geosolutions.geobatch.destination.action.gatestatistics;
 
 import it.geosolutions.geobatch.actions.ds2ds.Ds2dsConfiguration;
+import it.geosolutions.geobatch.catalog.impl.configuration.TimeFormatConfiguration;
 
 /**
  * Gate statistic configuration. Use input data store to read the data (must be
@@ -31,8 +32,28 @@ import it.geosolutions.geobatch.actions.ds2ds.Ds2dsConfiguration;
  */
 public class GateStatisticConfiguration extends Ds2dsConfiguration {
 
+/**
+ * Time format configuration for the ingestion
+ */
+private TimeFormatConfiguration timeFormatConfiguration;
+
 public GateStatisticConfiguration(String id, String name, String description) {
     super(id, name, description);
+}
+
+/**
+ * @return the timeFormatConfiguration
+ */
+public TimeFormatConfiguration getTimeFormatConfiguration() {
+    return timeFormatConfiguration;
+}
+
+/**
+ * @param timeFormatConfiguration the timeFormatConfiguration to set
+ */
+public void setTimeFormatConfiguration(
+        TimeFormatConfiguration timeFormatConfiguration) {
+    this.timeFormatConfiguration = timeFormatConfiguration;
 }
 
 }

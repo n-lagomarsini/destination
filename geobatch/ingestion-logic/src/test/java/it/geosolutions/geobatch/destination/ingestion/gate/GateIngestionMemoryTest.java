@@ -19,7 +19,8 @@ package it.geosolutions.geobatch.destination.ingestion.gate;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import it.geosolutions.geobatch.destination.common.utils.TimeUtils;
+import it.geosolutions.geobatch.catalog.impl.TimeFormat;
+import it.geosolutions.geobatch.catalog.impl.configuration.TimeFormatConfiguration;
 import it.geosolutions.geobatch.destination.commons.DestinationMemoryTest;
 import it.geosolutions.geobatch.destination.ingestion.GateIngestionProcess;
 import it.geosolutions.geobatch.destination.ingestion.gate.dao.TransitDao;
@@ -43,7 +44,6 @@ import org.apache.commons.io.FileUtils;
 import org.geotools.data.memory.MemoryDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.Feature;
@@ -99,6 +99,11 @@ public class GateIngestionMemoryTest extends DestinationMemoryTest {
 	private TransitDao transitDao;
 	
 	/**
+	 * Dummy time format. Use default configuration
+	 */
+	private TimeFormat timeFormat = new TimeFormat(null, null, null, null);
+	
+	/**
 	 * Initialization of data store
 	 * 
 	 * @throws Exception if create fake gate throws an exception 
@@ -130,7 +135,7 @@ public class GateIngestionMemoryTest extends DestinationMemoryTest {
 	        file = getTestFile(FAKE_GATE_ID, numberOrTransits);
 	        GateIngestionProcess gateIngestion = new GateIngestionProcess("A00_20131016-180030",
 	                new ProgressListenerForwarder(null), metadataHandler,
-	                dataStore, file);
+	                dataStore, file, new TimeFormatConfiguration(null, null, null));
 	
 	        // process execution
 	        ids = gateIngestion.importGates(false);
@@ -221,10 +226,10 @@ public class GateIngestionMemoryTest extends DestinationMemoryTest {
 	            // check dates
 	            Timestamp arriveDate = (Timestamp) feature.getProperty(
 	                    "data_rilevamento").getValue();
-	            String receiptDate = (String) feature.getProperty("data_ricezione")
+	            Object receiptDate = feature.getProperty("data_ricezione")
 	                    .getValue();
-	            if (TimeUtils.getTimeStamp(transit.getDataRilevamento()).getTime() == arriveDate
-	                    .getTime() && TimeUtils.isToday(receiptDate.toString())) {
+	            if (timeFormat.getTimeStamp(transit.getDataRilevamento()).getTime() == arriveDate
+	                    .getTime() && timeFormat.isToday(receiptDate.toString())) {
 	                found = true;
 	                break;
 	            }
@@ -276,7 +281,6 @@ public class GateIngestionMemoryTest extends DestinationMemoryTest {
 	
 	    // parameters to be generated in this function
 	    boolean inverse = false;
-	    DateTime dt = null;
 	    String kemler = null;
 	    String onu = null;
 	
@@ -293,8 +297,7 @@ public class GateIngestionMemoryTest extends DestinationMemoryTest {
 	        transit.setIdTransito(magicKey + i);
 	
 	        // Time it's different each time
-	        dt = new DateTime();
-	        transit.setDataRilevamento(dt.toString(TimeUtils.getDefaultFormatter()));
+	        transit.setDataRilevamento(timeFormat.getDate(new Date()));
 	
 	        // direction
 	        transit.setDirezione(inverse ? "1" : "0");
