@@ -21,6 +21,7 @@
  */
 package it.geosolutions.geobatch.destination.action.gatefilehandling;
 
+import it.geosolutions.geobatch.catalog.impl.configuration.TimeFormatConfiguration;
 import it.geosolutions.geobatch.destination.action.gateingestion.GateIngestionConfiguration;
 import it.geosolutions.geobatch.remoteBrowser.configuration.RemoteBrowserConfiguration;
 
@@ -41,6 +42,11 @@ private RemoteBrowserConfiguration remoteBrowserConfiguration;
  * Configuration for the remote connection for success or fail executions
  */
 private RemoteBrowserConfiguration remoteResultBrowserConfiguration;
+
+/**
+ * Time format configuration for the ingestion
+ */
+private TimeFormatConfiguration timeFormatConfiguration;
 
 /**
  * Pattern for files to be handled
@@ -227,6 +233,21 @@ public boolean isCheckIfExists() {
  */
 public void setCheckIfExists(boolean checkIfExists) {
     this.checkIfExists = checkIfExists;
+}
+
+/**
+ * @return the timeFormatConfiguration
+ */
+public TimeFormatConfiguration getTimeFormatConfiguration() {
+    return timeFormatConfiguration;
+}
+
+/**
+ * @param timeFormatConfiguration the timeFormatConfiguration to set
+ */
+public void setTimeFormatConfiguration(
+        TimeFormatConfiguration timeFormatConfiguration) {
+    this.timeFormatConfiguration = timeFormatConfiguration;
 }
 
 }

@@ -16,9 +16,10 @@
  */
 package it.geosolutions.geobatch.destination.ingestion.gate.statistics;
 
+import it.geosolutions.geobatch.catalog.impl.TimeFormat;
+import it.geosolutions.geobatch.catalog.impl.configuration.TimeFormatConfiguration;
 import it.geosolutions.geobatch.destination.common.InputObject;
 import it.geosolutions.geobatch.destination.common.utils.SequenceManager;
-import it.geosolutions.geobatch.destination.common.utils.TimeUtils;
 import it.geosolutions.geobatch.destination.ingestion.MetadataIngestionHandler;
 import it.geosolutions.geobatch.flow.event.ProgressListenerForwarder;
 
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,7 +43,6 @@ import org.geotools.factory.Hints;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.jdbc.JDBCDataStore;
-import org.joda.time.DateTime;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -73,11 +74,6 @@ private static Pattern typeNameParts = Pattern
         .compile("^([A-Z])([0-9]{2})[_-]([0-9]{8})[_-]([0-9]{6})$");
 
 /**
- * Used to clean fileName
- */
-private static final String DOT = ".";
-
-/**
  * Partner always 1
  */
 private static int PARTNER = 1;
@@ -105,6 +101,11 @@ private String outputType = "siig_gate_t_dato_statistico";
 private StatisticsExtractor statisticsExtractor;
 
 /**
+ * Time format component
+ */
+private TimeFormat timeFormat;
+
+/**
  * Parametrized constructor
  * 
  * @param typeName
@@ -116,16 +117,20 @@ private StatisticsExtractor statisticsExtractor;
 public GateStatisticsProcess(String typeName,
         ProgressListenerForwarder listenerForwarder,
         MetadataIngestionHandler metadataHandler, DataStore dataStore,
-        JDBCDataStore inputDataStore) {
+        JDBCDataStore inputDataStore,
+        TimeFormatConfiguration timeFormatConfiguration) {
 
     super(typeName, listenerForwarder, metadataHandler, dataStore);
+
+    // create time format
+    this.timeFormat = new TimeFormat(null, null, null, timeFormatConfiguration);
 
     // init from file to be inserted
     initFromNow();
 
     // init extractor and sequence manager
     this.statisticsExtractor = new StatisticsJDBCExtractor(
-            (JDBCDataStore) inputDataStore);
+            (JDBCDataStore) inputDataStore, this.timeFormat);
     this.setSequenceManager(new SequenceManager(inputDataStore,
             "gate_statistic_seq"));
 }
@@ -143,17 +148,20 @@ public GateStatisticsProcess(String typeName,
 public GateStatisticsProcess(String typeName,
         ProgressListenerForwarder listenerForwarder,
         MetadataIngestionHandler metadataHandler, DataStore dataStore,
-        File file, JDBCDataStore inputDataStore) {
+        File file, JDBCDataStore inputDataStore,
+        TimeFormatConfiguration timeFormatConfiguration) {
 
     super(typeName, listenerForwarder, metadataHandler, dataStore);
 
+    // create time format
+    this.timeFormat = new TimeFormat(null, null, null, timeFormatConfiguration);
+
     // init from file to be inserted
     this.file = file;
-    
 
     // init extractor and sequence manager
     this.statisticsExtractor = new StatisticsJDBCExtractor(
-            (JDBCDataStore) inputDataStore);
+            (JDBCDataStore) inputDataStore, this.timeFormat);
     this.setSequenceManager(new SequenceManager(inputDataStore,
             "gate_statistic_seq"));
 }
@@ -177,7 +185,7 @@ protected boolean parseTypeName(String inputTypeName) {
 
 private boolean initFromNow() {
 
-    this.date = (new DateTime()).toString(TimeUtils.getDayFormatter());
+    this.date = new Date().toString();
     this.inputTypeName = "Stats_" + this.date;
 
     return true;

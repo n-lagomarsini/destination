@@ -292,8 +292,9 @@ public void doProcess(GateFileHandlingConfiguration cfg,
                         // Import gate data
                         GateIngestionProcess computation = new GateIngestionProcess(
                                 // type name read on file name
-                        		getInputTypeName(inputFile), listenerForwarder, metadataHandler,
-                                dataStore, inputFile);
+                                getInputTypeName(inputFile), listenerForwarder,
+                                metadataHandler, dataStore, inputFile,
+                                configuration.getTimeFormatConfiguration());
                         Map<String, Object> procResult = computation
                                 .doProcess(cfg.getIgnorePks());
 
@@ -344,8 +345,9 @@ public void doProcess(GateFileHandlingConfiguration cfg,
                 } else if (LOGGER.isErrorEnabled()) {
                     LOGGER.error("Error downloading " + fileName);
                 }
-            }else if (LOGGER.isInfoEnabled()){
-                LOGGER.info("File "+fileName + " ignored because was processed after this execution");
+            } else if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("File " + fileName
+                        + " ignored because was processed after this execution");
             }
         }
 
@@ -364,7 +366,7 @@ public void doProcess(GateFileHandlingConfiguration cfg,
  * @return
  */
 private String getInputTypeName(File file) {
-	String fileName = file != null ? file.getName() : null;
+    String fileName = file != null ? file.getName() : null;
     if (fileName != null && fileName.contains(".")) {
         fileName = fileName.substring(0, fileName.lastIndexOf("."));
     }
