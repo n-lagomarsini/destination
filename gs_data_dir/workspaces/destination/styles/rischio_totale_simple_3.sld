@@ -7,13 +7,13 @@
       <Abstract>risk</Abstract>
       <FeatureTypeStyle>
    <Rule>
-    <Title>Basso Rischio
-      <Localized lang="it">Basso Rischio</Localized>
-      <Localized lang="en">Low Risk</Localized>
-      <Localized lang="fr">Basso Rischio</Localized>
-      <Localized lang="de">Basso Rischio</Localized>
+    <Title>Basso
+      <Localized lang="it">Basso</Localized>
+      <Localized lang="en">Low</Localized>
+      <Localized lang="fr">Basso</Localized>
+      <Localized lang="de">Basso</Localized>
     </Title>
-    <Abstract>Basso Rischio</Abstract>
+    <Abstract>Basso</Abstract>
    <ogc:Filter>
         <ogc:PropertyIsLessThanOrEqualTo>
         <ogc:Function name="round">
@@ -43,13 +43,13 @@
    </PolygonSymbolizer>
    </Rule>
    <Rule>
-    <Title>Medio Rischio
-      <Localized lang="it">Medio Rischio</Localized>
-      <Localized lang="en">Medium Risk</Localized>
-      <Localized lang="fr">Medio Rischio</Localized>
-      <Localized lang="de">Medio Rischio</Localized>
+    <Title>Medio
+      <Localized lang="it">Medio</Localized>
+      <Localized lang="en">Medium</Localized>
+      <Localized lang="fr">Medio</Localized>
+      <Localized lang="de">Medio</Localized>
     </Title>
-    <Abstract>Medio Rischio</Abstract>
+    <Abstract>Medio</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
@@ -99,13 +99,13 @@
    </PolygonSymbolizer>
    </Rule>
    <Rule>
-    <Title>Alto Rischio
-      <Localized lang="it">Alto Rischio</Localized>
-      <Localized lang="en">High Risk</Localized>
-      <Localized lang="fr">Alto Rischio</Localized>
-      <Localized lang="de">Alto Rischio</Localized>
+    <Title>Alto
+      <Localized lang="it">Alto</Localized>
+      <Localized lang="en">High</Localized>
+      <Localized lang="fr">Alto</Localized>
+      <Localized lang="de">Alto</Localized>
     </Title>
-    <Abstract>Alto Rischio</Abstract>
+    <Abstract>Alto</Abstract>
    <ogc:Filter>
         <ogc:PropertyIsGreaterThanOrEqualTo>
         <ogc:Function name="round">

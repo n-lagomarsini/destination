@@ -17,7 +17,7 @@
             <Localized lang="it">Popolazione Turistica</Localized>
             <Localized lang="en">Tourist People</Localized>
             <Localized lang="fr">Popolazione Turistica</Localized>
-            <Localized lang="de">Popolazione Turistica</Localized>
+            <Localized lang="de">Tourismus</Localized>
           </Title>
           <Name>rule1</Name>
           <Title>Opaque Raster</Title>

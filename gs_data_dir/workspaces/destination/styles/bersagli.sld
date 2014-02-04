@@ -13,7 +13,7 @@
             <Localized lang="it">Popolazione Residente</Localized>
             <Localized lang="en">People Resident</Localized>
             <Localized lang="fr">Popolazione Residente</Localized>
-            <Localized lang="de">Popolazione Residente</Localized>
+            <Localized lang="de">Wohnbevölkerung</Localized>
           </Title>
           <ogc:Filter>
               <ogc:PropertyIsEqualTo>
@@ -50,7 +50,7 @@
             <Localized lang="it">Aree agricole</Localized>
             <Localized lang="en">Coltivated Area</Localized>
             <Localized lang="fr">Aree agricole</Localized>
-            <Localized lang="de">Aree agricole</Localized>
+            <Localized lang="de">Landwirtschaftliche Flächen</Localized>
           </Title>
           <ogc:Filter>
               <ogc:PropertyIsEqualTo>
@@ -88,7 +88,7 @@
             <Localized lang="it">Aree protette</Localized>
             <Localized lang="en">Protected Areas</Localized>
             <Localized lang="fr">Aree protette</Localized>
-            <Localized lang="de">Aree protette</Localized>
+            <Localized lang="de">Schutzgebiete</Localized>
           </Title>
           <ogc:Filter>
               <ogc:PropertyIsEqualTo>
@@ -128,7 +128,7 @@
             <Localized lang="it">Acque superficiali</Localized>
             <Localized lang="en">Surface Waters</Localized>
             <Localized lang="fr">Acque superficiali</Localized>
-            <Localized lang="de">Acque superficiali</Localized>
+            <Localized lang="de">Oberflächengewässer</Localized>
           </Title>
           <ogc:Filter>
               <ogc:PropertyIsEqualTo>
@@ -168,7 +168,7 @@
             <Localized lang="it">Acque sotterranee</Localized>
             <Localized lang="en">Underground Waters</Localized>
             <Localized lang="fr">Acque sotterranee</Localized>
-            <Localized lang="de">Acque sotterranee</Localized>
+            <Localized lang="de">Tiefbrunnen</Localized>
           </Title>
           <ogc:Filter>
               <ogc:PropertyIsEqualTo>
@@ -208,7 +208,7 @@
             <Localized lang="it">Aree boscate</Localized>
             <Localized lang="en">Forest Area</Localized>
             <Localized lang="fr">Aree boscate</Localized>
-            <Localized lang="de">Aree boscate</Localized>
+            <Localized lang="de">Waldflächen</Localized>
           </Title>
           <ogc:Filter>
               <ogc:PropertyIsEqualTo>

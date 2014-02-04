@@ -13,7 +13,7 @@
             <Localized lang="it">Zone Urbanizzate</Localized>
             <Localized lang="en">Urbanized Zones</Localized>
             <Localized lang="fr">Zone Urbanizzate</Localized>
-            <Localized lang="de">Zone Urbanizzate</Localized>          
+            <Localized lang="de">Urbanisierte Gebiete</Localized>          
           </Title>
           
           <MaxScaleDenominator>50000</MaxScaleDenominator>

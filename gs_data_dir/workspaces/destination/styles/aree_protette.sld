@@ -14,7 +14,7 @@
             <Localized lang="it">Aree protette</Localized>
             <Localized lang="en">Protected Areas</Localized>
             <Localized lang="fr">Aree protette</Localized>
-            <Localized lang="de">Aree protette</Localized>
+            <Localized lang="de">Schutzgebiete</Localized>
           </Title>
           
           <MaxScaleDenominator>50000</MaxScaleDenominator>

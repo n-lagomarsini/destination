@@ -17,7 +17,7 @@
             <Localized lang="it">Beni culturali</Localized>
             <Localized lang="en">Cultural Sites</Localized>
             <Localized lang="fr">Beni culturali</Localized>
-            <Localized lang="de">Beni culturali</Localized>
+            <Localized lang="de">Kulturerbe</Localized>
           </Title>
           <Name>rule1</Name>
           <Title>Opaque Raster</Title>

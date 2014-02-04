@@ -14,7 +14,7 @@
             <Localized lang="it">Area di Danno</Localized>
             <Localized lang="en">Damage Area</Localized>
             <Localized lang="fr">Area di Danno</Localized>
-            <Localized lang="de">Area di Danno</Localized>
+            <Localized lang="de">Shadensbereich</Localized>
           </Title>
           <Abstract>Buffer per Rischio Incidentale</Abstract>
           <MaxScaleDenominator>17061</MaxScaleDenominator>

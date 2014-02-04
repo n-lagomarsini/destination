@@ -17,7 +17,7 @@
             <Localized lang="it">Zone Urbanizzate</Localized>
             <Localized lang="en">Urbanized Zones</Localized>
             <Localized lang="fr">Zone Urbanizzate</Localized>
-            <Localized lang="de">Zone Urbanizzate</Localized>          
+            <Localized lang="de">Urbanisierte Gebiete</Localized>          
           </Title>               
           <Name>rule1</Name>
           <Title>Opaque Raster</Title>

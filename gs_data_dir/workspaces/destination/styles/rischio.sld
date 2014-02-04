@@ -121,12 +121,12 @@
           </Transformation>
         <Rule>
     <Title>lowrisk
-      <Localized lang="it">Basso Rischio</Localized>
-      <Localized lang="en">Low Risk</Localized>
-      <Localized lang="fr">Basso Rischio</Localized>
-      <Localized lang="de">Niedriges Risiko</Localized>
+      <Localized lang="it">Basso</Localized>
+      <Localized lang="en">Low</Localized>
+      <Localized lang="fr">Basso</Localized>
+      <Localized lang="de">Niedriges</Localized>
     </Title>
-    <Abstract>Basso Rischio</Abstract>
+    <Abstract>Basso</Abstract>
           <FeatureTypeName>siig_geo_grid</FeatureTypeName>
    <ogc:Filter>
         <ogc:PropertyIsLessThanOrEqualTo>
@@ -154,12 +154,12 @@
    </Rule>
    <Rule>
     <Title>mediumrisk
-    <Localized lang="it">Medio Rischio</Localized>
-      <Localized lang="en">Medium Risk</Localized>
-      <Localized lang="fr">Medio Rischio</Localized>
-      <Localized lang="de">Mittleres Risiko</Localized>
+    <Localized lang="it">Medio</Localized>
+      <Localized lang="en">Medium</Localized>
+      <Localized lang="fr">Medio</Localized>
+      <Localized lang="de">Mittleres</Localized>
   </Title>
-    <Abstract>Medio Rischio</Abstract>
+    <Abstract>Medio</Abstract>
                <FeatureTypeName>siig_geo_grid</FeatureTypeName>
    <ogc:Filter>
      <ogc:And>
@@ -203,12 +203,12 @@
    </Rule>
    <Rule>
     <Title>highrisk
-    <Localized lang="it">Alto Rischio</Localized>
-      <Localized lang="en">High Risk</Localized>
-      <Localized lang="fr">Alto Rischio</Localized>
-      <Localized lang="de">Hohes Risiko</Localized>
+    <Localized lang="it">Alto</Localized>
+      <Localized lang="en">High</Localized>
+      <Localized lang="fr">Alto</Localized>
+      <Localized lang="de">Hohes</Localized>
   </Title>
-    <Abstract>Alto Rischio</Abstract>
+    <Abstract>Alto</Abstract>
                <FeatureTypeName>siig_geo_grid</FeatureTypeName>
    <ogc:Filter>
         <ogc:PropertyIsGreaterThanOrEqualTo>

@@ -15,7 +15,7 @@
                     <Localized lang="it">Area di danno</Localized>
                     <Localized lang="en">Damage Area</Localized>
                     <Localized lang="fr">Damage Area</Localized>
-                    <Localized lang="de">Damage Area</Localized>
+                    <Localized lang="de">Schadensbereich</Localized>
                     </Title>
                     <Abstract>Valutazione del danno</Abstract>
                     <MaxScaleDenominator>50000</MaxScaleDenominator>

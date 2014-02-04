@@ -17,7 +17,7 @@
         <Localized lang="it">Aree agricole</Localized>
             <Localized lang="en">Coltivated Area</Localized>
         <Localized lang="fr">Aree agricole</Localized>
-        <Localized lang="de">Aree agricole</Localized>
+        <Localized lang="de">Landwirtschaftliche Flächen</Localized>
         </Title>        
           <Name>rule1</Name>
           <Title>Opaque Raster</Title>

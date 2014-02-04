@@ -17,7 +17,7 @@
             <Localized lang="it">Acque superficiali</Localized>
             <Localized lang="en">Surface Waters</Localized>
             <Localized lang="fr">Acque superficiali</Localized>
-            <Localized lang="de">Acque superficiali</Localized>
+            <Localized lang="de">Oberflächengewässer</Localized>
         </Title>
           <Name>rule1</Name>
           <Title>Opaque Raster</Title>

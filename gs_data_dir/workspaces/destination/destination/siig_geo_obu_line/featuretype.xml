@@ -44,26 +44,47 @@
   <enabled>true</enabled>
   <advertised>true</advertised>
   <metadata>
+    <entry key="time">
+      <dimensionInfo>
+        <enabled>false</enabled>
+      </dimensionInfo>
+    </entry>
     <entry key="cachingEnabled">false</entry>
+    <entry key="elevation">
+      <dimensionInfo>
+        <enabled>false</enabled>
+      </dimensionInfo>
+    </entry>
     <entry key="JDBC_VIRTUAL_TABLE">
       <virtualTable>
         <name>siig_geo_obu_line</name>
-        <sql>SELECT obu.semirimorchio, ST_MakeLine(obu.geometria) as the_geom&#xd;
+        <sql>SELECT obu.semirimorchio,ST_MakeLine(obu.geometria) as the_geom&#xd;
 FROM (&#xd;
 SELECT semirimorchio, tipo, geometria&#xd;
-FROM siig_geo_obu ORDER BY tipo, semirimorchio) as obu&#xd;
+FROM siig_geo_obu &#xd;
+where data_creazione BETWEEN &apos;%start_date%&apos; and &apos;%end_date%&apos;&#xd;
+ORDER BY tipo, semirimorchio,data_creazione) as obu&#xd;
 WHERE obu.semirimorchio=&apos;%semirimorchio%&apos;&#xd;
 GROUP BY obu.semirimorchio</sql>
-        <keyColumn>semirimorchio</keyColumn>
         <geometry>
           <name>the_geom</name>
           <type>LineString</type>
           <srid>4326</srid>
         </geometry>
         <parameter>
+          <name>end_date</name>
+          <defaultValue>2012-11-21T07:44:00.000Z</defaultValue>
+          <regexpValidator>^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$</regexpValidator>
+        </parameter>
+        <parameter>
           <name>semirimorchio</name>
-          <defaultValue>LOM1434</defaultValue>
+          <defaultValue>995</defaultValue>
           <regexpValidator>^[\w\d\s]+$</regexpValidator>
+        </parameter>
+        <parameter>
+          <name>start_date</name>
+          <defaultValue>2012-11-20T07:40:00.000Z</defaultValue>
+          <regexpValidator>^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$</regexpValidator>
         </parameter>
       </virtualTable>
     </entry>

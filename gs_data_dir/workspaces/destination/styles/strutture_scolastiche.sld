@@ -13,7 +13,7 @@
             <Localized lang="it">Addetti e utenti strutture scolastiche</Localized>
             <Localized lang="en">Scholastic Structrures Employees and Users</Localized>
             <Localized lang="fr">Addetti e utenti strutture scolastiche</Localized>
-            <Localized lang="de">Addetti e utenti strutture scolastiche</Localized>
+            <Localized lang="de">Schulen und Kindergärten</Localized>
           </Title>          
           
           <MaxScaleDenominator>50000</MaxScaleDenominator>

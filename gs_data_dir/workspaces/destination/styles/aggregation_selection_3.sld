@@ -10,8 +10,8 @@
 
       <FeatureTypeStyle>
         <Rule>
-          <Title>Basso Rischio (0-100)</Title>
-          <Abstract>Linea per Basso Rischio Incidentale</Abstract>
+          <Title>Basso (0-100)</Title>
+          <Abstract>Linea per Basso Incidentale</Abstract>
           <ogc:Filter>
               <ogc:PropertyIsLessThanOrEqualTo>
                    <ogc:Function name="round">
@@ -34,8 +34,8 @@
         </Rule>
 
         <Rule>
-          <Title>Medio Rischio (100-500)</Title>
-          <Abstract>Linea per Medio Rischio Incidentale</Abstract>
+          <Title>Medio (100-500)</Title>
+          <Abstract>Linea per Medio Incidentale</Abstract>
           <ogc:Filter>
               <ogc:And>
                 <ogc:PropertyIsLessThanOrEqualTo>
@@ -70,8 +70,8 @@
         
         
         <Rule>
-          <Title>Alto Rischio (&gt; 500)</Title>
-          <Abstract>Linea per Alto Rischio Incidentale</Abstract>
+          <Title>Alto (&gt; 500)</Title>
+          <Abstract>Linea per Alto Incidentale</Abstract>
           <ogc:Filter>
             <ogc:PropertyIsGreaterThanOrEqualTo>
                <ogc:Function name="round">

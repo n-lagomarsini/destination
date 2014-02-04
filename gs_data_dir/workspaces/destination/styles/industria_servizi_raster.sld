@@ -17,7 +17,7 @@
             <Localized lang="it">Addetti industria e servizi</Localized>
             <Localized lang="en">Industry and Service Employees</Localized>
             <Localized lang="fr">Addetti industria e servizi</Localized>
-            <Localized lang="de">Addetti industria e servizi</Localized>
+            <Localized lang="de">Industrie und Dienstleistungen</Localized>
           </Title>
           <Name>rule1</Name>
           <Title>Opaque Raster</Title>

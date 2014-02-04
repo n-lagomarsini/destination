@@ -7,13 +7,13 @@
       <Abstract>risk</Abstract>
       <FeatureTypeStyle>
    <Rule>
-    <Title>Basso Rischio
-    <Localized lang="it">Basso Rischio</Localized>
-      <Localized lang="en">Low Risk</Localized>
-      <Localized lang="fr">Basso Rischio</Localized>
-      <Localized lang="de">Niedriges Risiko</Localized>
+    <Title>Basso
+    <Localized lang="it">Basso</Localized>
+      <Localized lang="en">Low</Localized>
+      <Localized lang="fr">Basso</Localized>
+      <Localized lang="de">Niedriges</Localized>
   </Title>
-    <Abstract>Basso Rischio</Abstract>
+    <Abstract>Basso</Abstract>
    <ogc:Filter>
         <ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyName>rischio</ogc:PropertyName>
@@ -40,13 +40,13 @@
    </LineSymbolizer>
    </Rule>
    <Rule>
-    <Title>Medio Rischio
-    <Localized lang="it">Medio Rischio</Localized>
-      <Localized lang="en">Medium Risk</Localized>
-      <Localized lang="fr">Medio Rischio</Localized>
-      <Localized lang="de">Mittleres Risiko</Localized>
+    <Title>Medio
+    <Localized lang="it">Medio</Localized>
+      <Localized lang="en">Medium</Localized>
+      <Localized lang="fr">Medio</Localized>
+      <Localized lang="de">Mittleres</Localized>
   </Title>
-    <Abstract>Medio Rischio</Abstract>
+    <Abstract>Medio</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
@@ -89,13 +89,13 @@
    </LineSymbolizer>
    </Rule>
    <Rule>
-    <Title>Alto Rischio
-    <Localized lang="it">Alto Rischio</Localized>
-      <Localized lang="en">High Risk</Localized>
-      <Localized lang="fr">Alto Rischio</Localized>
-      <Localized lang="de">Hohes Risiko</Localized>
+    <Title>Alto
+    <Localized lang="it">Alto</Localized>
+      <Localized lang="en">High</Localized>
+      <Localized lang="fr">Alto</Localized>
+      <Localized lang="de">Hohes</Localized>
   </Title>
-    <Abstract>Alto Rischio</Abstract>
+    <Abstract>Alto</Abstract>
    <ogc:Filter>
         <ogc:PropertyIsGreaterThanOrEqualTo>
         <ogc:PropertyName>rischio</ogc:PropertyName>

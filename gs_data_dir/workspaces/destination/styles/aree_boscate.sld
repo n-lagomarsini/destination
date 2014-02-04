@@ -14,7 +14,7 @@
             <Localized lang="it">Aree boscate</Localized>
             <Localized lang="en">Forest Area</Localized>
             <Localized lang="fr">Aree boscate</Localized>
-            <Localized lang="de">Aree boscate</Localized>
+            <Localized lang="de">Waldflächen</Localized>
           </Title>
           
           <MaxScaleDenominator>50000</MaxScaleDenominator>

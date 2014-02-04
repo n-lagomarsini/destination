@@ -118,13 +118,13 @@
             
           </Transformation>
    <Rule>
-    <Title>Basso Rischio-Basso Rischio
-    <Localized lang="it">Basso Rischio-Basso Rischio</Localized>
-      <Localized lang="en">Low Risk-Low Risk</Localized>
-      <Localized lang="fr">Basso Rischio-Basso Rischio</Localized>
-      <Localized lang="de">Niedriges Risiko-Niedriges Risiko</Localized>
+    <Title>Basso-Basso
+    <Localized lang="it">Basso-Basso</Localized>
+      <Localized lang="en">Low-Low</Localized>
+      <Localized lang="fr">Basso-Basso</Localized>
+      <Localized lang="de">Niedriges-Niedriges</Localized>
   </Title>
-    <Abstract>Basso Rischio-Basso Rischio</Abstract>
+    <Abstract>Basso-Basso</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
@@ -220,13 +220,13 @@
    </TextSymbolizer>
    </Rule>
    <Rule>
-    <Title>Basso Rischio-Medio Rischio
-    <Localized lang="it">Basso Rischio-Medio Rischio</Localized>
-      <Localized lang="en">Low Risk-Medium Risk</Localized>
-      <Localized lang="fr">Basso Rischio-Medio Rischio</Localized>
-      <Localized lang="de">Niedriges Risiko-Mittleres Risiko</Localized>
+    <Title>Basso-Medio
+    <Localized lang="it">Basso-Medio</Localized>
+      <Localized lang="en">Low-Medium</Localized>
+      <Localized lang="fr">Basso-Medio</Localized>
+      <Localized lang="de">Niedriges-Mittleres</Localized>
   </Title>
-    <Abstract>Basso Rischio-Medio Rischio</Abstract>
+    <Abstract>Basso-Medio</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
@@ -327,13 +327,13 @@
    </TextSymbolizer>
    </Rule>
    <Rule>
-    <Title>Basso Rischio-Alto Rischio
-    <Localized lang="it">Basso Rischio-Alto Rischio</Localized>
-      <Localized lang="en">Low Risk-High Risk</Localized>
-      <Localized lang="fr">Basso Rischio-Alto Rischio</Localized>
-      <Localized lang="de">Niedriges Risiko-Hohes Risiko</Localized>  
+    <Title>Basso-Alto
+    <Localized lang="it">Basso-Alto</Localized>
+      <Localized lang="en">Low-High</Localized>
+      <Localized lang="fr">Basso-Alto</Localized>
+      <Localized lang="de">Niedriges-Hohes</Localized>  
   </Title>
-    <Abstract>Basso Rischio-Alto Rischio</Abstract>
+    <Abstract>Basso-Alto</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
@@ -428,13 +428,13 @@
    </TextSymbolizer>
    </Rule>
    <Rule>
-    <Title>Medio Rischio-Basso Rischio
-    <Localized lang="it">Medio Rischio-Basso Rischio</Localized>
-      <Localized lang="en">Medium Risk-Low Risk</Localized>
-      <Localized lang="fr">Medio Rischio-Basso Rischio</Localized>
-      <Localized lang="de">Mittleres Risiko-Niedriges Risiko</Localized>    
+    <Title>Medio-Basso
+    <Localized lang="it">Medio-Basso</Localized>
+      <Localized lang="en">Medium-Low</Localized>
+      <Localized lang="fr">Medio-Basso</Localized>
+      <Localized lang="de">Mittleres-Niedriges</Localized>    
   </Title>
-    <Abstract>Medio Rischio-Basso Rischio</Abstract>
+    <Abstract>Medio-Basso</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
@@ -535,13 +535,13 @@
    </TextSymbolizer>
    </Rule>
    <Rule>
-    <Title>Medio Rischio-Medio Rischio
-    <Localized lang="it">Medio Rischio-Medio Rischio</Localized>
-      <Localized lang="en">Medium Risk-Medium Risk</Localized>
-      <Localized lang="fr">Medio Rischio-Medio Rischio</Localized>
-      <Localized lang="de">Mittleres Risiko-Mittleres Risiko</Localized>    
+    <Title>Medio-Medio
+    <Localized lang="it">Medio-Medio</Localized>
+      <Localized lang="en">Medium-Medium</Localized>
+      <Localized lang="fr">Medio-Medio</Localized>
+      <Localized lang="de">Mittleres-Mittleres</Localized>    
   </Title>
-    <Abstract>Medio Rischio-Medio Rischio</Abstract>
+    <Abstract>Medio-Medio</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
@@ -648,13 +648,13 @@
    </TextSymbolizer>
    </Rule>
    <Rule>
-    <Title>Medio Rischio-Alto Rischio
-    <Localized lang="it">Medio Rischio-Alto Rischio</Localized>
-      <Localized lang="en">Medium Risk-High Risk</Localized>
-      <Localized lang="fr">Medio Rischio-Alto Rischio</Localized>
-      <Localized lang="de">Mittleres Risiko-Hohes Risiko</Localized>  
+    <Title>Medio-Alto
+    <Localized lang="it">Medio-Alto</Localized>
+      <Localized lang="en">Medium-High</Localized>
+      <Localized lang="fr">Medio-Alto</Localized>
+      <Localized lang="de">Mittleres-Hohes</Localized>  
   </Title>
-    <Abstract>Medio Rischio-Alto Rischio</Abstract>
+    <Abstract>Medio-Alto</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
@@ -755,13 +755,13 @@
    </TextSymbolizer>
    </Rule>
    <Rule>
-    <Title>Alto Rischio-Basso Rischio
-    <Localized lang="it">Alto Rischio-Basso Rischio</Localized>
-      <Localized lang="en">High Risk-Low Risk</Localized>
-      <Localized lang="fr">Alto Rischio-Basso Rischio</Localized>
-      <Localized lang="de">Hohes Risiko-Niedriges Risiko</Localized>
+    <Title>Alto-Basso
+    <Localized lang="it">Alto-Basso</Localized>
+      <Localized lang="en">High-Low</Localized>
+      <Localized lang="fr">Alto-Basso</Localized>
+      <Localized lang="de">Hohes-Niedriges</Localized>
   </Title>
-    <Abstract>Alto Rischio-Basso Rischio</Abstract>
+    <Abstract>Alto-Basso</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsGreaterThanOrEqualTo>
@@ -856,13 +856,13 @@
    </TextSymbolizer>
    </Rule>
    <Rule>
-    <Title>Alto Rischio-Medio Rischio
-    <Localized lang="it">Alto Rischio-Medio Rischio</Localized>
-      <Localized lang="en">High Risk-Medium Risk</Localized>
-      <Localized lang="fr">Alto Rischio-Medio Rischio</Localized>
-      <Localized lang="de">Hohes Risiko-Mittleres Risiko</Localized>  
+    <Title>Alto-Medio
+    <Localized lang="it">Alto-Medio</Localized>
+      <Localized lang="en">High-Medium</Localized>
+      <Localized lang="fr">Alto-Medio</Localized>
+      <Localized lang="de">Hohes-Mittleres</Localized>  
   </Title>
-    <Abstract>Alto Rischio-Medio Rischio</Abstract>
+    <Abstract>Alto-Medio</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsGreaterThanOrEqualTo>
@@ -963,13 +963,13 @@
    </TextSymbolizer>
    </Rule>
    <Rule>
-    <Title>Alto Rischio-Alto Rischio
-    <Localized lang="it">Alto Rischio-Alto Rischio</Localized>
-      <Localized lang="en">High Risk-High Risk</Localized>
-      <Localized lang="fr">Alto Rischio-Alto Rischio</Localized>
-      <Localized lang="de">Hohes Risiko-Hohes Risiko</Localized>  
+    <Title>Alto-Alto
+    <Localized lang="it">Alto-Alto</Localized>
+      <Localized lang="en">High-High</Localized>
+      <Localized lang="fr">Alto-Alto</Localized>
+      <Localized lang="de">Hohes-Hohes</Localized>  
   </Title>
-    <Abstract>Alto Rischio-Alto Rischio</Abstract>
+    <Abstract>Alto-Alto</Abstract>
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsGreaterThanOrEqualTo>

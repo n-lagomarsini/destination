@@ -13,7 +13,7 @@
             <Localized lang="it">Addetti e utenti strutture sanitarie</Localized>
             <Localized lang="en">Sanitary Structrures Employees and Users</Localized>
             <Localized lang="fr">Addetti e utenti strutture sanitarie</Localized>
-            <Localized lang="de">Addetti e utenti strutture sanitarie</Localized>
+            <Localized lang="de">Sanitäre Strukturen</Localized>
           </Title>
           
           <MaxScaleDenominator>50000</MaxScaleDenominator>

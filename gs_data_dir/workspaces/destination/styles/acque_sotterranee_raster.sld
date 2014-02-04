@@ -17,7 +17,7 @@
         <Localized lang="it">Acque sotterranee</Localized>
         <Localized lang="en">Underground Waters</Localized>
         <Localized lang="fr">Acque sotterranee</Localized>
-        <Localized lang="de">Acque sotterranee</Localized>
+        <Localized lang="de">Tiefbrunnen</Localized>
         </Title>        
           <Name>rule1</Name>
           <Title>Opaque Raster</Title>

@@ -38,7 +38,7 @@
                     <Localized lang="it">Lesioni reversibili</Localized>
                     <Localized lang="en">Reversible Injuries</Localized>
                     <Localized lang="fr">Lesioni reversibili</Localized>
-                    <Localized lang="de">Lesioni reversibili</Localized>
+                    <Localized lang="de">Reversiblie Verletzungen</Localized>
                     </Title>
                     <Abstract>Buffer per Rischio Incidentale</Abstract>
                     <MaxScaleDenominator>17070</MaxScaleDenominator>
@@ -63,7 +63,7 @@
                     <Localized lang="it">Lesioni irreversibili</Localized>
                     <Localized lang="en">Irreversible Injuries</Localized>
                     <Localized lang="fr">Lesioni irreversibili</Localized>
-                    <Localized lang="de">Lesioni irreversibili</Localized>
+                    <Localized lang="de">Irreversiblie Verletzungen</Localized>
                     </Title>
                     <Abstract>Buffer per Rischio Incidentale</Abstract>
                     <MaxScaleDenominator>17070</MaxScaleDenominator>
@@ -89,7 +89,7 @@
                     <Localized lang="it">Inizio letalità</Localized>
                     <Localized lang="en">Start Lethality</Localized>
                     <Localized lang="fr">Inizio letalità</Localized>
-                    <Localized lang="de">Inizio letalità</Localized>
+                    <Localized lang="de">Beginn Letalität</Localized>
                     </Title>
                     <Abstract>Buffer per Rischio Incidentale</Abstract>
                     <MaxScaleDenominator>17070</MaxScaleDenominator>
@@ -115,7 +115,7 @@
                     <Localized lang="it">Elevata letalità</Localized>
                     <Localized lang="en">High Lethality</Localized>
                     <Localized lang="fr">Elevata letalità</Localized>
-                    <Localized lang="de">Elevata letalità</Localized>
+                    <Localized lang="de">Hohe Letalität</Localized>
                     </Title>
                     <Abstract>Buffer per Rischio Incidentale</Abstract>
                     <MaxScaleDenominator>17070</MaxScaleDenominator>
