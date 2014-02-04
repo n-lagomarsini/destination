@@ -522,7 +522,7 @@ public Timestamp getTodayStartTime() {
  */
 public Date getMonthStart() {
     Calendar calendar = getTodayCalendar();
-    calendar.roll(Calendar.MONTH, 1);
+    calendar.roll(Calendar.MONTH, -1);
     return calendar.getTime();
 }
 
@@ -538,7 +538,7 @@ public Timestamp getMonthStartTime() {
  */
 public Date getYearStart() {
     Calendar calendar = getTodayCalendar();
-    calendar.roll(Calendar.YEAR, 1);
+    calendar.roll(Calendar.YEAR, -1);
     return calendar.getTime();
 }
 
@@ -546,7 +546,7 @@ public Date getYearStart() {
  * @return start time of the day one year ago
  */
 public Timestamp getYearStartTime() {
-    return new Timestamp(getYearStartTime().getTime());
+    return new Timestamp(getYearStart().getTime());
 }
 
 /**
@@ -561,7 +561,7 @@ public Timestamp getTodayEndTime() {
  */
 public Date getWeekStart() {
     Calendar calendar = getTodayCalendar();
-    calendar.roll(Calendar.DATE, 7);
+    calendar.roll(Calendar.DATE, -7);
     return calendar.getTime();
 }
 

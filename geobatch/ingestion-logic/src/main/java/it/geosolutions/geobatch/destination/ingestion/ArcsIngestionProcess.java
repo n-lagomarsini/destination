@@ -986,7 +986,11 @@ public class ArcsIngestionProcess extends InputObject {
 	private Set<Integer> removePTerrDuplicates(String[] pterrs) {
 		Set<Integer> result = new HashSet<Integer>();
 		for(String pterr : pterrs) {
-			result.add(Integer.parseInt(pterr));
+			try {
+				result.add(Integer.parseInt(pterr));
+			} catch(NumberFormatException e) {
+				
+			}
 		}
 		return result;
 	}

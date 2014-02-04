@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -98,6 +99,8 @@ private String date;
  */
 private String outputType = "siig_gate_t_dato_statistico";
 
+
+
 private StatisticsExtractor statisticsExtractor;
 
 /**
@@ -121,8 +124,7 @@ public GateStatisticsProcess(String typeName,
         TimeFormatConfiguration timeFormatConfiguration) {
 
     super(typeName, listenerForwarder, metadataHandler, dataStore);
-
-    // create time format
+        // create time format
     this.timeFormat = new TimeFormat(null, null, null, timeFormatConfiguration);
 
     // init from file to be inserted
@@ -152,7 +154,6 @@ public GateStatisticsProcess(String typeName,
         TimeFormatConfiguration timeFormatConfiguration) {
 
     super(typeName, listenerForwarder, metadataHandler, dataStore);
-
     // create time format
     this.timeFormat = new TimeFormat(null, null, null, timeFormatConfiguration);
 
@@ -185,7 +186,7 @@ protected boolean parseTypeName(String inputTypeName) {
 
 private boolean initFromNow() {
 
-    this.date = new Date().toString();
+    this.date = new SimpleDateFormat("yyyyMMDD").format(new Date());
     this.inputTypeName = "Stats_" + this.date;
 
     return true;
