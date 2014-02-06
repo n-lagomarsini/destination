@@ -19,6 +19,7 @@ package it.geosolutions.geobatch.destination.action;
 import it.geosolutions.geobatch.destination.ingestion.ArcsIngestionProcess;
 import it.geosolutions.geobatch.destination.ingestion.MetadataIngestionHandler;
 import it.geosolutions.geobatch.destination.streetuser.StreetUserComputation;
+import it.geosolutions.geobatch.destination.vulnerability.RiskComputation;
 import it.geosolutions.geobatch.destination.vulnerability.TargetManager.TargetInfo;
 import it.geosolutions.geobatch.destination.vulnerability.VulnerabilityComputation;
 import it.geosolutions.geobatch.destination.vulnerability.VulnerabilityEnvironment;
@@ -36,6 +37,7 @@ import javax.media.jai.PlanarImage;
 
 import org.geotools.data.DataStoreFinder;
 import org.geotools.filter.function.RangedClassifier;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.resources.image.ImageUtilities;
 import org.slf4j.Logger;
@@ -97,8 +99,7 @@ public class RoadRunner {
                     new ProgressListenerForwarder(null), metadataHandler, dataStore);
 
             Map<Integer, TargetInfo> bandPerTargetH = new TreeMap<Integer, TargetInfo>();
-            Map<Integer, TargetInfo> bandPerTargetNH = new TreeMap<Integer, TargetInfo>();
-            // Calculation of the input Rasters
+            Map<Integer, TargetInfo> bandPerTargetNH = new TreeMap<Integer, TargetInfo>(); // Calculation of the input Rasters
             RenderedImage[] images = vulnerability1.rasterCalculation(bandPerTargetH,
                     bandPerTargetNH);
 
@@ -110,39 +111,46 @@ public class RoadRunner {
 
             // Launch of multiple vulnerability computation inside threads
 
-            String writeMode = "PURGE_INSERT";
-
+            //String writeMode = "PURGE_INSERT";
+            String writeMode = "UPDATE";
+            
             VulnerabilityEnvironment env = new VulnerabilityEnvironment(
                     new ProgressListenerForwarder(null));
-
+            
+            double x = 440000;
+            double y = 4940000;
+            double width = 700000 - x;
+            double height = 5030000 - y;
+            Envelope2D bbox = new Envelope2D(null, x, y, width, height);      
+            
             // Level 1
-            env.computeLevel12(writeMode, numBlocksPerAxis, numBlocksPerAxis, inputFeature,
-                    dataStore, metadataHandler, images, bandPerTargetNH, bandPerTargetNH,
-                    writeMode, 1, false, null, null, null);
-            // Level 2
-            env.computeLevel12(writeMode, numBlocksPerAxis, numBlocksPerAxis, inputFeature,
-                    dataStore, metadataHandler, images, bandPerTargetNH, bandPerTargetNH,
-                    writeMode, 2, false, null, null, null);
+            /*env.computeLevel12(null, numBlocksPerAxis, numBlocksPerAxis, inputFeature,
+                    dataStore, metadataHandler, images, bandPerTargetNH, bandPerTargetH,
+                    writeMode, 1, false, null, null, null, null, null, null);
+            // Level 2           
+                    env.computeLevel12(null, numBlocksPerAxis, numBlocksPerAxis, inputFeature,
+                    dataStore, metadataHandler, images, bandPerTargetNH, bandPerTargetH,
+                    writeMode, 2, false, null, null, null, null, null, bbox);*/
             // Level 3
-            env.computeLevel3(writeMode, threadMaxNumber, groups, inputFeature, dataStore,
+            env.computeLevel3(null, threadMaxNumber, groups, inputFeature, dataStore,
                     metadataHandler, images, bandPerTargetNH, bandPerTargetH, writeMode, false,
-                    null, null);
+                    bbox);
 
-            // Image Disposal
-            ImageUtilities.disposePlanarImageChain(PlanarImage.wrapRenderedImage(images[0]));
+            // Image Disposal 
+            ImageUtilities.disposePlanarImageChain(PlanarImage.wrapRenderedImage(images[0])); 
             // Image Disposal
             ImageUtilities.disposePlanarImageChain(PlanarImage.wrapRenderedImage(images[1]));
-            /*
-             * RiskComputation riskComputation = new RiskComputation( inputFeature, new ProgressListenerForwarder(null), metadataHandler, dataStore);
-             * 
-             * 
-             * 
-             * riskComputation.prefetchRiskAtLevel(3, 1, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10", "1,2,3,4,5,6,7,8,9,10,11", "0,1", "1,2,3,4,5",
-             * "fp_scen_centrale", "PURGE_INSERT", null); riskComputation.prefetchRiskAtLevel(3, 2, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10",
-             * "1,2,3,4,5,6,7,8,9,10,11", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null); riskComputation.prefetchRiskAtLevel(3, 3, 1,
-             * 29, 100, "1,2,3,4,5,6,7,8,9,10", "1,2,3,4,5,6,7,8,9,10,11", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", "B");
-             */
 
+            /*
+             * RiskComputation riskComputation = new RiskComputation(inputFeature, new ProgressListenerForwarder(null), metadataHandler, dataStore);
+             * 
+             * riskComputation.prefetchRiskAtLevel(15, 1, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1",
+             * "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null);
+             * 
+             * riskComputation.prefetchRiskAtLevel(15, 2, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1",
+             * "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null); riskComputation.prefetchRiskAtLevel(15, 3, 1, 29, 100,
+             * "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", "B");
+             */
             StreetUserComputation streetUserComputation = new StreetUserComputation(inputFeature,
                     new ProgressListenerForwarder(null), metadataHandler, dataStore);
 
@@ -150,6 +158,7 @@ public class RoadRunner {
              * streetUserComputation.execute(1); streetUserComputation.execute(2); streetUserComputation.execute(3);
              */
         } catch (Exception e) {
+        	e.printStackTrace();
             LOGGER.error(e.getMessage());
         } finally {
             if (metadataHandler != null) {
