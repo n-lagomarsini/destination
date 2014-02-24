@@ -64,14 +64,15 @@ public class RoadRunner{
         try {
         	
         	//String inputFeature = "RL_C_Grafo_20130918";
-        	//String inputFeature = "AO_C_Grafo_20130704";
-        	String inputFeature = "RP_C_Grafo_20131212";
+        	//String inputFeature = "RP_C_Grafo_20131212";
+        	//String inputFeature = "TI_C_Grafo_20140124";
+        	String inputFeature = "AO_C_Grafo_20140108";
         	
         	dataStore = (JDBCDataStore)DataStoreFinder.getDataStore(datastoreParams);	        
 	        metadataHandler = new MetadataIngestionHandler(dataStore);
 	        /*OriginalArcsIngestionProcess arcIngestion = new OriginalArcsIngestionProcess(inputFeature,
 	                new ProgressListenerForwarder(null), metadataHandler, dataStore, -1, -1);
-	        arcIngestion.importArcs(null, false);*/
+	        arcIngestion.importArcs(null, false);
 	        ArcsIngestionProcess arcIngestion = new ArcsIngestionProcess(inputFeature,
 	                new ProgressListenerForwarder(null), metadataHandler, dataStore);
 	        
@@ -79,7 +80,7 @@ public class RoadRunner{
 	        
 	        arcIngestion.importArcs(null, 2, false, false, false, null);
 	        arcIngestion.importArcs(null, 3, false, false, false, null);
-	        arcIngestion.importArcs(null, 3, true, false, false, "A");
+	        arcIngestion.importArcs(null, 3, true, false, false, "A");*/
 
             // Spalmatore
 			ZeroRemovalComputation zeroComputation = new ZeroRemovalComputation(
@@ -87,9 +88,9 @@ public class RoadRunner{
 					metadataHandler, dataStore);
 	        
 	        
-	        /*zeroComputation.removeZeros(null, 1, null);
+	        zeroComputation.removeZeros(null, 1, null);
 	        zeroComputation.removeZeros(null, 2, null);
-	        zeroComputation.removeZeros(null, 3, null);*/
+	        zeroComputation.removeZeros(null, 3, null);
 	        
 	        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(1024*1024*512);
 	        
@@ -100,17 +101,16 @@ public class RoadRunner{
 	        vulnerability.computeVulnerability(null, 2, "PURGE_INSERT", null);
 	        vulnerability.computeVulnerability(null, 3, "PURGE_INSERT", null);*/
 			
-	        /*RiskComputation riskComputation = new RiskComputation(
+	        RiskComputation riskComputation = new RiskComputation(
 	        		inputFeature,
 					new ProgressListenerForwarder(null),
 					metadataHandler, dataStore);
 	    	
 	        
+	        /*riskComputation.prefetchRiskAtLevel(15, 1, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null, false);
+	        riskComputation.prefetchRiskAtLevel(15, 2, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null, false);
+	        riskComputation.prefetchRiskAtLevel(15, 3, 1, 29, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", "B", false);*/
 	        
-	        riskComputation.prefetchRiskAtLevel(3, 1, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10", "1,2,3,4,5,6,7,8,9,10,11", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null);
-	        riskComputation.prefetchRiskAtLevel(3, 2, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10", "1,2,3,4,5,6,7,8,9,10,11", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null);
-	        riskComputation.prefetchRiskAtLevel(3, 3, 1, 29, 100, "1,2,3,4,5,6,7,8,9,10", "1,2,3,4,5,6,7,8,9,10,11", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", "B");
-	        */
 	        
 	        StreetUserComputation streetUserComputation = new StreetUserComputation(inputFeature,
 					new ProgressListenerForwarder(null),
