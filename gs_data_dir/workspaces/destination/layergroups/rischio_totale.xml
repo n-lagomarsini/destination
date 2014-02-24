@@ -57,19 +57,19 @@
   <identifiers>
     <Identifier>
       <authority>en</authority>
-      <identifier>Total Risk Social - Environmental</identifier>
+      <identifier>Risk Social - Environmental</identifier>
     </Identifier>
     <Identifier>
       <authority>it</authority>
-      <identifier>Rischio Totale Sociale - Ambientale</identifier>
+      <identifier>Rischio Sociale - Ambientale</identifier>
     </Identifier>
     <Identifier>
       <authority>fr</authority>
-      <identifier>risque total sociale - environnemental</identifier>
+      <identifier>risque sociale - environnemental</identifier>
     </Identifier>
     <Identifier>
       <authority>de</authority>
-      <identifier>Gesamtrisiko</identifier>
+      <identifier>Risiko</identifier>
     </Identifier>
   </identifiers>
 </layerGroup>

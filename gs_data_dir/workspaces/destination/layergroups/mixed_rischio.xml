@@ -54,19 +54,19 @@
   <identifiers>
     <Identifier>
       <authority>en</authority>
-      <identifier>Total Risk</identifier>
+      <identifier>Risk</identifier>
     </Identifier>
     <Identifier>
       <authority>it</authority>
-      <identifier>Rischio Totale</identifier>
+      <identifier>Rischio</identifier>
     </Identifier>
     <Identifier>
       <authority>fr</authority>
-      <identifier>risque total</identifier>
+      <identifier>risque</identifier>
     </Identifier>
     <Identifier>
       <authority>de</authority>
-      <identifier>Gesamtrisiko</identifier>
+      <identifier>Risiko</identifier>
     </Identifier>
   </identifiers>
 </layerGroup>

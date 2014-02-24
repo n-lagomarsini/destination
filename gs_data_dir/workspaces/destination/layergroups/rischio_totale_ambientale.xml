@@ -57,19 +57,19 @@
   <identifiers>
     <Identifier>
       <authority>en</authority>
-      <identifier>Total Environment Risk</identifier>
+      <identifier>Environment Risk</identifier>
     </Identifier>
     <Identifier>
       <authority>it</authority>
-      <identifier>Rischio Totale Ambientale</identifier>
+      <identifier>Rischio Ambientale</identifier>
     </Identifier>
     <Identifier>
       <authority>fr</authority>
-      <identifier>risque environnemental total</identifier>
+      <identifier>risque environnemental</identifier>
     </Identifier>
     <Identifier>
       <authority>de</authority>
-      <identifier>Gesamtheit der Umweltrisiken</identifier>
+      <identifier>Umweltrisiken</identifier>
     </Identifier>
   </identifiers>
 </layerGroup>

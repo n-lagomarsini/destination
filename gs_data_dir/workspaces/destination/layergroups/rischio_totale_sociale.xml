@@ -57,19 +57,19 @@
   <identifiers>
     <Identifier>
       <authority>en</authority>
-      <identifier>Total Social Risk</identifier>
+      <identifier>Social Risk</identifier>
     </Identifier>
     <Identifier>
       <authority>it</authority>
-      <identifier>Rischio Totale Sociale</identifier>
+      <identifier>Rischio Sociale</identifier>
     </Identifier>
     <Identifier>
       <authority>fr</authority>
-      <identifier>risque social total</identifier>
+      <identifier>risque social</identifier>
     </Identifier>
     <Identifier>
       <authority>de</authority>
-      <identifier>Gesamtheit der anthropologischen Risiken</identifier>
+      <identifier>Anthropologischen Risiken</identifier>
     </Identifier>
   </identifiers>
 </layerGroup>

@@ -127,24 +127,24 @@
       <null/>
     </entry>
     <entry>
-      <string>InputTransparentColor</string>
-      <string>#000000</string>
-    </entry>
-    <entry>
       <string>OutputTransparentColor</string>
       <string></string>
+    </entry>
+    <entry>
+      <string>InputTransparentColor</string>
+      <string>#000000</string>
     </entry>
     <entry>
       <string>SUGGESTED_TILE_SIZE</string>
       <null/>
     </entry>
     <entry>
-      <string>USE_JAI_IMAGEREAD</string>
-      <string>false</string>
-    </entry>
-    <entry>
       <string>BackgroundValues</string>
       <null/>
+    </entry>
+    <entry>
+      <string>USE_JAI_IMAGEREAD</string>
+      <string>false</string>
     </entry>
   </parameters>
 </coverage>

@@ -53,6 +53,7 @@
   </latLonBoundingBox>
   <projectionPolicy>FORCE_DECLARED</projectionPolicy>
   <enabled>true</enabled>
+  <advertised>true</advertised>
   <metadata>
     <entry key="cachingEnabled">false</entry>
     <entry key="JDBC_VIRTUAL_TABLE">
@@ -63,7 +64,7 @@ from siig_geo_ln_arco_1&#xd;
 where siig_geo_ln_arco_1.geometria &amp;&amp; st_makeenvelope(%bounds%, 32632)</sql>
         <geometry>
           <name>geometria</name>
-          <type>LineString</type>
+          <type>MultiLineString</type>
           <srid>32632</srid>
         </geometry>
         <parameter>
