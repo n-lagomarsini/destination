@@ -499,6 +499,6 @@ public class FormulaUtils {
 	 */
 	public static Double fixDecimals(double number , int numDecimals) {
 		double pow = Math.pow(10, numDecimals);
-		return Math.round(number * (int)pow) / pow;
+		return Math.round(number * (long)pow) / pow;
 	}
 }
