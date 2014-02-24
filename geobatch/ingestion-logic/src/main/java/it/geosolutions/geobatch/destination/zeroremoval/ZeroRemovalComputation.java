@@ -349,6 +349,9 @@ public class ZeroRemovalComputation extends InputObject {
 			double newIncidenti) throws IOException {
 		Filter updateFilter = filterFactory.equals(filterFactory.property(GEOID),
 				filterFactory.literal(inputFeature.getAttribute(GEOID)));
+		if(Double.isNaN(newIncidenti) || Double.isInfinite(newIncidenti)) {
+			newIncidenti = 0.0;
+		}
 		writer.modifyFeatures(
 				geoObject.getSchema().getDescriptor(outputField).getName(), newIncidenti,
 				updateFilter);
