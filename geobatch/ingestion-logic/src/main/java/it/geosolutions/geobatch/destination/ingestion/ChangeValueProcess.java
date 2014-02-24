@@ -17,8 +17,8 @@ public class ChangeValueProcess extends OutputObject{
 	protected final static Logger LOGGER = LoggerFactory.getLogger(ChangeValueProcess.class);
 
 	public ChangeValueProcess(DataStore dataStore, Transaction transaction,
-			String name, String id) throws IOException {
-		super(dataStore, transaction, name, id);
+			String name) throws IOException {
+		super(dataStore, transaction, name, "");
 	}
 
 	public void execute(String filter, String attribute, String value) throws Exception{
