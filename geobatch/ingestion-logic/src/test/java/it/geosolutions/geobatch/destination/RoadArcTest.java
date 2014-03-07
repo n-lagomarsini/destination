@@ -65,7 +65,7 @@ public class RoadArcTest extends DestinationMemoryTest{
 		checkFeature("siig_r_tipovei_geoarco2", 4);
 		checkFeature("siig_r_arco_2_dissesto", 6);
 		checkFeature("siig_r_arco_2_scen_tipobers", 26);
-		checkFeature("siig_r_arco_2_sostanza", 20); 
+		checkFeature("siig_r_arco_2_sostanza", 24); 
 	}
 
 	@Test
@@ -91,7 +91,7 @@ public class RoadArcTest extends DestinationMemoryTest{
 		checkFeature("siig_r_tipovei_geoarco3", 0);
 		checkFeature("siig_r_arco_3_dissesto", 3);
 		checkFeature("siig_r_arco_3_scen_tipobers", 13);
-		checkFeature("siig_r_arco_3_sostanza", 10); 
+		checkFeature("siig_r_arco_3_sostanza", 12); 
 
 	}
 

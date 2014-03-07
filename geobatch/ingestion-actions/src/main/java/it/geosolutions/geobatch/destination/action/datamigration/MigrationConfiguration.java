@@ -28,8 +28,24 @@ import it.geosolutions.geobatch.actions.ds2ds.Ds2dsConfiguration;
  */
 public class MigrationConfiguration extends Ds2dsConfiguration {
 
+	private String closePhase = null;
+	
 	public MigrationConfiguration(String id, String name, String description) {
 		super(id, name, description);
 	}	
+	
+	/**
+	 * @return the closePhase
+	 */
+	public String getClosePhase() {
+		return closePhase;
+	}
+
+	/**
+	 * @param closePhase the closePhase to set
+	 */
+	public void setClosePhase(String closePhase) {
+		this.closePhase = closePhase;
+	}
 
 }

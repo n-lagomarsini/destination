@@ -49,9 +49,9 @@ public class RasterRunner {
 		}*/
 		
 		RasterMigration migration = new RasterMigration("ALL", "D:\\Develop\\destination\\rasters_out",
-				"D:\\Develop\\destination\\rasters_prod", new ProgressListenerForwarder(null));
+				"D:\\Develop\\destination\\rasters_prod", null, null, new ProgressListenerForwarder(null));
         try {
-			migration.execute();
+			migration.execute("C");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

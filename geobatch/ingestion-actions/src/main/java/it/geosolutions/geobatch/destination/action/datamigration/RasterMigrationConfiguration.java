@@ -21,11 +21,45 @@
  */
 package it.geosolutions.geobatch.destination.action.datamigration;
 
+import it.geosolutions.geobatch.actions.ds2ds.dao.FeatureConfiguration;
 import it.geosolutions.geobatch.configuration.event.action.ActionConfiguration;
 
 public class RasterMigrationConfiguration extends ActionConfiguration {
 
+	private String closePhase = null;
+	private FeatureConfiguration sourceFeature;
+	
     public RasterMigrationConfiguration(String id, String name, String description) {
         super(id, name, description);
     }
+
+	/**
+	 * @return the closePhase
+	 */
+	public String getClosePhase() {
+		return closePhase;
+	}
+
+	/**
+	 * @param closePhase the closePhase to set
+	 */
+	public void setClosePhase(String closePhase) {
+		this.closePhase = closePhase;
+	}
+
+	/**
+	 * @return the sourceFeature
+	 */
+	public FeatureConfiguration getSourceFeature() {
+		return sourceFeature;
+	}
+
+	/**
+	 * @param sourceFeature the sourceFeature to set
+	 */
+	public void setSourceFeature(FeatureConfiguration sourceFeature) {
+		this.sourceFeature = sourceFeature;
+	}
+    
+    
 }

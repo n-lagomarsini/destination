@@ -22,6 +22,7 @@
 package it.geosolutions.geobatch.destination;
 
 import static org.junit.Assert.assertTrue;
+import it.geosolutions.geobatch.destination.commons.DestinationMemoryTest;
 import it.geosolutions.geobatch.destination.datamigration.RasterMigration;
 
 import java.io.File;
@@ -32,9 +33,11 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.FilenameUtils;
 import org.geotools.test.TestData;
+import org.junit.Before;
 import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
 
-public class RasterMigrationTest {
+public class RasterMigrationTest extends DestinationMemoryTest {
 
     private static final Class<RasterMigrationTest> CALLER = RasterMigrationTest.class;
 
@@ -71,12 +74,17 @@ public class RasterMigrationTest {
         OUTPUT_DIR = outputdir.getPath();
     }
 
+    @Before
+	public void before() throws Exception { 	
+		initTestWithData(new String[] {"targets_test_data"});
+	}
+    
     @Test
     public void testCopySingleFile() throws IOException {
         // Initialization of the migration object
-        RasterMigration rasterMig = new RasterMigration(SINGLE_FILE, INPUT_DIR, OUTPUT_DIR, null);
+        RasterMigration rasterMig = new RasterMigration(SINGLE_FILE, INPUT_DIR, OUTPUT_DIR, metadataHandler, dataStore, null);
         // Copying file
-        rasterMig.execute();
+        rasterMig.execute(null);
         // Path of the new file
         String filePath = OUTPUT_DIR + PATHSEPARATOR + "aree_boscate" + PATHSEPARATOR
                 + "aree_boscate_ao" + TIF_EXTENSION;
@@ -95,9 +103,9 @@ public class RasterMigrationTest {
         // First partner string initialization
         String partnerName = PARTNER_FILES[0];
         // Initialization of the migration object
-        RasterMigration rasterMig = new RasterMigration(partnerName, INPUT_DIR, OUTPUT_DIR, null);
+        RasterMigration rasterMig = new RasterMigration(partnerName, INPUT_DIR, OUTPUT_DIR, metadataHandler, dataStore, null);
         // Copying file
-        rasterMig.execute();
+        rasterMig.execute(null);
         // Path of the new files
         String filePathBase = INPUT_DIR + PATHSEPARATOR + partnerName;
         File inputDirPartner = new File(filePathBase);
@@ -122,9 +130,9 @@ public class RasterMigrationTest {
     @Test
     public void testCopyAllFiles() throws IOException {
         // Initialization of the migration object
-        RasterMigration rasterMig = new RasterMigration(ALL_FILES, INPUT_DIR, OUTPUT_DIR, null);
+        RasterMigration rasterMig = new RasterMigration(ALL_FILES, INPUT_DIR, OUTPUT_DIR, metadataHandler, dataStore,  null);
         // Copying file
-        rasterMig.execute();
+        rasterMig.execute(null);
         // Path of the new files
         String filePathBase = INPUT_DIR + PATHSEPARATOR + PARTNER_FILES[0];
         File inputDirPartner = new File(filePathBase);
@@ -152,4 +160,9 @@ public class RasterMigrationTest {
             }
         }
     }
+
+	@Override
+	protected void checkData(SimpleFeature feature) {
+		
+	}
 }

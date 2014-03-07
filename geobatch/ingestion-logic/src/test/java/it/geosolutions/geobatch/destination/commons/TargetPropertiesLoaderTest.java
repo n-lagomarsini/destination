@@ -45,14 +45,14 @@ public class TargetPropertiesLoaderTest extends TestCase{
         
         TargetPropertiesLoader tpl = new TargetPropertiesLoader();
         
-        Map mm = TargetPropertiesLoader.loadDistances();
+        //Map mm = TargetPropertiesLoader.loadDistances();
         Properties p1 = tpl.getTargetURIs();
         Properties p2 = tpl.getTargetMapping();
         Properties p3 = tpl.getTargetZoneValues();
         Map<Integer, String> m1 = tpl.getTargetValuesZone();
         List<Integer> l1 = tpl.getAllCopSuoloValues();
         
-        Assert.assertNotNull(mm);
+        //Assert.assertNotNull(mm);
         Assert.assertNotNull(p1);
         Assert.assertNotNull(p2);
         Assert.assertNotNull(p3);

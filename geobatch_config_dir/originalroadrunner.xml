@@ -38,7 +38,7 @@
                    </entry>
                    <entry>
                      <string>host</string>
-                     <string>192.168.1.31</string>
+                     <string>localhost</string>
                    </entry>
                    <entry>
                      <string>port</string>
@@ -247,8 +247,8 @@
             <processing>1</processing>
             <formula>26</formula>
             <target>100</target>
-            <materials>1,2,3,4,5,6,7,8,9,10</materials>
-            <scenarios>1,2,3,4,5,6,7,8,9,10,11</scenarios>
+            <materials>1,2,3,4,5,6,7,8,9,10,11,12</materials>
+            <scenarios>1,2,3,4,5,6,7,8,9,10,11,12,13,14</scenarios>
             <entities>0,1</entities>
             <severeness>1,2,3,4,5</severeness>
             <fpfield>fp_scen_centrale</fpfield>
@@ -268,8 +268,8 @@
             <processing>1</processing>
             <formula>26</formula>
             <target>100</target>
-            <materials>1,2,3,4,5,6,7,8,9,10</materials>
-            <scenarios>1,2,3,4,5,6,7,8,9,10,11</scenarios>
+            <materials>1,2,3,4,5,6,7,8,9,10,11,12</materials>
+            <scenarios>1,2,3,4,5,6,7,8,9,10,11,12,13,14</scenarios>
             <entities>0,1</entities>
             <severeness>1,2,3,4,5</severeness>
             <fpfield>fp_scen_centrale</fpfield>
@@ -289,21 +289,20 @@
             <processing>1</processing>
             <formula>29</formula>
             <target>100</target>
-            <materials>1,2,3,4,5,6,7,8,9,10</materials>
-            <scenarios>1,2,3,4,5,6,7,8,9,10,11</scenarios>
+            <materials>1,2,3,4,5,6,7,8,9,10,11,12</materials>
+            <scenarios>1,2,3,4,5,6,7,8,9,10,11,12,13,14</scenarios>
             <entities>0,1</entities>
             <severeness>1,2,3,4,5</severeness>
             <fpfield>fp_scen_centrale</fpfield>
             <writeMode>PURGE_INSERT</writeMode>
             <closePhase>B</closePhase>
+            <dropInput>true</dropInput>
             <!-- Listeners -->
             <listenerId>ConsumerLogger0</listenerId>
             <listenerId>Cumulator</listenerId>
         </RiskConfiguration>
-
-    </EventConsumerConfiguration>
-
-    <ChangeValueConfiguration>
+        
+        <ChangeValueConfiguration>
 			<id>changevalue</id>
 			<description>ChangeValue action</description>
 			<name>ChangeValue</name>
@@ -349,6 +348,10 @@
 			</outputFeature>
 			<listenerConfigurations/>
 		</ChangeValueConfiguration>
+
+    </EventConsumerConfiguration>
+
+    
 
     <ListenerConfigurations>
         <LoggingProgressListener>

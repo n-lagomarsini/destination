@@ -23,8 +23,11 @@ package it.geosolutions.geobatch.destination.action.datamigration;
 
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEvent;
 import it.geosolutions.filesystemmonitor.monitor.FileSystemEventType;
+import it.geosolutions.geobatch.actions.ds2ds.dao.FeatureConfiguration;
+import it.geosolutions.geobatch.actions.ds2ds.util.FeatureConfigurationUtil;
 import it.geosolutions.geobatch.annotations.Action;
 import it.geosolutions.geobatch.destination.datamigration.RasterMigration;
+import it.geosolutions.geobatch.destination.ingestion.MetadataIngestionHandler;
 import it.geosolutions.geobatch.flow.event.ProgressListenerForwarder;
 import it.geosolutions.geobatch.flow.event.action.ActionException;
 import it.geosolutions.geobatch.flow.event.action.BaseAction;
@@ -35,6 +38,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import org.apache.commons.io.FilenameUtils;
+import org.geotools.data.DataStore;
+import org.geotools.jdbc.JDBCDataStore;
 
 @Action(configurationClass = RasterMigrationConfiguration.class)
 public class RasterMigrationAction extends BaseAction<EventObject> {
@@ -48,9 +53,12 @@ public class RasterMigrationAction extends BaseAction<EventObject> {
      * Path of the input directory
      */
     private String inputDirectory;
+    
+    RasterMigrationConfiguration configuration = null;
 
     public RasterMigrationAction(final RasterMigrationConfiguration configuration) {
         super(configuration);
+        this.configuration = configuration;
         this.inputDirectory = System.getProperty("SIIG_RASTERS_PATH");
         this.finalDirectory = System.getProperty("SIIG_RASTERS_PATH_FINAL");
     }
@@ -94,9 +102,32 @@ public class RasterMigrationAction extends BaseAction<EventObject> {
      */
     private void doProcess(String fileName) throws ActionException {
         try {
-            RasterMigration migration = new RasterMigration(fileName, inputDirectory,
-                    finalDirectory, new ProgressListenerForwarder(null));
-            migration.execute();
+        	FeatureConfiguration sourceFeature = configuration.getSourceFeature();
+			DataStore ds = FeatureConfigurationUtil
+					.createDataStore(sourceFeature);
+			if (ds == null) {
+				throw new ActionException(this, "Can't find datastore ");
+			}
+			try {
+				if (!(ds instanceof JDBCDataStore)) {
+					throw new ActionException(this, "Bad Datastore type "
+							+ ds.getClass().getName());
+				}
+				JDBCDataStore dataStore = (JDBCDataStore) ds;
+				dataStore.setExposePrimaryKeyColumns(true);
+				MetadataIngestionHandler metadataHandler = new MetadataIngestionHandler(
+						dataStore);
+				RasterMigration migration = new RasterMigration(fileName, inputDirectory,
+	                    finalDirectory, metadataHandler, dataStore, new ProgressListenerForwarder(null));
+	            
+	            migration.execute(configuration.getClosePhase());
+				
+				
+			} finally {
+				ds.dispose();
+			}
+        	
+            
         } catch (Exception ex) {
             LOGGER.error("Error in copying rasters", ex);
             throw new ActionException(this, "Error in copying rasters", ex);

@@ -101,6 +101,7 @@
 					</entry>
 				</dataStore>
 			</outputFeature>
+            <closePhase>C</closePhase>
 			<!-- Listeners -->
 	        <listenerId>ConsumerLogger0</listenerId>
 	        <listenerId>Cumulator</listenerId>

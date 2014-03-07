@@ -63,22 +63,28 @@ public class RoadRunner{
         MetadataIngestionHandler metadataHandler = null;
         try {
         	
-        	//String inputFeature = "RL_C_Grafo_20130918";
-        	//String inputFeature = "RP_C_Grafo_20131212";
+        	//String inputFeature = "RL_C_Grafo_20131126";
+        	String inputFeature = "RP_C_Grafo_20131212";
         	//String inputFeature = "TI_C_Grafo_20140124";
-        	String inputFeature = "AO_C_Grafo_20140108";
+        	//String inputFeature = "BZ_C_Grafo_20131125";
+        	
+        	//String inputFeature = "AO_C_Grafo_20140108";
         	
         	dataStore = (JDBCDataStore)DataStoreFinder.getDataStore(datastoreParams);	        
 	        metadataHandler = new MetadataIngestionHandler(dataStore);
 	        /*OriginalArcsIngestionProcess arcIngestion = new OriginalArcsIngestionProcess(inputFeature,
 	                new ProgressListenerForwarder(null), metadataHandler, dataStore, -1, -1);
-	        arcIngestion.importArcs(null, false);
+	        arcIngestion.importArcs(null, false);*/
 	        ArcsIngestionProcess arcIngestion = new ArcsIngestionProcess(inputFeature,
 	                new ProgressListenerForwarder(null), metadataHandler, dataStore);
 	        
-	        arcIngestion.importArcs(null, 1, false, false, true, null);
+	        /*arcIngestion.updateArcs(null, 2, false, false, false, null);
+	        arcIngestion.updateArcs(null, 3, false, false, false, null);
+	        arcIngestion.updateArcs(null, 3, true, false, false, null);*/
 	        
-	        arcIngestion.importArcs(null, 2, false, false, false, null);
+	        
+	        /*arcIngestion.importArcs(null, 1, false, false, true, null);	        
+	        arcIngestion.importArcs(null, 2, false, false, false, null);	        
 	        arcIngestion.importArcs(null, 3, false, false, false, null);
 	        arcIngestion.importArcs(null, 3, true, false, false, "A");*/
 
@@ -88,8 +94,8 @@ public class RoadRunner{
 					metadataHandler, dataStore);
 	        
 	        
-	        zeroComputation.removeZeros(null, 1, null);
-	        zeroComputation.removeZeros(null, 2, null);
+	        //zeroComputation.removeZeros(null, 1, null);
+	        //zeroComputation.removeZeros(null, 2, null);
 	        zeroComputation.removeZeros(null, 3, null);
 	        
 	        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(1024*1024*512);
@@ -107,9 +113,9 @@ public class RoadRunner{
 					metadataHandler, dataStore);
 	    	
 	        
-	        /*riskComputation.prefetchRiskAtLevel(15, 1, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null, false);
-	        riskComputation.prefetchRiskAtLevel(15, 2, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null, false);
-	        riskComputation.prefetchRiskAtLevel(15, 3, 1, 29, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", "B", false);*/
+	        //riskComputation.prefetchRiskAtLevel(15, 1, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null, false);
+	        //riskComputation.prefetchRiskAtLevel(15, 2, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null, false);
+	        riskComputation.prefetchRiskAtLevel(15, 3, 1, 29, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", "B", false);
 	        
 	        
 	        StreetUserComputation streetUserComputation = new StreetUserComputation(inputFeature,

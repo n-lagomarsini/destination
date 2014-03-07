@@ -214,8 +214,8 @@ public class ArcsIngestionProcess extends InputObject {
 				int startErrors = errors;
 				
 				// setup input reader								
-				createInputReader(dataStore, Transaction.AUTO_COMMIT, onGrid ? gridTypeName : null);						
-				
+				createInputReader(dataStore, Transaction.AUTO_COMMIT, onGrid ? gridTypeName : null);
+								
 				Transaction transaction = new DefaultTransaction();
 				
 				// setup the MAIN geo output object
@@ -276,7 +276,7 @@ public class ArcsIngestionProcess extends InputObject {
 				
 				if(onGrid) {
 					//aggregate arcs on grid and compute also the other tables with that aggregation
-					errors = aggregateArcsOnGrid(trace, dataStore, outputObjects, total, errors, startErrors, geoName, aggregationLevel);					
+					errors = aggregateArcsOnGrid(trace, dataStore, outputObjects, total, errors, startErrors, geoName, aggregationLevel, false);					
 				} else if(aggregationLevel == 1) {
 					// no aggregation
 					errors = importWithoutAggregation(trace, dataStore,
@@ -285,7 +285,123 @@ public class ArcsIngestionProcess extends InputObject {
 					// aggregation on input field
 					errors = aggregateArcs(trace, dataStore, outputObjects,
 							total, errors, startErrors, geoName,
-							aggregationLevel, aggregationLevel == 3);
+							aggregationLevel, aggregationLevel == 3, false);
+				}
+				metadataHandler.updateLogFile(trace, total, errors, aggregationLevel == 1);
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage(),e);
+				errors++;				
+				metadataHandler.logError(trace, errors, "Error importing data", getError(e), 0);				
+				throw e;
+			} finally {
+				if(dropInput) {
+					dropInputFeature(dataStore);
+				}
+				
+				if(process != -1 && processPhase != null) {
+					// close current process phase
+					metadataHandler.closeProcessPhase(process, processPhase);
+				}				
+							
+			}
+		}
+	}
+	
+	/**
+	 * Imports the arcs feature from the original Feature into on of the SIIG
+	 * arcs tables (in staging).
+	 * 
+	 * @param datastoreParams
+	 * @param crs
+	 * @param aggregationLevel level to import (1, 2, 3)
+	 * @param onGrid aggregate on cells or not (for level 3)
+	 * @param dropInput drop input table after import
+	 * @param closePhase phase to close at the end of the import (A, B or C; null means no closing)
+	 * @throws IOException
+	 */
+	public void updateArcs(CoordinateReferenceSystem crs, int aggregationLevel,
+			boolean onGrid, boolean dropInput, boolean newProcess, String closePhase)
+			throws IOException {
+		reset();
+		if(isValid()) {								
+			
+			
+			crs = checkCrs(crs);			
+			
+			int process = -1;
+			int trace = -1;
+			int errors = 0;
+			
+			
+			String processPhase = closePhase;
+			
+			try {												
+								
+				// create or retrieve metadata for ingestion
+				if(newProcess) {
+					// new process
+					process = createProcess();
+					// write log for the imported file
+					trace = logFile(process, NO_TARGET,
+							partner, codicePartner, date, false);
+				} else {
+					// existing process
+					MetadataIngestionHandler.Process importData = getProcessData();
+					process = importData.getId();
+					trace = importData.getMaxTrace();
+					errors = importData.getMaxError();
+				}	
+				int startErrors = errors;
+				
+				// setup input reader								
+				createInputReader(dataStore, Transaction.AUTO_COMMIT, onGrid ? gridTypeName : null);						
+				
+				Transaction transaction = new DefaultTransaction();
+				
+				// setup the MAIN geo output object
+				// The mainGeoObject is that one is used for compute also the other outputObjects
+				// For aggregation level 1 and 2 is that one related to table siig_geo_ln_arco_X but for aggregation 3 on grid is siig_geo_pl_arco_X 
+				String geoName = getTypeName((onGrid ? geoTypeNamePl : geoTypeName), aggregationLevel);
+				OutputObject mainGeoObject = new OutputObject(dataStore, transaction, geoName, geoId);
+				
+				// setup vehicle output object
+				String vehicleName = getTypeName(byVehicleTypeName, aggregationLevel);
+				OutputObject vehicleObject = new OutputObject(dataStore, transaction, vehicleName, "");
+								
+				// setup dissesto output object
+				String dissestoName = getTypeName(dissestoTypeName, aggregationLevel);
+				OutputObject dissestoObject = new OutputObject(dataStore, transaction, dissestoName, "");
+				
+				// setup CFF output object
+				String tipobersName = getTypeName(tipobersTypeName, aggregationLevel);
+				OutputObject tipobersObject = new OutputObject(dataStore, transaction, tipobersName, "");
+
+				// setup sostanza output object
+				String tiposostName = getTypeName(sostanzaArcoTypeName, aggregationLevel);
+				OutputObject tiposostObject = new OutputObject(dataStore, transaction, tiposostName, "");
+                                
+				// list of all the output objects
+				OutputObject[] outputObjects = new OutputObject[] {vehicleObject,
+						dissestoObject, tipobersObject, tiposostObject, mainGeoObject};
+									
+				// calculates total objects to import				
+				int total = getImportCount();												
+				
+				if(onGrid) {
+					
+					//aggregate arcs on grid and compute also the other tables with that aggregation
+					errors = aggregateArcsOnGrid(trace, dataStore, outputObjects, total, errors, startErrors, geoName, aggregationLevel, true);
+										
+				} else if(aggregationLevel == 1) {
+					/*
+					// no aggregation
+					errors = importWithoutAggregation(trace, dataStore,
+							outputObjects, total, errors, geoName);*/
+				} else {
+					// aggregation on input field
+					errors = aggregateArcs(trace, dataStore, outputObjects,
+							total, errors, startErrors, geoName,
+							aggregationLevel, aggregationLevel == 3, true);
 				}
 				metadataHandler.updateLogFile(trace, total, errors, aggregationLevel == 1);
 			} catch (IOException e) {
@@ -323,7 +439,7 @@ public class ArcsIngestionProcess extends InputObject {
 	 */
 	private int aggregateArcsOnGrid(int trace, DataStore dataStore,
 			OutputObject[] outputObjects, int total, int errors, int startErrors,
-			String outputName, int aggregationLevel) throws IOException {
+			String outputName, int aggregationLevel, boolean update) throws IOException {
 		try {
 			String inputGeometryName = getInputGeometryName(dataStore);
 			
@@ -345,7 +461,7 @@ public class ArcsIngestionProcess extends InputObject {
 				
 				try  {
 					errors = aggregateStep(trace, dataStore, outputObjects, total,
-							errors, startErrors, outputName, id, idTematico, iterator, cell, false, true);
+							errors, startErrors, outputName, id, idTematico, iterator, cell, false, true, update);
 				} finally {
 					iterator.close();
 				}
@@ -368,7 +484,7 @@ public class ArcsIngestionProcess extends InputObject {
 	 */
 	private int aggregateArcs(int trace, DataStore dataStore,
 			OutputObject[] outputObjects, int total, int errors, int startErrors,
-			String outputName, int aggregationLevel, boolean computeOnlyGeoFeature) throws IOException {
+			String outputName, int aggregationLevel, boolean computeOnlyGeoFeature, boolean update) throws IOException {
 		String aggregationAttribute = aggregation.getProperty(aggregationLevel + "");
 		// get unique aggregation values		
 		Set<Number> aggregationValues = getAggregationValues(aggregationAttribute);		
@@ -384,7 +500,7 @@ public class ArcsIngestionProcess extends InputObject {
 			));
 			try {
 				errors = aggregateStep(trace, dataStore, outputObjects, total,
-						errors, startErrors, outputName, id, idTematico, null, null, computeOnlyGeoFeature, false);
+						errors, startErrors, outputName, id, idTematico, null, null, computeOnlyGeoFeature, false, update);
 			} finally {
 				closeInputReader();
 			}	
@@ -417,12 +533,12 @@ public class ArcsIngestionProcess extends InputObject {
 			OutputObject[] outputObjects, int total, int errors,
 			int startErrors, String outputName, int id, int idTematico,
 			FeatureIterator<SimpleFeature> iterator, Geometry aggregateGeo,
-			boolean computeOnlyGeoFeature, boolean dontComputeVehicle) throws IOException {
+			boolean computeOnlyGeoFeature, boolean dontComputeVehicle, boolean update) throws IOException {
 		
 		SimpleFeature inputFeature;
 		Geometry geo = null;
 		int lunghezza = 0;
-		int incidenti = 0;
+		double incidenti = 0;
 		int corsie = 0;
 		int[] tgm = new int[] {0, 0};
 		int[] velocita = new int[] {0, 0};
@@ -455,7 +571,7 @@ public class ArcsIngestionProcess extends InputObject {
 				Number currentIncidenti = (Number) getMapping(inputFeature,
 						attributeMappings, "nr_incidenti");
 				if (currentIncidenti != null) {
-					incidenti += Math.max(0, currentIncidenti.intValue());
+					incidenti += Math.max(0, currentIncidenti.doubleValue());
 				}
 				Number currentCorsie = (Number) getMapping(inputFeature,
 						attributeMappings, "nr_corsie");
@@ -535,25 +651,32 @@ public class ArcsIngestionProcess extends InputObject {
 			Transaction rowTransaction = new DefaultTransaction();
 			setTransaction(outputObjects, rowTransaction);			
 			
-			try {							
-				addAggregateGeoFeature(outputObjects[4], id, idTematico, geo,
-						lunghezza, corsie, incidenti, inputFeature, idOrigin, 
-						flgCorsieCounter.getMax(), flgIncidentiCounter.getMax());						
-				if(!dontComputeVehicle) {
-					addAggregateVehicleFeature(outputObjects[0], id, lunghezza,
-							tgm, velocita, flgTgmCounter.getMax(),
-							flgVelocCounter.getMax(), inputFeature);
+			try {		
+				if(update) {
+					updateAggregateGeoFeature(outputObjects[4], id, idTematico, geo,
+							lunghezza, corsie, incidenti, inputFeature, idOrigin, 
+							flgCorsieCounter.getMax(), flgIncidentiCounter.getMax());
+				} else {
+					addAggregateGeoFeature(outputObjects[4], id, idTematico, geo,
+							lunghezza, corsie, incidenti, inputFeature, idOrigin, 
+							flgCorsieCounter.getMax(), flgIncidentiCounter.getMax());						
+					if(!dontComputeVehicle) {
+						addAggregateVehicleFeature(outputObjects[0], id, lunghezza,
+								tgm, velocita, flgTgmCounter.getMax(),
+								flgVelocCounter.getMax(), inputFeature);
+					}
+					
+					if(!computeOnlyGeoFeature){
+						addAggregateDissestoFeature(outputObjects[1], id,
+								lunghezza, pterr, inputFeature);
+						addAggregateCFFFeature(outputObjects[2], id, lunghezza, cff,
+								inputFeature);
+						addAggregatePADRFeature(outputObjects[3], id, lunghezza,
+								padr, inputFeature);
+						
+					}
 				}
 				
-				if(!computeOnlyGeoFeature){
-					addAggregateDissestoFeature(outputObjects[1], id,
-							lunghezza, pterr, inputFeature);
-					addAggregateCFFFeature(outputObjects[2], id, lunghezza, cff,
-							inputFeature);
-					addAggregatePADRFeature(outputObjects[3], id, lunghezza,
-							padr, inputFeature);
-					
-				}
 				rowTransaction.commit();
 				
 				updateImportProgress(total, errors - startErrors, "Importing data in " + outputName);
@@ -705,7 +828,7 @@ public class ArcsIngestionProcess extends InputObject {
 	 * @throws IOException 
 	 */
 	private void addAggregateGeoFeature(OutputObject outputObject, int id, int idTematico,
-			Geometry geo, int lunghezza, int corsie, int incidenti, SimpleFeature inputFeature, 
+			Geometry geo, int lunghezza, int corsie, double incidenti, SimpleFeature inputFeature, 
 			int idOrigin, String flgCorsie, String flgIncidenti) throws IOException {
 		SimpleFeatureBuilder geoFeatureBuilder = outputObject.getBuilder();
 		for(AttributeDescriptor attr : outputObject.getSchema().getAttributeDescriptors()) {
@@ -743,6 +866,27 @@ public class ArcsIngestionProcess extends InputObject {
 		geoFeature.getUserData().put(Hints.USE_PROVIDED_FID, true);
 		outputObject.getWriter().addFeatures(DataUtilities
 				.collection(geoFeature));
+	}
+	
+	/**
+	 * @param outputObject
+	 * @param id
+	 * @param geo
+	 * @param lunghezza
+	 * @param corsie
+	 * @param inputFeature
+	 * @throws IOException 
+	 */
+	private void updateAggregateGeoFeature(OutputObject outputObject, int id, int idTematico,
+			Geometry geo, int lunghezza, int corsie, double incidenti, SimpleFeature inputFeature, 
+			int idOrigin, String flgCorsie, String flgIncidenti) throws IOException {
+		Filter filter = filterFactory.and(
+				filterFactory.equals(filterFactory.property("fk_partner"), filterFactory.literal(partner+"")),
+				filterFactory.equals(filterFactory.property("id_tematico_shape"), filterFactory.literal(idTematico+""))
+		);
+		outputObject.getWriter().modifyFeatures(outputObject.getSchema().getDescriptor("nr_incidenti").getName(), incidenti, filter);
+		outputObject.getWriter().modifyFeatures(outputObject.getSchema().getDescriptor("nr_incidenti_elab").getName(), incidenti, filter);
+		
 	}
 	
 	private void addAggregateCFFFeature(OutputObject cffObject,

@@ -565,26 +565,26 @@ public class OriginalArcsIngestionProcess extends InputObject {
 			padr = padrStatistico ;
 		}
 		
-		int[] incidentiPerYear = new int[years];
+		double[] incidentiPerYear = new double[years];
 				
 		for(int year = 1; year <= years; year++) {
-			int incidenti = ((Number)inputFeature.getAttribute("INC_ANNO_" + year)).intValue();
+			double incidenti = ((Number)inputFeature.getAttribute("INC_ANNO_" + year)).doubleValue();
 			if(incidenti < 0) {
 				String key = provincia + "." + patrimonialita + "." + (lastYear + 1 - year);
 				if(incidentalitaStandard.containsKey(key)) {
 					flagIncidenti = "S";
-					incidenti = (int) Math.round(incidentalitaStandard.get(key) * geometry.getLength());
+					incidenti = incidentalitaStandard.get(key) * geometry.getLength();
 				} else {
 					incidenti = 0;
 				}
 			}
 			incidentiPerYear[year - 1] = incidenti;
 		}
-		int incidenti = 0;
+		double incidenti = 0;
 		for(int year = 1; year <= years; year++) {
 			incidenti += incidentiPerYear[year -1];
 		}
-		incidenti = (int)((double)incidenti / (double)incidentiPerYear.length);
+		incidenti = (double)incidenti / (double)incidentiPerYear.length;
 
 		for(AttributeDescriptor attr : geoObject.getSchema().getAttributeDescriptors()) {
 			if(attr.getLocalName().equals(geoId) || attr.getLocalName().equals("ID_SEGM_01")) {

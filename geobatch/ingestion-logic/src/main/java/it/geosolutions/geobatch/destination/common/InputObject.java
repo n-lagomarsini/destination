@@ -704,19 +704,29 @@ public abstract class InputObject {
 	 * @throws IOException
 	 */
 	protected void dropInputFeature(DataStore dataStore) throws IOException {
-		listenerForwarder.setTask("Dropping table "+inputTypeName);
+		dropFeature(dataStore, inputTypeName);
+	}
+	
+	/**
+	 * Drops the input feature.
+	 * 
+	 * @param datastoreParams
+	 * @throws IOException
+	 */
+	protected void dropFeature(DataStore dataStore, String typeName) throws IOException {
+		listenerForwarder.setTask("Dropping table "+typeName);
 		if(LOGGER.isInfoEnabled()) {
-			LOGGER.info("Dropping table "+inputTypeName);
+			LOGGER.info("Dropping table "+typeName);
 		}
 		
 		try {
-			DbUtils.dropFeatureType(dataStore, inputTypeName);
+			DbUtils.dropFeatureType(dataStore, typeName);
 			listenerForwarder.setTask("Table dropped");
 			if(LOGGER.isInfoEnabled()) {
 				LOGGER.info("Table dropped");
 			}
 		} catch (SQLException e) {
-			LOGGER.error("Error dropping table "+inputTypeName+": "+e.getMessage());
+			LOGGER.error("Error dropping table "+typeName+": "+e.getMessage());
 		}
 	}
 	

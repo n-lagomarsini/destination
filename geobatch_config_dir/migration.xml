@@ -111,6 +111,47 @@
 			<description>rastermigration</description>
 			<name>rastermigration</name>               
 			<failIgnored>true</failIgnored>
+            <sourceFeature>
+				<!-- Coordinate system EPSG code: force input feature crs, if not defined -->
+				<crs>EPSG:32632</crs>
+				<!-- source GeoTools DataStore connection parameters: an entry for each 
+					connection parameter -->
+				<dataStore>
+					<entry>
+						<string>dbtype</string>
+						<string>postgis</string>
+					</entry>
+					<entry>
+						<string>host</string>
+						<string>localhost</string>
+					</entry>
+					<entry>
+						<string>port</string>
+						<string>5432</string>
+					</entry>
+					<entry>
+						<string>database</string>
+						<string>destination_staging</string>
+					</entry>
+					<entry>
+						<string>schema</string>
+						<string>siig_p</string>
+					</entry>
+					<entry>
+						<string>user</string>
+						<string>siig_p</string>
+					</entry>
+					<entry>
+						<string>passwd</string>
+						<string>siig_p</string>
+					</entry>
+					<entry>
+						<string>Expose primary keys</string>
+						<string>true</string>
+					</entry>
+				</dataStore>
+			</sourceFeature>
+            <closePhase>C</closePhase>
             <!-- Listeners -->
 	        <listenerId>ConsumerLogger0</listenerId>
 	        <listenerId>Cumulator</listenerId>

@@ -579,7 +579,13 @@ public class StreetUserComputation extends InputObject {
 				veicle.setType(getAttributeAsInt(sf.getAttribute("id_tipo_veicolo")));
 				int tgm = getAttributeAsInt(sf.getAttribute("densita_veicolare"));
 				int meanVelocity = getAttributeAsInt(sf.getAttribute("velocita_media"));
-				double densita = tgm / (meanVelocity * HOUR_IN_DAY);						
+				double densita;
+				if(meanVelocity == 0) {
+					densita = 0;
+				} else {
+					densita = tgm / (meanVelocity * HOUR_IN_DAY);
+				}
+				 						
 				veicle.setDensity(densita);
 				veicle.setMeanVelocity(meanVelocity);
 				retrieveVeicleInfo(veicle);

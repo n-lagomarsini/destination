@@ -197,7 +197,7 @@ public class ProductionUpdater extends InputObject{
 		return events;
 	}
 
-	public void execute() throws Exception {
+	public void execute(String closePhase) throws Exception {
 		UpdaterFeatures updaterFeatures  = UpdaterFeatures.fromXML(this.getClass().getClassLoader().getResourceAsStream("datamigration.xml"));
 		UpdaterFeatures targetFeature = new UpdaterFeatures();
 		UpdaterFeatures arcFeature = new UpdaterFeatures();
@@ -208,11 +208,36 @@ public class ProductionUpdater extends InputObject{
 				arcFeature.getFeatures().add(f);
 			}
 		}
-		if(targetType!=null){
-			executeTarget(targetFeature);
-		}else{
-			executeArc(arcFeature);
-		}
+		
+		int process = -1;
+        int trace = -1;
+        int errors = 0;
+                
+        // existing process
+		MetadataIngestionHandler.Process importData = getProcessData();
+		process = importData.getId();
+		trace = importData.getMaxTrace();
+		errors = importData.getMaxError();
+		
+		try {
+			if(targetType!=null){
+				executeTarget(targetFeature);
+			}else{
+				executeArc(arcFeature);
+			}
+		} catch(Exception e){
+        	errors++;
+        	metadataHandler
+				.logError(trace, errors, "Error occurred on migration", getError(e), 0);                        
+            LOGGER.error("Error occurred on migration" + e.getMessage(), e);
+	    } finally {
+	    
+	        if (process != -1 && closePhase != null) {
+				// close current process phase
+				metadataHandler.closeProcessPhase(process, closePhase);
+			}
+	        
+	    }
 
 	}
 
@@ -271,7 +296,7 @@ public class ProductionUpdater extends InputObject{
 							}
 						}
 					}
-					connection.close();
+					//connection.close();
 
 					if(fkFound){
 
@@ -350,11 +375,12 @@ public class ProductionUpdater extends InputObject{
 					//Delete all using cascade on FK
 					if(pr == null){
 						Query query = new Query(fn,filter);
+						Connection connection = getConnection(destinationDataStore,transaction);
+						DatabaseMetaData metaData = connection.getMetaData();
 						FeatureReader<SimpleFeatureType, SimpleFeature> reader = destinationDataStore.getFeatureReader(query, transaction);
-						while (reader.hasNext()) {
+						if (reader.hasNext()) {
 							SimpleFeature feature = reader.next();			
-							Connection connection = getConnection(destinationDataStore,transaction);
-							DatabaseMetaData metaData = connection.getMetaData();
+							
 
 							ResultSet foreignKeys = metaData.getExportedKeys(connection.getCatalog(), null, fn);
 							if(foreignKeys != null){
@@ -375,10 +401,9 @@ public class ProductionUpdater extends InputObject{
 									}
 								}
 							}
-							connection.close();
+							//
 						}
-						reader.close();
-						
+						reader.close();						
 						SimpleFeatureStore store = (SimpleFeatureStore) destinationDataStore.getFeatureSource(fn);
 						store.setTransaction(transaction);					
 						store.removeFeatures(filter);

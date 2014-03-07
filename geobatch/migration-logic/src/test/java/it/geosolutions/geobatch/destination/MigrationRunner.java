@@ -50,7 +50,7 @@ public class MigrationRunner {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		/*
+		
 		Map<String, Serializable> datastoreParams = new HashMap<String, Serializable>();
         datastoreParams.put("port", 5432);
         datastoreParams.put("schema", "siig_p");
@@ -61,7 +61,7 @@ public class MigrationRunner {
         datastoreParams.put("user", "siig_p");
         datastoreParams.put("database", "destination_staging");
         
-        Map<String, Serializable> outDatastoreParams = new HashMap<String, Serializable>();
+        /*Map<String, Serializable> outDatastoreParams = new HashMap<String, Serializable>();
         outDatastoreParams.put("port", 5432);
         outDatastoreParams.put("schema", "siig_p");
         outDatastoreParams.put("passwd", "siig_p");
@@ -95,10 +95,10 @@ public class MigrationRunner {
         	/*
         	String inputFeature = "BZ_BNU-AAGR_C_20130904_02";
         	//String inputFeature = "AO_C_Grafo_20130704";
-        	
+        	*/
         	dataStore = (JDBCDataStore)DataStoreFinder.getDataStore(datastoreParams);	        
 	        metadataHandler = new MetadataIngestionHandler(dataStore);
-	        ProductionUpdater updater = new ProductionUpdater(inputFeature, 
+	        /*ProductionUpdater updater = new ProductionUpdater(inputFeature, 
 	                new ProgressListenerForwarder(null), metadataHandler, dataStore);
 	        updater.setFilterByTarget(false);
 	        updater.setRemoveFeatures(false);
@@ -128,9 +128,9 @@ public class MigrationRunner {
 	        //updater.executeTarget(targetFeature);
 	        //updater.executeArc(arcFeature);	        
 	        */
-	        RasterMigration rasterMig = new RasterMigration("ALL", "D:\\Develop\\destination\\rasters_out", "D:\\Develop\\destination\\rasters_prod", null);
+	        RasterMigration rasterMig = new RasterMigration("ALL", "D:\\Develop\\destination\\rasters_out", "D:\\Develop\\destination\\rasters_prod", metadataHandler, dataStore, null);
 	        // Copying file
-	        rasterMig.execute();
+	        rasterMig.execute("C");
 	        
         } catch(Exception e) {
         	LOGGER.error(e.getMessage());

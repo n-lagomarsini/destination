@@ -34,7 +34,7 @@ import org.opengis.feature.simple.SimpleFeature;
  * @author "Mauro Bartolomeoli - mauro.bartolomeoli@geo-solutions.it"
  *
  */
-public class OriginalRoadArcTest  extends DestinationMemoryTest{
+public class OriginalRoadArcTest extends DestinationMemoryTest{
 
 	private static final String sampleInput = "RP_C_Grafo_20131212_ORIG";
 	private static final int SAMPLE_DATA_LAST_YEAR = 2012;

@@ -22,6 +22,7 @@
 package it.geosolutions.geobatch.destination.datamigration;
 
 import it.geosolutions.geobatch.destination.common.InputObject;
+import it.geosolutions.geobatch.destination.ingestion.MetadataIngestionHandler;
 import it.geosolutions.geobatch.destination.ingestion.TargetIngestionProcess;
 import it.geosolutions.geobatch.flow.event.ProgressListener;
 
@@ -36,10 +37,11 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
+import org.geotools.data.DataStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class RasterMigration {
+public class RasterMigration extends InputObject {
 
     private static final String PATHSEPARATOR = File.separator;
 
@@ -96,7 +98,9 @@ public class RasterMigration {
     }
 
     public RasterMigration(String typeName, String inputDirectory, String finalDirectory,
+    		MetadataIngestionHandler metadataHandler, DataStore dataStore,
             ProgressListener listener) {
+    	super(typeName, listener, metadataHandler, dataStore);
         this.inputDirectory = inputDirectory;
         this.outputDirectory = finalDirectory;
         this.listener = listener;
@@ -145,35 +149,62 @@ public class RasterMigration {
      * 
      * @throws IOException
      */
-    public void execute() throws IOException {
+    public void execute(String closePhase) throws IOException {
         if (!(singleFile || partnerFiles || allFiles)) {
             if (listenerPresent) {
                 listener.setTask("Unable to process the input string");
             }
             return;
         }
-        // Directory where the input files are stored
-        File inputDir = new File(inputDirectory);
-        // Directory where the input files will be stored
-        File outputDir = new File(outputDirectory);
-        // Check if it is a directory
-        if (inputDir.exists() && inputDir.isDirectory() && outputDir.exists()
-                && outputDir.isDirectory()) {
-            if (singleFile) {
-                // Creation of the file name
-                String fileName = targetNames.get(targetType.toString()).toString();
-                // Copy of the single file
-                copySingleFile(fileName, codicePartner);
-            } else if (partnerFiles) {
-                // Copy of all the files associated to the partner
-                copyPartnerFiles(codicePartner);
-            } else {
-                // Copy of all the files
-                copyAllFiles(inputDir, outputDir);
-            }
-        } else {
-            throw new IllegalArgumentException("File path is not correct");
+        
+        int process = -1;
+        int trace = -1;
+        int errors = 0;
+        
+
+        if(singleFile) {
+	        // existing process
+			MetadataIngestionHandler.Process importData = getProcessData();
+			process = importData.getId();
+			trace = importData.getMaxTrace();
+			errors = importData.getMaxError();
         }
+        try {
+	        // Directory where the input files are stored
+	        File inputDir = new File(inputDirectory);
+	        // Directory where the input files will be stored
+	        File outputDir = new File(outputDirectory);
+	        // Check if it is a directory
+	        if (inputDir.exists() && inputDir.isDirectory() && outputDir.exists()
+	                && outputDir.isDirectory()) {
+	            if (singleFile) {
+	                // Creation of the file name
+	                String fileName = targetNames.get(targetType.toString()).toString();
+	                // Copy of the single file
+	                copySingleFile(fileName, codicePartner);
+	            } else if (partnerFiles) {
+	                // Copy of all the files associated to the partner
+	                copyPartnerFiles(codicePartner);
+	            } else {
+	                // Copy of all the files
+	                copyAllFiles(inputDir, outputDir);
+	            }
+	        } else {
+	            throw new IllegalArgumentException("File path is not correct");
+	        }
+        } catch(Exception e){
+            	errors++;
+            	metadataHandler
+					.logError(trace, errors, "Error occurred on raster migration", getError(e), 0);                        
+                LOGGER.error("Error occurred on raster migration" + e.getMessage(), e);
+        } finally {
+        
+	        if (process != -1 && closePhase != null) {
+				// close current process phase
+				metadataHandler.closeProcessPhase(process, closePhase);
+			}
+	        
+	    }
     }
 
     /**
@@ -293,4 +324,9 @@ public class RasterMigration {
     private String composeTargetDirPath(String partnerName, String fileName) {
         return outputDirectory + PATHSEPARATOR + fileName;
     }
+
+	@Override
+	protected boolean parseTypeName(String typeName) {
+		return true;
+	}
 }

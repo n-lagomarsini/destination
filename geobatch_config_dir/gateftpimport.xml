@@ -25,7 +25,7 @@
 
         <GateFileHandlingConfiguration>
             <id>gate_file_handling</id>
-            <name>XML gate FTP reader/writter</name>
+            <name>XML gate FTP reader/writer</name>
             <description>Ingesting xml files into the DB</description>
             <listenerConfigurations/>
             <failIgnored>false</failIgnored>

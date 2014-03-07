@@ -19,7 +19,7 @@
         <osType>OS_UNDEFINED</osType>
   		  <eventType>POLLING_EVENT</eventType>
   		  <!-- Executed once an hour  -->
-  		  <interval>0 0 * * * ?</interval>
+  		  <interval>0 5 * * * ?</interval>
     </EventGeneratorConfiguration>
 
     <EventConsumerConfiguration>
