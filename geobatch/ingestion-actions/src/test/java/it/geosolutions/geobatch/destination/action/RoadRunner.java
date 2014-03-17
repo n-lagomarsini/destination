@@ -64,11 +64,11 @@ public class RoadRunner{
         try {
         	
         	//String inputFeature = "RL_C_Grafo_20131126";
-        	String inputFeature = "RP_C_Grafo_20131212";
+        	//String inputFeature = "RP_C_Grafo_20131212";
         	//String inputFeature = "TI_C_Grafo_20140124";
         	//String inputFeature = "BZ_C_Grafo_20131125";
         	
-        	//String inputFeature = "AO_C_Grafo_20140108";
+        	String inputFeature = "AO_C_Grafo_20140108";
         	
         	dataStore = (JDBCDataStore)DataStoreFinder.getDataStore(datastoreParams);	        
 	        metadataHandler = new MetadataIngestionHandler(dataStore);
@@ -96,7 +96,7 @@ public class RoadRunner{
 	        
 	        //zeroComputation.removeZeros(null, 1, null);
 	        //zeroComputation.removeZeros(null, 2, null);
-	        zeroComputation.removeZeros(null, 3, null);
+	        //zeroComputation.removeZeros(null, 3, null);
 	        
 	        JAI.getDefaultInstance().getTileCache().setMemoryCapacity(1024*1024*512);
 	        
@@ -115,17 +115,19 @@ public class RoadRunner{
 	        
 	        //riskComputation.prefetchRiskAtLevel(15, 1, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null, false);
 	        //riskComputation.prefetchRiskAtLevel(15, 2, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null, false);
-	        riskComputation.prefetchRiskAtLevel(15, 3, 1, 29, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", "B", false);
+	        //riskComputation.prefetchRiskAtLevel(15, 3, 1, 29, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", "B", false);
 	        
 	        
 	        StreetUserComputation streetUserComputation = new StreetUserComputation(inputFeature,
 					new ProgressListenerForwarder(null),
 					metadataHandler,
 					dataStore);
-	        
-	        /*streetUserComputation.execute(1);
-	       streetUserComputation.execute(2);
-	        streetUserComputation.execute(3);*/
+	        //streetUserComputation.setStartOriginId(832268);
+	        streetUserComputation.setRemoveFeatures(false);
+	        streetUserComputation.setSorted(true);
+	        //streetUserComputation.execute(1, false, null);
+	        streetUserComputation.execute(2, false, null);
+	        streetUserComputation.execute(3, false, null);
         } catch(Exception e) {
         	LOGGER.error(e.getMessage());
         } finally {

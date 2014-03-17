@@ -5,8 +5,8 @@ import com.vividsolutions.jts.geom.Geometry;
 public class StreetUser {
 	private Integer idArco;
 	private Geometry geoemtry;
-	private StreetDistance distance;
-	public StreetUser(Integer idArco, Geometry geoemtry, StreetDistance distance) {
+	private int distance;
+	public StreetUser(Integer idArco, Geometry geoemtry, int distance) {
 		super();
 		this.idArco = idArco;
 		this.distance = distance;
@@ -37,7 +37,7 @@ public class StreetUser {
 
 
 
-	public StreetDistance getDistance() {
+	public int getDistance() {
 		return distance;
 	}
 	

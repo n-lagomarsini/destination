@@ -50,6 +50,9 @@ public class StreetVeicle {
 	public ComputedData getComputedData(StreetScenario scenario) {
 		return this.scenarioComputedData.get(scenario);
 	}
+	public void resetComputedData() {
+		this.scenarioComputedData.clear();
+	}
 	
 	
 	

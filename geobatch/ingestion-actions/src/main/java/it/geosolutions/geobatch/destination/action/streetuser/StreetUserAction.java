@@ -32,7 +32,7 @@ public class StreetUserAction extends DestinationBaseAction<StreetUserConfigurat
 					listenerForwarder,
 					metadataHandler,
 					dataStore);
-	
+			computation.setSorted(true);
 			computation.execute(cfg.getAggregationLevel(), cfg.isDropInput(), cfg.getClosePhase());
 		} catch (IOException ex) {
             // TODO: what shall we do here??

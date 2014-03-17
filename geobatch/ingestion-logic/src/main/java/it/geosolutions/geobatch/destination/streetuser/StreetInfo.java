@@ -51,4 +51,10 @@ public class StreetInfo {
 		return storage;
 	}
 
+	public void resetVehiclesData() {
+		for(StreetVeicle vehicle : veicleTypes) {
+			vehicle.resetComputedData();
+		}
+	}
+
 }

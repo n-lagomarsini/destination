@@ -622,7 +622,18 @@ public abstract class InputObject {
 	 * @param message
 	 */
 	protected void updateImportProgress(int count, int total, int errors, String message) {
-		if (count % 100 == 0) {
+		updateImportProgress(count, total, 100, errors, message);
+	}
+	
+	/**
+	 * Updates the import progress ( progress / total )
+	 * for the listeners.
+	 * 
+	 * @param total
+	 * @param message
+	 */
+	protected void updateImportProgress(int count, int total, int batch, int errors, String message) {
+		if (count % batch == 0) {
 			listenerForwarder.setProgress((float) count);
 			listenerForwarder.setTask(message);
 			if(LOGGER.isInfoEnabled()) {
