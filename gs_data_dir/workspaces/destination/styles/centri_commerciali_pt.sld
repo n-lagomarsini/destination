@@ -12,7 +12,7 @@
           <Title>Addetti e utenti centri Commerciali
             <Localized lang="it">Addetti e utenti centri Commerciali</Localized>
             <Localized lang="en">Supermarket Employees and Users</Localized>
-            <Localized lang="fr">Addetti e utenti centri Commerciali</Localized>
+            <Localized lang="fr">Supermarché employés et utilisateurs</Localized>
             <Localized lang="de">Einkaufszentren und Großmärkte</Localized>
           </Title>
           

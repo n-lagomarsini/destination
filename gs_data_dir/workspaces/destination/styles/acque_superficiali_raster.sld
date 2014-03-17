@@ -16,7 +16,7 @@
         <Title>Acque superficiali
             <Localized lang="it">Acque superficiali</Localized>
             <Localized lang="en">Surface Waters</Localized>
-            <Localized lang="fr">Acque superficiali</Localized>
+            <Localized lang="fr">Eaux de surface</Localized>
             <Localized lang="de">Oberflächengewässer</Localized>
         </Title>
           <Name>rule1</Name>

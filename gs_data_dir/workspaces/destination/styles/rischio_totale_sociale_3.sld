@@ -13,8 +13,8 @@
           <Title>Basso
       <Localized lang="it">Basso</Localized>
       <Localized lang="en">Low</Localized>
-      <Localized lang="fr">Basso</Localized>
-      <Localized lang="de">Basso</Localized>
+      <Localized lang="fr">Faible</Localized>
+      <Localized lang="de">Niedrig</Localized>
     </Title>
           <Abstract>Linea per Basso Incidentale</Abstract>
           <ogc:Filter>
@@ -41,8 +41,8 @@
         <Title>Medio
       <Localized lang="it">Medio</Localized>
       <Localized lang="en">Medium</Localized>
-      <Localized lang="fr">Medio</Localized>
-      <Localized lang="de">Medio</Localized>
+      <Localized lang="fr">Moyen</Localized>
+      <Localized lang="de">Mittel</Localized>
     </Title>
           <Abstract>Linea per Medio Incidentale</Abstract>
           <ogc:Filter>
@@ -80,8 +80,8 @@
           <Title>Alto
       <Localized lang="it">Alto</Localized>
       <Localized lang="en">High</Localized>
-      <Localized lang="fr">Alto</Localized>
-      <Localized lang="de">Alto</Localized>
+      <Localized lang="fr">Haut</Localized>
+      <Localized lang="de">Hoch</Localized>
     </Title>
           <Abstract>Linea per Alto Incidentale</Abstract>
           <ogc:Filter>

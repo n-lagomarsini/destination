@@ -12,7 +12,7 @@
           <Title>Beni culturali
             <Localized lang="it">Beni culturali</Localized>
             <Localized lang="en">Cultural Sites</Localized>
-            <Localized lang="fr">Beni culturali</Localized>
+            <Localized lang="fr">Sites culturels</Localized>
             <Localized lang="de">Kulturerbe</Localized>
           </Title>
           

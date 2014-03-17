@@ -16,7 +16,7 @@
           <Title>Zone Urbanizzate
             <Localized lang="it">Zone Urbanizzate</Localized>
             <Localized lang="en">Urbanized Zones</Localized>
-            <Localized lang="fr">Zone Urbanizzate</Localized>
+            <Localized lang="fr">Zones urbanisées</Localized>
             <Localized lang="de">Urbanisierte Gebiete</Localized>          
           </Title>               
           <Name>rule1</Name>

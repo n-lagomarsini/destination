@@ -12,7 +12,7 @@
           <Title>Popolazione Residente
             <Localized lang="it">Popolazione Residente</Localized>
             <Localized lang="en">People Resident</Localized>
-            <Localized lang="fr">Popolazione Residente</Localized>
+            <Localized lang="fr">Les gens résident</Localized>
             <Localized lang="de">Wohnbevölkerung</Localized>
           </Title>
           <ogc:Filter>

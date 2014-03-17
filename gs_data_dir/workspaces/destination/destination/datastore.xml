@@ -15,7 +15,7 @@
     <entry key="validate connections">true</entry>
     <entry key="encode functions">false</entry>
     <entry key="max connections">50</entry>
-    <entry key="database">destination</entry>
+    <entry key="database">destination_staging</entry>
     <entry key="namespace">http://destination.geo-solutions.it</entry>
     <entry key="schema">siig_p</entry>
     <entry key="Loose bbox">true</entry>

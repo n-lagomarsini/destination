@@ -16,7 +16,7 @@
         <Title>Acque sotterranee
         <Localized lang="it">Acque sotterranee</Localized>
         <Localized lang="en">Underground Waters</Localized>
-        <Localized lang="fr">Acque sotterranee</Localized>
+        <Localized lang="fr">Eaux souterraines</Localized>
         <Localized lang="de">Tiefbrunnen</Localized>
         </Title>        
           <Name>rule1</Name>

@@ -120,7 +120,7 @@
     <Title>Basso-Basso
     <Localized lang="it">Basso-Basso</Localized>
       <Localized lang="en">Low-Low</Localized>
-      <Localized lang="fr">Basso-Basso</Localized>
+      <Localized lang="fr">Faible-Faible</Localized>
       <Localized lang="de">Basso Risiko-Niedriges</Localized>
   </Title>
     <Abstract>Basso-Basso</Abstract>
@@ -152,7 +152,7 @@
     <Title>Basso-Medio
     <Localized lang="it">Basso-Medio</Localized>
       <Localized lang="en">Low-Medium</Localized>
-      <Localized lang="fr">Basso-Medio</Localized>
+      <Localized lang="fr">Faible-Moyen</Localized>
       <Localized lang="de">Niedriges-Mittleres</Localized>
   </Title>
     <Abstract>Basso-Medio</Abstract>
@@ -190,7 +190,7 @@
     <Title>Basso-Alto
     <Localized lang="it">Basso-Alto</Localized>
       <Localized lang="en">Low-High</Localized>
-      <Localized lang="fr">Basso-Alto</Localized>
+      <Localized lang="fr">Faible-Haut</Localized>
       <Localized lang="de">Niedriges-Hohes</Localized>  
   </Title>
     <Abstract>Basso-Alto</Abstract>
@@ -222,7 +222,7 @@
     <Title>Medio-Basso
     <Localized lang="it">Medio-Basso</Localized>
       <Localized lang="en">Medium-Low</Localized>
-      <Localized lang="fr">Medio-Basso</Localized>
+      <Localized lang="fr">Moyen-Faible</Localized>
       <Localized lang="de">Mittleres-Niedriges</Localized>    
   </Title>
     <Abstract>Medio-Basso</Abstract>
@@ -260,7 +260,7 @@
     <Title>Medio-Medio
     <Localized lang="it">Medio-Medio</Localized>
       <Localized lang="en">Medium-Medium</Localized>
-      <Localized lang="fr">Medio-Medio</Localized>
+      <Localized lang="fr">Moyen-Moyen</Localized>
       <Localized lang="de">Medio Risiko-Mittleres</Localized>    
   </Title>
     <Abstract>Medio-Medio</Abstract>
@@ -304,7 +304,7 @@
     <Title>Medio-Alto
     <Localized lang="it">Medio-Alto</Localized>
       <Localized lang="en">Medium-High</Localized>
-      <Localized lang="fr">Medio-Alto</Localized>
+      <Localized lang="fr">Moyen-Haut</Localized>
       <Localized lang="de">Mittleres-Hohes</Localized>  
   </Title>
     <Abstract>Medio-Alto</Abstract>
@@ -342,7 +342,7 @@
     <Title>Alto-Basso
     <Localized lang="it">Alto-Basso</Localized>
       <Localized lang="en">High-Low</Localized>
-      <Localized lang="fr">Alto-Basso</Localized>
+      <Localized lang="fr">Haut-Faible</Localized>
       <Localized lang="de">Hohes-Niedriges</Localized>
   </Title>
     <Abstract>Alto-Basso</Abstract>
@@ -374,7 +374,7 @@
     <Title>Alto-Medio
     <Localized lang="it">Alto-Medio</Localized>
       <Localized lang="en">High-Medium</Localized>
-      <Localized lang="fr">Alto-Medio</Localized>
+      <Localized lang="fr">Haut-Moyen</Localized>
       <Localized lang="de">Hohes-Mittleres</Localized>  
   </Title>
     <Abstract>Alto-Medio</Abstract>
@@ -412,7 +412,7 @@
     <Title>Alto-Alto
     <Localized lang="it">Alto-Alto</Localized>
       <Localized lang="en">High-High</Localized>
-      <Localized lang="fr">Alto-Alto</Localized>
+      <Localized lang="fr">Haut-Haut</Localized>
       <Localized lang="de">Alto Risiko-Hohes</Localized>  
   </Title>
     <Abstract>Alto-Alto</Abstract>

@@ -16,8 +16,8 @@
         <Title>Bersagli Ambientali
             <Localized lang="it">Bersagli Ambientali</Localized>
             <Localized lang="en">Environmental Target</Localized>
-            <Localized lang="fr">Bersagli Ambientali</Localized>
-            <Localized lang="de">Bersagli Ambientali</Localized>
+            <Localized lang="fr">Objectif de l'environnement</Localized>
+            <Localized lang="de">Umweltziel</Localized>
           </Title>
           <Name>rule1</Name>
           <Title>Opaque Raster</Title>

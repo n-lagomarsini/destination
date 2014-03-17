@@ -16,7 +16,7 @@
           <Title>Addetti e utenti strutture scolastiche
             <Localized lang="it">Addetti e utenti strutture scolastiche</Localized>
             <Localized lang="en">Scholastic Structrures Employees and Users</Localized>
-            <Localized lang="fr">Addetti e utenti strutture scolastiche</Localized>
+            <Localized lang="fr">Scholastic Structrures employés et utilisateurs</Localized>
             <Localized lang="de">Schulen und Kindergärten</Localized>
           </Title>            
           <Name>rule1</Name>

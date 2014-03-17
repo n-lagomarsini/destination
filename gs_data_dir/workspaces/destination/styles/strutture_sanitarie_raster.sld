@@ -16,7 +16,7 @@
           <Title>Addetti e utenti strutture sanitarie
             <Localized lang="it">Addetti e utenti strutture sanitarie</Localized>
             <Localized lang="en">Sanitary Structrures Employees and Users</Localized>
-            <Localized lang="fr">Addetti e utenti strutture sanitarie</Localized>
+            <Localized lang="fr">Structrures sanitaires employés et utilisateurs</Localized>
             <Localized lang="de">Sanitäre Strukturen</Localized>
           </Title>        
           <Name>rule1</Name>

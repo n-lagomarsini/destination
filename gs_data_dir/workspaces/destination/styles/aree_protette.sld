@@ -13,7 +13,7 @@
           <Title>Aree protette
             <Localized lang="it">Aree protette</Localized>
             <Localized lang="en">Protected Areas</Localized>
-            <Localized lang="fr">Aree protette</Localized>
+            <Localized lang="fr">Les aires protégées</Localized>
             <Localized lang="de">Schutzgebiete</Localized>
           </Title>
           

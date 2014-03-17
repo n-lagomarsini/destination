@@ -12,7 +12,7 @@
           <Title>Popolazione Turistica
             <Localized lang="it">Popolazione Turistica</Localized>
             <Localized lang="en">Tourist People</Localized>
-            <Localized lang="fr">Popolazione Turistica</Localized>
+            <Localized lang="fr">Les gens touristiques</Localized>
             <Localized lang="de">Tourismus</Localized>
           </Title>
           

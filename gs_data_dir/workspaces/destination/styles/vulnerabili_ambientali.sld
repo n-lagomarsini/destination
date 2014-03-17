@@ -66,6 +66,7 @@
           <Name>rule1</Name>
           <Title>Opaque Raster</Title>
           <Abstract>A raster with 100% opacity</Abstract>
+          
           <RasterSymbolizer>
             <ChannelSelection>
                 <GrayChannel>
@@ -78,6 +79,7 @@
         <ColorMapEntry color="#FFFF00" quantity="600" label="Vulnerabile" opacity="0.7"/>
 </ColorMap>
           </RasterSymbolizer>
+          
         </Rule>
       </FeatureTypeStyle>
     </UserStyle>

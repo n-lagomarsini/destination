@@ -14,7 +14,7 @@
                     <Title>Area di danno
                     <Localized lang="it">Area di danno</Localized>
                     <Localized lang="en">Damage Area</Localized>
-                    <Localized lang="fr">Damage Area</Localized>
+                    <Localized lang="fr">Dommages Région</Localized>
                     <Localized lang="de">Schadensbereich</Localized>
                     </Title>
                     <Abstract>Valutazione del danno</Abstract>

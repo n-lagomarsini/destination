@@ -13,7 +13,7 @@
           <Title>Area di Danno
             <Localized lang="it">Area di Danno</Localized>
             <Localized lang="en">Damage Area</Localized>
-            <Localized lang="fr">Area di Danno</Localized>
+            <Localized lang="fr">Dommages Région</Localized>
             <Localized lang="de">Shadensbereich</Localized>
           </Title>
           <Abstract>Buffer per Rischio Incidentale</Abstract>

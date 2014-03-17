@@ -13,7 +13,7 @@
               <Title>Basso
       <Localized lang="it">Basso</Localized>
       <Localized lang="en">Low</Localized>
-      <Localized lang="fr">Basso</Localized>
+      <Localized lang="fr">Faible</Localized>
       <Localized lang="de">Niedriges</Localized>
     </Title>
           <Abstract>Linea per Basso Incidentale</Abstract>
@@ -41,7 +41,7 @@
               <Title>Medio
       <Localized lang="it">Medio</Localized>
       <Localized lang="en">Medium</Localized>
-      <Localized lang="fr">Medio</Localized>
+      <Localized lang="fr">Moyen</Localized>
       <Localized lang="de">Mittleres</Localized>
     </Title>
           <Abstract>Linea per Medio Incidentale</Abstract>
@@ -80,7 +80,7 @@
               <Title>Alto
       <Localized lang="it">Alto</Localized>
       <Localized lang="en">High</Localized>
-      <Localized lang="fr">Alto</Localized>
+      <Localized lang="fr">Haut</Localized>
       <Localized lang="de">Hohes</Localized>
     </Title>
           <Abstract>Linea per Alto Incidentale</Abstract>

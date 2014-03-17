@@ -60,8 +60,8 @@
           <Title>Rischio
             <Localized lang="it">Rischio</Localized>
             <Localized lang="en">Risk</Localized>
-            <Localized lang="fr">Rischio</Localized>
-            <Localized lang="de">Rischio</Localized>          
+            <Localized lang="fr">Risque</Localized>
+            <Localized lang="de">Risiko</Localized>          
           </Title>
           <Abstract>Rischio Incidentale</Abstract>
           

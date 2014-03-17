@@ -16,7 +16,7 @@
         <Title>Popolazione Residente
             <Localized lang="it">Popolazione Residente</Localized>
             <Localized lang="en">Resident People</Localized>
-            <Localized lang="fr">Popolazione Residente</Localized>
+            <Localized lang="fr">Les gens résidents</Localized>
             <Localized lang="de">Wohnbevölkerung</Localized>
           </Title>
           <Name>rule1</Name>

@@ -16,7 +16,7 @@
           <Title>Aree boscate
             <Localized lang="it">Aree boscate</Localized>
             <Localized lang="en">Forest Area</Localized>
-            <Localized lang="fr">Aree boscate</Localized>
+            <Localized lang="fr">Superficie forestière</Localized>
             <Localized lang="de">Waldflächen</Localized>
           </Title>
           <Name>rule1</Name>

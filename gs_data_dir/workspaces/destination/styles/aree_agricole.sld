@@ -13,7 +13,7 @@
           <Title>Aree agricole
             <Localized lang="it">Aree agricole</Localized>
             <Localized lang="en">Coltivated Area</Localized>
-            <Localized lang="fr">Aree agricole</Localized>
+            <Localized lang="fr">Coltivated Région</Localized>
             <Localized lang="de">Landwirtschaftliche Flächen</Localized>
           </Title>
           
