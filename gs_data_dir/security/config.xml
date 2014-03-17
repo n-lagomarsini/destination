@@ -9,7 +9,6 @@
   <filterChain>
     <filters name="web" path="/web/**,/gwc/rest/web/**">
       <filter>contextAsc</filter>
-      <filter>rememberme</filter>
       <filter>basic</filter>
       <filter>shibboleth</filter>
       <filter>anonymous</filter>

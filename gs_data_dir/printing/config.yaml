@@ -79,14 +79,16 @@ layouts:
           width: 170
           items:
             - !legends
-              #maxIconWidth: 160
-              maxIconHeight: 0
+              horizontalAlignment: left
+              #iconMaxWidth: 150
+              iconMaxHeight: 0
               layerSpace: 5
               layerFontSize: 12
               classIndentation: 5
               classFontSize: 8
               classSpace: 4
-              backgroundColor: #ffffff   
+              backgroundColor: #ffffff
+              failOnBrokenUrl: false 
         - !columns
           absoluteX: 590
           absoluteY: 140
@@ -169,14 +171,18 @@ layouts:
           width: 170
           items:
             - !legends
-              maxIconWidth: 160
-              maxIconHeight: 260
+              horizontalAlignment: left
+              #iconMaxWidth: 150
+              iconMaxHeight: 0
               layerSpace: 5
               layerFontSize: 12
               classIndentation: 5
               classFontSize: 8
               classSpace: 4
-              backgroundColor: #ffffff   
+              backgroundColor: #ffffff
+              fitWidth: 200
+              fitHeight: 390
+              failOnBrokenUrl: false  
         - !columns
           absoluteX: 590
           absoluteY: 140
@@ -373,14 +379,22 @@ layouts:
           width: 220
           items:
             - !legends
-              #maxIconWidth: 16
-              maxIconHeight: 0
+              failOnBrokenUrl: false
+              horizontalAlignment: left
+              iconMaxWidth: 0
+              iconMaxHeight: 700
+              maxHeight: 750
+              maxColumns: 1
+              maxWidth: 800
               layerSpace: 5
               layerFontSize: 12
               classIndentation: 5
               classFontSize: 8
               classSpace: 4
-              backgroundColor: #ffffff      
+              backgroundColor: #ffffff                
+              reorderColumns: true    
+              dontBreakItems: true  
+              overflow: true     
   #===========================================================================
   A4_2_pages_compact_legend :
   #===========================================================================
@@ -468,14 +482,18 @@ layouts:
           width: 220
           items:
             - !legends
-              maxIconWidth: 210
-              maxIconHeight: 300
+              horizontalAlignment: left
+              #iconMaxWidth: 150
+              iconMaxHeight: 0
               layerSpace: 5
               layerFontSize: 12
               classIndentation: 5
               classFontSize: 8
               classSpace: 4
-              backgroundColor: #ffffff                
+              backgroundColor: #ffffff
+              fitWidth: 200
+              fitHeight: 390
+              failOnBrokenUrl: false                 
   #===========================================================================
   A3 :
   #===========================================================================
@@ -514,14 +532,16 @@ layouts:
           width: 170
           items:
             - !legends
-              #maxIconWidth: 160
-              maxIconHeight: 0
+              horizontalAlignment: left
+              #iconMaxWidth: 150
+              iconMaxHeight: 0
               layerSpace: 5
               layerFontSize: 12
               classIndentation: 5
               classFontSize: 8
               classSpace: 4
-              backgroundColor: #ffffff   
+              backgroundColor: #ffffff
+              failOnBrokenUrl: false  
         - !columns
           absoluteX: 590
           absoluteY: 140
@@ -604,14 +624,18 @@ layouts:
           width: 170
           items:
             - !legends
-              maxIconWidth: 160
-              maxIconHeight: 260
+              horizontalAlignment: left
+              #iconMaxWidth: 150
+              iconMaxHeight: 0
               layerSpace: 5
               layerFontSize: 12
               classIndentation: 5
               classFontSize: 8
               classSpace: 4
-              backgroundColor: #ffffff   
+              backgroundColor: #ffffff
+              fitWidth: 240
+              fitHeight: 550
+              failOnBrokenUrl: false   
         - !columns
           absoluteX: 590
           absoluteY: 140
@@ -808,14 +832,22 @@ layouts:
           width: 220
           items:
             - !legends
-              #maxIconWidth: 16
-              maxIconHeight: 0
+              failOnBrokenUrl: false
+              horizontalAlignment: left
+              iconMaxWidth: 0
+              iconMaxHeight: 1050
+              maxHeight: 1050
+              maxColumns: 2
+              maxWidth: 800
               layerSpace: 5
               layerFontSize: 12
               classIndentation: 5
               classFontSize: 8
               classSpace: 4
-              backgroundColor: #ffffff      
+              backgroundColor: #ffffff 
+              reorderColumns: true    
+              dontBreakItems: true    
+              overflow: true      
   #===========================================================================
   A3_2_pages_compact_legend :
   #===========================================================================
@@ -903,11 +935,15 @@ layouts:
           width: 220
           items:
             - !legends
-              maxIconWidth: 210
-              maxIconHeight: 300
+              horizontalAlignment: left
+              #iconMaxWidth: 150
+              iconMaxHeight: 0
               layerSpace: 5
               layerFontSize: 12
               classIndentation: 5
               classFontSize: 8
               classSpace: 4
-              backgroundColor: #ffffff 
+              backgroundColor: #ffffff
+              fitWidth: 800
+              fitHeight: 1050
+              failOnBrokenUrl: false 
