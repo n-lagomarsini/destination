@@ -10,7 +10,7 @@
 <mapEntry key="[debug]" value="org.eclipse.jdt.launching.localJavaApplication"/>
 </mapAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="it.geosolutions.peoplecalculator.App"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-shpA G:\Archivio\Clienti\GeoSolution\destination\shapefiles_targets\BZ\test\BZ_BNU-ZURB_C_20130911_02\BZ_BNU-ZURB_C_20130911_02.shp&#13;&#10;-shpP G:\Archivio\Clienti\GeoSolution\destination\shapefiles_targets\BZ\test\BZ_BU-ASCOL_C_20130531_01\BZ_BU-ASCOL_C_20130531_01.shp&#13;&#10;-fIn N_ADDETTI&#13;&#10;-fOut N_ADDETTI&#13;&#10;-dMax 500&#13;&#10;-dirOut C:\test"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-shpA C:\work\destination_test\AO_BNU-ZURB_C_20130625_02\AO_BNU-ZURB_C_20130625_02.shp&#13;&#10;-shpP C:\work\destination_test\AO_BU-ASCOL_C_20130624_01\AO_BU-ASCOL_C_20130624_01.shp&#13;&#10;-fIn N_ADDETTI&#13;&#10;-fOut N_ADDETTI&#13;&#10;-dMax 500&#13;&#10;-dirOut C:\work\destination_test"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="peoplecalculator"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-DBASEDIR=.\&#13;&#10;-Dproject-level=INFO"/>
 </launchConfiguration>
