@@ -43,11 +43,11 @@
         </#if>
     </#list>
     <#if mixed>
-    <th>${["Processed Value - Social","Valore Elaborazione - Sociale","Valore Elaborazione - Sociale","Valore Elaborazione - Sociale"][locale]}</th><td>${rischio1?number}</td>
+    <th>${["Processed Value - Social","Valore Elaborazione - Sociale","Valore Elaborazione - Sociale","Valore Elaborazione - Sociale"][locale]}</th><td>${rischio1}</td>
     </tr><tr>
-    <th>${["Processed Value - Environmental","Valore Elaborazione - Ambientale","Valore Elaborazione - Ambientale","Valore Elaborazione - Ambientale"][locale]}</th><td>${rischio2?number}</td>
+    <th>${["Processed Value - Environmental","Valore Elaborazione - Ambientale","Valore Elaborazione - Ambientale","Valore Elaborazione - Ambientale"][locale]}</th><td>${rischio2}</td>
     <#else>
-    <th>${["Processed Value","Valore Elaborazione","Valore Elaborazione","Valore Elaborazione"][locale]}</th><td>${rischio1?number}</td>
+    <th>${["Processed Value","Valore Elaborazione","Valore Elaborazione","Valore Elaborazione"][locale]}</th><td>${rischio1}</td>
 	</#if>
     </tr>
 </table>
