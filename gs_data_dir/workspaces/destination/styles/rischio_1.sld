@@ -18,7 +18,13 @@
                 <ogc:Literal>store</ogc:Literal>
                 <ogc:Literal>destination</ogc:Literal>
               </ogc:Function>
-              
+              <ogc:Function name="parameter">
+                <ogc:Literal>precision</ogc:Literal>
+                <ogc:Function name="env">
+                   <ogc:Literal>precision</ogc:Literal>
+                   <ogc:Literal>15</ogc:Literal>
+                </ogc:Function>
+              </ogc:Function>
               <ogc:Function name="parameter">
                 <ogc:Literal>formula</ogc:Literal>
                 <ogc:Function name="env">
