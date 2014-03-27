@@ -13,9 +13,11 @@ public class InputData {
 	private String outputFeild;
 	private String outputDir;
 	private Integer maxDsitance = Constant.DEFAULT_DISTANCE;
-	
-	public InputData(String areaShp, String pointShp, String inputField,
-			String outputFeild, String outputDir, Integer maxDsitance) {
+	private String attrField = Constant.DEFAULT_OUTPUT_ATTRIBUTION_REL;
+
+    public InputData(String areaShp, String pointShp, String inputField,
+			String outputFeild, String outputDir, Integer maxDsitance,
+			String attrField) {
 		super();
 		this.areaShp = areaShp;
 		this.pointShp = pointShp;
@@ -24,6 +26,9 @@ public class InputData {
 		this.outputDir = outputDir;
 		if(maxDsitance != null){
 			this.maxDsitance = maxDsitance;
+		}
+		if(attrField !=null){
+		    this.attrField = attrField;
 		}
 	}	
 	
@@ -51,4 +56,11 @@ public class InputData {
 		return maxDsitance;
 	}
 
+        public String getAttrField() {
+            return attrField;
+        }
+    
+        public void setAttrField(String attrField) {
+            this.attrField = attrField;
+        }
 }

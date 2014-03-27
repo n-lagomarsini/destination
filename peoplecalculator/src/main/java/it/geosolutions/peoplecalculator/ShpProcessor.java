@@ -81,7 +81,9 @@ public class ShpProcessor {
 			Name geometryPointName = point.getSchema().getGeometryDescriptor().getName();			
 			while( areaIterator.hasNext() ){
 				//For every area compute output value
-				Integer outputValue = new Integer(0);
+				Integer outputValue = Integer.valueOf(0);
+				// Distance value
+				int distanceFromBuffer = 0; 
 				SimpleFeature areaFeature = (SimpleFeature) areaIterator.next();
 				Geometry areaGeometry = (Geometry) areaFeature.getDefaultGeometry();
 
@@ -89,7 +91,7 @@ public class ShpProcessor {
 				FeatureCollection<?, ?> pointCollection = point.getFeatures( filter );
 				Function sum = ff.function("Collection_Sum", new Expression[]{ff.property(inputData.getInputField())});
 				Object sumResult = sum.evaluate( pointCollection );
-
+				
 				if(sumResult != null){
 					outputValue = ((Number)sum.evaluate( pointCollection )).intValue();
 					logger.debug("Found point inside area");
@@ -97,7 +99,9 @@ public class ShpProcessor {
 					//Found the nearest geometry into distance
 					Filter distanceFilter = ff.dwithin(ff.property(geometryPointName), ff.literal(areaGeometry), inputData.getMaxDsitance().doubleValue(), uom.toString());
 					pointCollection = point.getFeatures( distanceFilter );
-					FeatureIterator<?> pointIteartor = pointCollection.features();
+					FeatureIterator<?> pointIteartor = pointCollection.features();		
+                                        // If multiple points are present, then the maximum distance from the buffer is taken
+                                        double maxDistanceFromBuffer = 0; 
 					try{
 						int minDistance = inputData.getMaxDsitance().intValue();
 						while( pointIteartor.hasNext() ){
@@ -105,20 +109,30 @@ public class ShpProcessor {
 							Geometry pointGeometry = (Geometry) pointFeature.getDefaultGeometry();
 							double distance = areaGeometry.distance(pointGeometry);							
 							if(distance <=  minDistance){
-								outputValue =  ((Number)pointFeature.getProperty(inputData.getInputField()).getValue()).intValue();
+								outputValue +=  ((Number)pointFeature.getProperty(inputData.getInputField()).getValue()).intValue();
 								logger.debug("Found point in " + inputData.getMaxDsitance().doubleValue() + " from area");
+								if(distance > maxDistanceFromBuffer){
+								    maxDistanceFromBuffer = distance;
+								}
 							}
+						}
+						if(maxDistanceFromBuffer > minDistance){
+						    maxDistanceFromBuffer = minDistance;
 						}
 					}finally {
 						pointIteartor.close();
 					}
+					distanceFromBuffer = (int) maxDistanceFromBuffer;					
 				}
 				logger.debug(outputValue.toString());
-				//Add computed feature to output collection				
-				featureBuilder.init(areaFeature);
-				featureBuilder.set(inputData.getOutputFeild(), outputValue);				
-				SimpleFeature feature = featureBuilder.buildFeature(null);				
-				outputCollection.add(feature);		
+				//Add computed feature to output collection only if the output value is not 0
+				if(outputValue!=null && outputValue > 0){
+	                                featureBuilder.init(areaFeature);
+	                                featureBuilder.set(inputData.getOutputFeild(), outputValue);                            
+	                                featureBuilder.set(inputData.getAttrField(), distanceFromBuffer);
+	                                SimpleFeature feature = featureBuilder.buildFeature(null);                              
+	                                outputCollection.add(feature);
+				}		
 				
 				if(count % 1000 == 0) {
 					logger.info(count + "/" + total);
@@ -158,6 +172,9 @@ public class ShpProcessor {
 		if(originFeatureType.indexOf(data.getOutputFeild()) == -1){
 			builder.add(data.getOutputFeild(), Integer.class);
 		}
+		if(originFeatureType.indexOf(data.getAttrField()) == -1){
+                    builder.add(data.getAttrField(), Integer.class);
+                }
 		SimpleFeatureType ft = builder.buildFeatureType();
 		newDataStore.createSchema(ft);
 

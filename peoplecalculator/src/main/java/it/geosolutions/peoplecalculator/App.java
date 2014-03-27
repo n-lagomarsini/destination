@@ -66,6 +66,13 @@ public class App {
 					.create( "dMax" );
 			opt.addOption(dMax);
 
+			
+	                Option attribution   = OptionBuilder.withArgName( "field" )
+                                         .hasArg().withType(String.class)
+                                         .withDescription(  "Field associated to the distance between a point inside the area buffer and the area" )
+                                         .create( "fAtt" );
+                         opt.addOption(attribution);
+			
 			opt.addOption("h", false, "Print this help");
 
 			BasicParser parser = new BasicParser();
@@ -81,7 +88,8 @@ public class App {
 				String outputFeild = cl.getOptionValue("fOut");
 				Integer maxDsitance = cl.getOptionValue("dMax")!=null ? new Integer(Integer.parseInt(cl.getOptionValue("dMax"))):null;
 				String outputDir =  cl.getOptionValue("dirOut");
-				InputData inputData = new InputData(areaShp, pointShp, inputField, outputFeild, outputDir, maxDsitance);
+				String attrField = cl.getOptionValue("fAtt");
+				InputData inputData = new InputData(areaShp, pointShp, inputField, outputFeild, outputDir, maxDsitance, attrField);
 				ShpProcessor.getInstance().compute(inputData);
 				logger.info("DONE");
 			}
