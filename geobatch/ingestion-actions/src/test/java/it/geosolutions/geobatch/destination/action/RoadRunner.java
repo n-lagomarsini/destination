@@ -36,6 +36,7 @@ import javax.media.jai.PlanarImage;
 
 import org.geotools.data.DataStoreFinder;
 import org.geotools.filter.function.RangedClassifier;
+import org.geotools.geometry.Envelope2D;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.resources.image.ImageUtilities;
 import org.slf4j.Logger;
@@ -64,9 +65,9 @@ public class RoadRunner {
         MetadataIngestionHandler metadataHandler = null;
         try {
 
-            String inputFeature = "RL_C_Grafo_20131126";
+            //String inputFeature = "RL_C_Grafo_20131126";
              //String inputFeature = "AO_C_Grafo_20140108";
-            //String inputFeature = "RP_C_Grafo_20130424";
+            String inputFeature = "RP_C_Grafo_20131212";
             //String inputFeature = "BZ_C_Grafo_20131125";
             //String inputFeature = "TI_C_Grafo_20140124";
 
@@ -111,26 +112,33 @@ public class RoadRunner {
 
             // Launch of multiple vulnerability computation inside threads
 
-            String writeMode = "PURGE_INSERT";
-            //String writeMode = "UPDATE";
+            //String writeMode = "PURGE_INSERT";
+            String writeMode = "UPDATE";
             
             VulnerabilityEnvironment env = new VulnerabilityEnvironment(
                     new ProgressListenerForwarder(null));
             
             long start = System.nanoTime();
             
+            double x = 396289.4;
+            double y = 4984026.3;
+            double width = 396324.9 - x;
+            double height = 4984122.4 -y;
+            
+            Envelope2D env1 = new Envelope2D(null, x, y, width, height);
+            
             // Level 1
             env.computeLevel12(null, numBlocksPerAxis, numBlocksPerAxis, inputFeature,
                     dataStore, metadataHandler, images, bandPerTargetNH, bandPerTargetH,
-                    writeMode, 1, false, null, null, null, null, null, null);
-            // Level 2           
-            env.computeLevel12(null, numBlocksPerAxis, numBlocksPerAxis, inputFeature,
-                    dataStore, metadataHandler, images, bandPerTargetNH, bandPerTargetH,
-                    writeMode, 2, false, null, null, null, null, null, null);
-            // Level 3
-            env.computeLevel3(null, threadMaxNumber, groups, inputFeature, dataStore,
-                    metadataHandler, images, bandPerTargetNH, bandPerTargetH, writeMode, false,
-                    null);
+                    writeMode, 1, false, null, null, null, null, null, env1);
+//            // Level 2           
+//            env.computeLevel12(null, numBlocksPerAxis, numBlocksPerAxis, inputFeature,
+//                    dataStore, metadataHandler, images, bandPerTargetNH, bandPerTargetH,
+//                    writeMode, 2, false, null, null, null, null, null, null);
+//            // Level 3
+//            env.computeLevel3(null, threadMaxNumber, groups, inputFeature, dataStore,
+//                    metadataHandler, images, bandPerTargetNH, bandPerTargetH, writeMode, false,
+//                    null);
 
             long end = System.nanoTime() - start;
             
