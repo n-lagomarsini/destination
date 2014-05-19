@@ -201,7 +201,7 @@ protected boolean parseTypeName(String inputTypeName) {
 
     if (m.matches()) {
         // file date identifier
-        date = m.group(3);
+        date = m.group(2);
         this.inputTypeName = inputTypeName;
 
         return true;

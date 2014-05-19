@@ -36,7 +36,16 @@ public Map execute(Map argsMap) throws Exception {
 			break
 		case 'PTUR':
 			attribute = 'N_PTUR_MAX'
-			break		
+			break
+        case 'ASCOL':
+			attribute = '(N_ADDETTI+N_ISCRITTI)'
+			break
+        case 'ASAN':
+			attribute = '(N_ADDETTI+N_LETTI_DH+N_LETTI_OR)'
+			break
+        case 'ACOMM':
+			attribute = '(N_ADDETTI+N_UTENTI)'
+			break
 	}
 	
 	def outputFile = new File(tempDir.getParentFile().getAbsolutePath() + fs + 'rasterize.xml')

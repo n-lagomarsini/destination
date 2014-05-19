@@ -137,6 +137,7 @@ public Queue<EventObject> execute(Queue<EventObject> events)
                         ret.add(new FileSystemEvent(((FileSystemEvent) ev)
                                 .getSource(), FileSystemEventType.FILE_ADDED));
                     } finally {
+                    	sourceDs.dispose();
                         ds.dispose();
                     }
                 }
