@@ -54,6 +54,12 @@
     siig_mtd_t_formula.tema_low,&#xd;
     siig_mtd_t_formula.tema_medium,&#xd;
     siig_mtd_t_formula.tema_max,&#xd;
+    formula_soc.tema_low as tema_low_soc,&#xd;
+    formula_soc.tema_medium as tema_medium_soc,&#xd;
+    formula_soc.tema_max as tema_max_soc,&#xd;
+    formula_env.tema_low as tema_low_env,&#xd;
+    formula_env.tema_medium as tema_medium_env,&#xd;
+    formula_env.tema_max as tema_max_env,&#xd;
     coalesce((select flg_obbligatorio+1 from siig_mtd_r_formula_criterio where id_formula=siig_mtd_t_formula.id_formula and id_criterio=1),0) as ambito_territoriale,&#xd;
     coalesce((select flg_obbligatorio+1 from siig_mtd_r_formula_criterio where id_formula=siig_mtd_t_formula.id_formula and id_criterio=2),0) as condizioni_temporali,&#xd;
     coalesce((select flg_obbligatorio+1 from siig_mtd_r_formula_criterio where id_formula=siig_mtd_t_formula.id_formula and id_criterio=3),0) as condizioni_meteo,&#xd;
