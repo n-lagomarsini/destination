@@ -38,7 +38,10 @@
       <virtualTable>
         <name>gate_stats</name>
         <sql>SELECT id_dato, fk_gate, siig_gate_d_direzione.descrizione as flg_direzione, data_stat_inizio, data_stat_fine, flg_corsia, siig_d_onu.codice_onu, &#xd;
-siig_d_onu.descrizione_onu, siig_d_kemler.codice_kemler, quantita, fk_interval, data_trasmissione &#xd;
+siig_d_onu.descrizione_onu_it, &#xd;
+siig_d_onu.descrizione_onu_en, &#xd;
+siig_d_onu.descrizione_onu_de, &#xd;
+siig_d_onu.descrizione_onu_fr, siig_d_kemler.codice_kemler, quantita, fk_interval, data_trasmissione &#xd;
 FROM siig_gate_t_dato_statistico&#xd;
 left outer join siig_gate_d_direzione on siig_gate_t_dato_statistico.flg_direzione = siig_gate_d_direzione.flg_direzione and siig_gate_t_dato_statistico.fk_gate = siig_gate_d_direzione.id_gate&#xd;
 left outer join siig_d_onu on siig_gate_t_dato_statistico.codice_onu = siig_d_onu.codice_onu&#xd;
