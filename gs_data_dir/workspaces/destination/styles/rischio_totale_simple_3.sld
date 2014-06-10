@@ -16,23 +16,13 @@
     <Abstract>Basso</Abstract>
    <ogc:Filter>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>low</ogc:Literal>
             <ogc:Literal>100</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
-        <ogc:PropertyName>rischio</ogc:PropertyName>
-        </ogc:Function>
-          <ogc:Function name="env">
-            <ogc:Literal>low</ogc:Literal>
-            <ogc:Literal>100</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsLessThanOrEqualTo>
+
    </ogc:Filter>
      <MinScaleDenominator>500000</MinScaleDenominator>
    <PolygonSymbolizer>
@@ -53,41 +43,20 @@
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>medium</ogc:Literal>
             <ogc:Literal>500</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>low</ogc:Literal>
             <ogc:Literal>100</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
-        <ogc:PropertyName>rischio</ogc:PropertyName>
-        </ogc:Function>
-          <ogc:Function name="env">
-            <ogc:Literal>medium</ogc:Literal>
-            <ogc:Literal>500</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
-        <ogc:PropertyName>rischio</ogc:PropertyName>
-        </ogc:Function>
-          <ogc:Function name="env">
-            <ogc:Literal>low</ogc:Literal>
-            <ogc:Literal>100</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsGreaterThanOrEqualTo>
+        
      </ogc:And>
    </ogc:Filter>
      <MinScaleDenominator>500000</MinScaleDenominator>
@@ -108,18 +77,7 @@
     <Abstract>Alto</Abstract>
    <ogc:Filter>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio</ogc:PropertyName>
-        </ogc:Function>
-          <ogc:Function name="env">
-            <ogc:Literal>medium</ogc:Literal>
-            <ogc:Literal>500</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
-        <ogc:PropertyName>rischio</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>medium</ogc:Literal>
             <ogc:Literal>500</ogc:Literal>

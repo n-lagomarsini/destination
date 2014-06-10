@@ -22,13 +22,7 @@
             <ogc:Literal>100</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:PropertyName>rischio</ogc:PropertyName>
-          <ogc:Function name="env">
-            <ogc:Literal>low</ogc:Literal>
-            <ogc:Literal>100</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsLessThanOrEqualTo>
+        
    </ogc:Filter>
      <MaxScaleDenominator>17070</MaxScaleDenominator>
    <LineSymbolizer uom="http://www.opengeospatial.org/se/units/metre">
@@ -130,20 +124,7 @@
             <ogc:Literal>100</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:PropertyName>rischio</ogc:PropertyName>
-          <ogc:Function name="env">
-            <ogc:Literal>medium</ogc:Literal>
-            <ogc:Literal>500</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:PropertyName>rischio</ogc:PropertyName>
-          <ogc:Function name="env">
-            <ogc:Literal>low</ogc:Literal>
-            <ogc:Literal>100</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsGreaterThanOrEqualTo>
+        
      </ogc:And>
    </ogc:Filter>
      <MaxScaleDenominator>17070</MaxScaleDenominator>
@@ -238,13 +219,7 @@
             <ogc:Literal>500</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:PropertyName>rischio</ogc:PropertyName>
-          <ogc:Function name="env">
-            <ogc:Literal>medium</ogc:Literal>
-            <ogc:Literal>500</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsGreaterThanOrEqualTo>
+        
    </ogc:Filter>
      <MaxScaleDenominator>17070</MaxScaleDenominator>
    <LineSymbolizer uom="http://www.opengeospatial.org/se/units/metre">

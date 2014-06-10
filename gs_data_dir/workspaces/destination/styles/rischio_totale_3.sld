@@ -17,17 +17,13 @@
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowambientale</ogc:Literal>
           </ogc:Function>
@@ -53,25 +49,19 @@
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumambientale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowambientale</ogc:Literal>
           </ogc:Function>
@@ -97,17 +87,13 @@
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumambientale</ogc:Literal>
           </ogc:Function>
@@ -133,25 +119,19 @@
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowambientale</ogc:Literal>
           </ogc:Function>
@@ -177,34 +157,26 @@
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumambientale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
-        <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
-          <ogc:Function name="env">
+         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
+         <ogc:Function name="env">
             <ogc:Literal>lowambientale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
@@ -229,25 +201,19 @@
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumambientale</ogc:Literal>
           </ogc:Function>
@@ -273,17 +239,13 @@
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowambientale</ogc:Literal>
           </ogc:Function>
@@ -309,25 +271,19 @@
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
         <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumambientale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>lowambientale</ogc:Literal>
           </ogc:Function>
@@ -353,17 +309,13 @@
    <ogc:Filter>
      <ogc:And>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_sociale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumsociale</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
         <ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:Function name="round">
         <ogc:PropertyName>rischio_ambientale</ogc:PropertyName>
-        </ogc:Function>
           <ogc:Function name="env">
             <ogc:Literal>mediumambientale</ogc:Literal>
           </ogc:Function>

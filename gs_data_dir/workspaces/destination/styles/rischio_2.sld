@@ -141,13 +141,7 @@
             <ogc:Literal>100</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:PropertyName>rischio1</ogc:PropertyName>
-          <ogc:Function name="env">
-            <ogc:Literal>low</ogc:Literal>
-            <ogc:Literal>100</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsLessThanOrEqualTo>
+       
    </ogc:Filter>
      <MaxScaleDenominator>500000</MaxScaleDenominator>
      <MinScaleDenominator>17070</MinScaleDenominator>
@@ -182,20 +176,7 @@
             <ogc:Literal>100</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:PropertyIsLessThanOrEqualTo>
-          <ogc:PropertyName>rischio1</ogc:PropertyName>
-          <ogc:Function name="env">
-            <ogc:Literal>medium</ogc:Literal>
-            <ogc:Literal>500</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsLessThanOrEqualTo>
-        <ogc:PropertyIsGreaterThanOrEqualTo>
-         <ogc:PropertyName>rischio1</ogc:PropertyName>
-          <ogc:Function name="env">
-            <ogc:Literal>low</ogc:Literal>
-            <ogc:Literal>100</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsGreaterThanOrEqualTo>
+        
      </ogc:And>
    </ogc:Filter>
      <MaxScaleDenominator>500000</MaxScaleDenominator>
@@ -223,13 +204,7 @@
             <ogc:Literal>500</ogc:Literal>
           </ogc:Function>
         </ogc:PropertyIsGreaterThanOrEqualTo>
-        <ogc:PropertyIsGreaterThanOrEqualTo>
-          <ogc:PropertyName>rischio1</ogc:PropertyName>
-          <ogc:Function name="env">
-            <ogc:Literal>medium</ogc:Literal>
-            <ogc:Literal>500</ogc:Literal>
-          </ogc:Function>
-        </ogc:PropertyIsGreaterThanOrEqualTo>
+        
    </ogc:Filter>
      <MaxScaleDenominator>500000</MaxScaleDenominator>
      <MinScaleDenominator>17070</MinScaleDenominator>
