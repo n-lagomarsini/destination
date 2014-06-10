@@ -272,79 +272,86 @@ public void doProcess(GateFileHandlingConfiguration cfg,
             // only download and handle if was not be already handled
             if (!exists) {
                 // Download the file
-                File inputFile = RemoteBrowserUtils.downloadFile(
-                        serverProtocol, serverUser, serverPWD, serverHost,
-                        serverPort, remotePath + SEPARATOR + fileName, inputDir
-                                + SEPARATOR + fileName, timeout);
+                File inputFile = null;
+                try {
+	                inputFile = RemoteBrowserUtils.downloadFile(
+	                        serverProtocol, serverUser, serverPWD, serverHost,
+	                        serverPort, remotePath + SEPARATOR + fileName, inputDir
+	                                + SEPARATOR + fileName, timeout);
+	                
+	             // process the file
+	                if (inputFile.exists()) {
+	                    if (configuration.isDeleteDownloadedFiles()) {
+	                        // delete downloaded file
+	                        RemoteBrowserUtils.deleteFile(serverProtocol,
+	                                serverUser, serverPWD, serverHost, serverPort,
+	                                timeout, remotePath, fileName, connectMode);
+	                    }
 
-                // process the file
-                if (inputFile.exists()) {
-                    if (configuration.isDeleteDownloadedFiles()) {
-                        // delete downloaded file
-                        RemoteBrowserUtils.deleteFile(serverProtocol,
-                                serverUser, serverPWD, serverHost, serverPort,
-                                timeout, remotePath, fileName, connectMode);
-                    }
+	                    boolean error = true;
 
-                    boolean error = true;
+	                    try {
+	                        // Import gate data
+	                        GateIngestionProcess computation = new GateIngestionProcess(
+	                                // type name read on file name
+	                                getInputTypeName(inputFile), listenerForwarder,
+	                                metadataHandler, dataStore, inputFile,
+	                                configuration.getTimeFormatConfiguration());
+	                        Map<String, Object> procResult = computation
+	                                .doProcess(cfg.getIgnorePks());
 
-                    try {
-                        // Import gate data
-                        GateIngestionProcess computation = new GateIngestionProcess(
-                                // type name read on file name
-                                getInputTypeName(inputFile), listenerForwarder,
-                                metadataHandler, dataStore, inputFile,
-                                configuration.getTimeFormatConfiguration());
-                        Map<String, Object> procResult = computation
-                                .doProcess(cfg.getIgnorePks());
+	                        // is correct?
+	                        if (procResult != null
+	                                && !procResult.isEmpty()
+	                                && procResult
+	                                        .get(GateIngestionProcess.ERROR_COUNT) != null
+	                                && procResult.get(
+	                                        GateIngestionProcess.ERROR_COUNT)
+	                                        .equals(0)) {
+	                            error = false;
+	                        }
+	                    } catch (Exception e) {
+	                        if (LOGGER.isErrorEnabled()) {
+	                            LOGGER.error("Error processing " + fileName, e);
+	                        }
+	                    }
 
-                        // is correct?
-                        if (procResult != null
-                                && !procResult.isEmpty()
-                                && procResult
-                                        .get(GateIngestionProcess.ERROR_COUNT) != null
-                                && procResult.get(
-                                        GateIngestionProcess.ERROR_COUNT)
-                                        .equals(0)) {
-                            error = false;
-                        }
-                    } catch (Exception e) {
-                        if (LOGGER.isErrorEnabled()) {
-                            LOGGER.error("Error processing " + fileName, e);
-                        }
-                    }
+	                    // Post process.
+	                    String targetPath = null;
+	                    if (!error) {
+	                        // success: put on success remote dir
+	                        targetPath = configuration.getSuccesPath();
+	                    } else {
+	                        // fail: put on fail remote dir
+	                        targetPath = configuration.getFailPath();
+	                    }
 
-                    // Post process.
-                    String targetPath = null;
-                    if (!error) {
-                        // success: put on success remote dir
-                        targetPath = configuration.getSuccesPath();
-                    } else {
-                        // fail: put on fail remote dir
-                        targetPath = configuration.getFailPath();
-                    }
+	                    // result could be local or remote
+	                    if (configuration.isStoreLocal()) {
+	                        // move the the target path
+	                        inputFile.renameTo(new File(targetPath + SEPARATOR
+	                                + inputFile.getName()));
+	                    } else {
+	                        // upload file
+	                        RemoteBrowserUtils.putFile(serverResultProtocol,
+	                                serverResultUser, serverResultHost,
+	                                serverResultPWD, serverResultPort, targetPath
+	                                        + SEPARATOR + inputFile.getName(),
+	                                inputFile.getAbsolutePath(), resultConnectMode,
+	                                resultTimeout);
 
-                    // result could be local or remote
-                    if (configuration.isStoreLocal()) {
-                        // move the the target path
-                        inputFile.renameTo(new File(targetPath + SEPARATOR
-                                + inputFile.getName()));
-                    } else {
-                        // upload file
-                        RemoteBrowserUtils.putFile(serverResultProtocol,
-                                serverResultUser, serverResultHost,
-                                serverResultPWD, serverResultPort, targetPath
-                                        + SEPARATOR + inputFile.getName(),
-                                inputFile.getAbsolutePath(), resultConnectMode,
-                                resultTimeout);
+	                        // clean downloaded file in the input directory
+	                        inputFile.delete();
+	                    }
 
-                        // clean downloaded file in the input directory
-                        inputFile.delete();
-                    }
-
-                } else if (LOGGER.isErrorEnabled()) {
-                    LOGGER.error("Error downloading " + fileName);
+	                } else if (LOGGER.isErrorEnabled()) {
+	                    LOGGER.error("Error downloading " + fileName);
+	                }
+                } catch(Exception e) {
+                	LOGGER.error("Error downloading " + fileName, e);
                 }
+
+                
             } else if (LOGGER.isInfoEnabled()) {
                 LOGGER.info("File " + fileName
                         + " ignored because was processed after this execution");
