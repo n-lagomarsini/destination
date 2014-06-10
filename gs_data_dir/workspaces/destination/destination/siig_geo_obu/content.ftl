@@ -26,7 +26,22 @@
 						<th>${["Event","Evento","Event","Event"][locale]}</th><td>${attribute.value}</td> 
                     </#if> 
 					<#if attribute.name == 'semirimorchio'>
+						<th>${["Semirimorchio","Semirimorchio","Semirimorchio","Semirimorchio"][locale]}</th><td>${attribute.value}</td> 
+                    </#if> 
+                    <#if attribute.name == 'id'>
 						<th>${["Id","Id","Id","Id"][locale]}</th><td>${attribute.value}</td> 
+                    </#if> 
+                    <#if attribute.name == 'autista'>
+						<th>${["Driver","Autista","Autista","Autista"][locale]}</th><td>${attribute.value}</td> 
+                    </#if> 
+                    <#if attribute.name == 'trattore'>
+						<th>${["Trattore","Trattore","Trattore","Trattore"][locale]}</th><td>${attribute.value}</td> 
+                    </#if> 
+                    <#if attribute.name == 'velocita'>
+						<th>${["Speed","Velocita","Velocita","Velocita"][locale]}</th><td>${attribute.value}</td> 
+                    </#if> 
+                    <#if attribute.name == 'direzione'>
+						<th>${["Direction","Direzione","Direzione","Direzione"][locale]}</th><td>${attribute.value}</td> 
                     </#if> 
 					<#if attribute.name == 'data_creazione'>
 						<th>${["Date","Data","Date","Date"][locale]}</th><td>${attribute.value}</td> 
