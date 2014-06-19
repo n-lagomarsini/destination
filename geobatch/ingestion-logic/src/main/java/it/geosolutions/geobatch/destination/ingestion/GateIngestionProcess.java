@@ -411,7 +411,7 @@ public Long createTransit(Transit transit) throws Exception {
 
     SimpleFeatureType featureType = featureSource.getSchema();
     SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(featureType);
-
+    Long fkGate = 0l;
     // values
     for (AttributeDescriptor attDesc : featureType.getAttributeDescriptors()) {
         // known columns
@@ -420,6 +420,7 @@ public Long createTransit(Transit transit) throws Exception {
             featureBuilder.add(idLong.toString());
         } else if (name.equals("fk_gate")) {
             featureBuilder.add(transit.getIdGate().toString());
+            fkGate = transit.getIdGate();
         } else if (name.equals("data_rilevamento")) {
             featureBuilder.add(arriveDate);
         } else if (name.equals("ora_fuso_orario")){
@@ -442,7 +443,7 @@ public Long createTransit(Transit transit) throws Exception {
         }
     }
 
-    SimpleFeature feature = featureBuilder.buildFeature(idLong.toString());
+    SimpleFeature feature = featureBuilder.buildFeature(idLong.toString()+"."+fkGate.toString());
     feature.getUserData().put(Hints.USE_PROVIDED_FID, true);
 
     SimpleFeatureStore featureStore = null;
