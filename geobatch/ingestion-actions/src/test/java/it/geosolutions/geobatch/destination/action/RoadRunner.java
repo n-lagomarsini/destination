@@ -16,9 +16,9 @@
  */
 package it.geosolutions.geobatch.destination.action;
 
-import it.geosolutions.geobatch.destination.ingestion.ArcsIngestionProcess;
 import it.geosolutions.geobatch.destination.ingestion.MetadataIngestionHandler;
 import it.geosolutions.geobatch.destination.streetuser.StreetUserComputation;
+import it.geosolutions.geobatch.destination.vulnerability.RiskComputation;
 import it.geosolutions.geobatch.destination.vulnerability.TargetManager.TargetInfo;
 import it.geosolutions.geobatch.destination.vulnerability.VulnerabilityComputation;
 import it.geosolutions.geobatch.destination.vulnerability.VulnerabilityEnvironment;
@@ -36,7 +36,6 @@ import javax.media.jai.PlanarImage;
 
 import org.geotools.data.DataStoreFinder;
 import org.geotools.filter.function.RangedClassifier;
-import org.geotools.geometry.Envelope2D;
 import org.geotools.jdbc.JDBCDataStore;
 import org.geotools.resources.image.ImageUtilities;
 import org.slf4j.Logger;
@@ -65,33 +64,30 @@ public class RoadRunner {
         MetadataIngestionHandler metadataHandler = null;
         try {
 
-            //String inputFeature = "RL_C_Grafo_20131126";
-             //String inputFeature = "AO_C_Grafo_20140108";
             String inputFeature = "RP_C_Grafo_20131212";
-            //String inputFeature = "BZ_C_Grafo_20131125";
-            //String inputFeature = "TI_C_Grafo_20140124";
 
             dataStore = (JDBCDataStore) DataStoreFinder.getDataStore(datastoreParams);
             metadataHandler = new MetadataIngestionHandler(dataStore);
-            /*
-             * OriginalArcsIngestionProcess arcIngestion = new OriginalArcsIngestionProcess(inputFeature, new ProgressListenerForwarder(null),
-             * metadataHandler, dataStore, -1, -1); arcIngestion.importArcs(null, false);
-             */
-            ArcsIngestionProcess arcIngestion = new ArcsIngestionProcess(inputFeature,
-                    new ProgressListenerForwarder(null), metadataHandler, dataStore);
-
-            // arcIngestion.importArcs(null, 1, false, false, true, null);
-
-            /*
-             * arcIngestion.importArcs(null, 2, false, false, null); arcIngestion.importArcs(null, 3, false, false, null);
-             * arcIngestion.importArcs(null, 3, true, false, "A");
-             * 
-             * // Spalmatore ZeroRemovalComputation zeroComputation = new ZeroRemovalComputation( inputFeature, new ProgressListenerForwarder(null),
-             * metadataHandler, dataStore);
-             * 
-             * 
-             * zeroComputation.removeZeros(null, 1, null); zeroComputation.removeZeros(null, 2, null); zeroComputation.removeZeros(null, 3, null);
-             */
+            
+//             OriginalArcsIngestionProcess arcIngestion = new OriginalArcsIngestionProcess(inputFeature, new ProgressListenerForwarder(null),
+//             metadataHandler, dataStore, -1, -1); arcIngestion.importArcs(null, false);
+//             
+////            ArcsIngestionProcess arcIngestion = new ArcsIngestionProcess(inputFeature,
+////                    new ProgressListenerForwarder(null), metadataHandler, dataStore);
+//
+//             arcIngestion.importArcs(null, 1, false, false, true, null);
+//
+//            
+//             arcIngestion.importArcs(null, 2, false, false, null); 
+//             arcIngestion.importArcs(null, 3, false, false, null);
+//             arcIngestion.importArcs(null, 3, true, false, "A");
+//             
+//             // Spalmatore 
+//             ZeroRemovalComputation zeroComputation = new ZeroRemovalComputation( inputFeature, new ProgressListenerForwarder(null),
+//             metadataHandler, dataStore);
+//             
+//             zeroComputation.removeZeros(null, 1, null); zeroComputation.removeZeros(null, 2, null); zeroComputation.removeZeros(null, 3, null);
+            
             
             JAI.getDefaultInstance().getTileCache().setMemoryCapacity(512 * 1024 * 1024);
             
@@ -111,34 +107,25 @@ public class RoadRunner {
                     threadMaxNumber, null, false);
 
             // Launch of multiple vulnerability computation inside threads
-
-            //String writeMode = "PURGE_INSERT";
             String writeMode = "UPDATE";
             
             VulnerabilityEnvironment env = new VulnerabilityEnvironment(
                     new ProgressListenerForwarder(null));
             
-            long start = System.nanoTime();
-            
-            double x = 396289.4;
-            double y = 4984026.3;
-            double width = 396324.9 - x;
-            double height = 4984122.4 -y;
-            
-            Envelope2D env1 = new Envelope2D(null, x, y, width, height);
+            long start = System.nanoTime();            
             
             // Level 1
             env.computeLevel12(null, numBlocksPerAxis, numBlocksPerAxis, inputFeature,
                     dataStore, metadataHandler, images, bandPerTargetNH, bandPerTargetH,
-                    writeMode, 1, false, null, null, null, null, null, env1);
-//            // Level 2           
-//            env.computeLevel12(null, numBlocksPerAxis, numBlocksPerAxis, inputFeature,
-//                    dataStore, metadataHandler, images, bandPerTargetNH, bandPerTargetH,
-//                    writeMode, 2, false, null, null, null, null, null, null);
-//            // Level 3
-//            env.computeLevel3(null, threadMaxNumber, groups, inputFeature, dataStore,
-//                    metadataHandler, images, bandPerTargetNH, bandPerTargetH, writeMode, false,
-//                    null);
+                    writeMode, 1, false, null, null, null, null, null, null);
+            // Level 2           
+            env.computeLevel12(null, numBlocksPerAxis, numBlocksPerAxis, inputFeature,
+                    dataStore, metadataHandler, images, bandPerTargetNH, bandPerTargetH,
+                    writeMode, 2, false, null, null, null, null, null, null);
+            // Level 3
+            env.computeLevel3(null, threadMaxNumber, groups, inputFeature, dataStore,
+                    metadataHandler, images, bandPerTargetNH, bandPerTargetH, writeMode, false,
+                    null);
 
             long end = System.nanoTime() - start;
             
@@ -150,20 +137,20 @@ public class RoadRunner {
             ImageUtilities.disposePlanarImageChain(PlanarImage.wrapRenderedImage(images[1]));
 
             /*
-             * RiskComputation riskComputation = new RiskComputation(inputFeature, new ProgressListenerForwarder(null), metadataHandler, dataStore);
-             * 
-             * riskComputation.prefetchRiskAtLevel(15, 1, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1",
-             * "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null);
-             * 
-             * riskComputation.prefetchRiskAtLevel(15, 2, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1",
-             * "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null); riskComputation.prefetchRiskAtLevel(15, 3, 1, 29, 100,
-             * "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", "B");
-             */
+             RiskComputation riskComputation = new RiskComputation(inputFeature, new ProgressListenerForwarder(null), metadataHandler, dataStore);
+             
+             riskComputation.prefetchRiskAtLevel(15, 1, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1",
+             "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null);
+             
+             riskComputation.prefetchRiskAtLevel(15, 2, 1, 26, 100, "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1",
+             "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", null); riskComputation.prefetchRiskAtLevel(15, 3, 1, 29, 100,
+             "1,2,3,4,5,6,7,8,9,10,11,12", "1,2,3,4,5,6,7,8,9,10,11,12,13,14", "0,1", "1,2,3,4,5", "fp_scen_centrale", "PURGE_INSERT", "B");
+             
             StreetUserComputation streetUserComputation = new StreetUserComputation(inputFeature,
                     new ProgressListenerForwarder(null), metadataHandler, dataStore);
 
-            /*
-             * streetUserComputation.execute(1); streetUserComputation.execute(2); streetUserComputation.execute(3);
+            
+             streetUserComputation.execute(1); streetUserComputation.execute(2); streetUserComputation.execute(3);
              */
         } catch (Exception e) {
             e.printStackTrace();
